@@ -23,7 +23,6 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
     </div>
     <dl class="chiffres" data-apparait data-delai="0.25">
       <div><dt class="titre-fin">300+</dt><dd>pages de catalogues mises en page</dd></div>
-      <div><dt class="titre-fin">4 + 2</dt><dd>graphistes et chefs de production coordonnés chez Belin</dd></div>
       <div><dt class="titre-fin">Print → BAT</dt><dd>chaîne graphique suivie jusqu’à la production</dd></div>
     </dl>
   </section>
@@ -72,7 +71,7 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
   .points { display: flex; gap: 7px; list-style: none; margin: 0; padding: 0 0 6px; }
 
   .chiffres {
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gouttiere);
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gouttiere);
     margin: clamp(48px, 7vw, 88px) 0 0;
   }
   .chiffres > div { border-top: 1px solid var(--encre); padding-top: 14px; }
