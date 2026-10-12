@@ -1,0 +1,195 @@
+---
+// Visuel d'une carte projet sur l'accueil, avec une animation au survol
+// propre à chaque projet (choisie dans projets.ts, champ `survol`).
+// Les animations ne jouent qu'à la souris et jamais en « réduire les animations ».
+import type { Projet } from '../data/projets';
+
+interface Props {
+  projet: Projet;
+  prioritaire?: boolean;
+}
+const { projet, prioritaire = false } = Astro.props;
+const couv = projet.visuels[0];
+const s = projet.survol;
+const imgs = s?.images ?? [];
+const chargement = prioritaire ? 'eager' : 'lazy';
+---
+<div class:list={['visuel', s && `survol-${s.type}`]} style={s?.couleur ? `--sc: ${s.couleur}` : undefined}>
+  {s?.type === 'livre' ? (
+    <div class="scene-livre" role="img" aria-label="Le livre « Deux guerres, une vie » en volume">
+      <div class="livre">
+        <img class="f-av" src="/livre-3d/tex/front.jpg" alt="" loading={chargement} />
+        <img class="f-ar" src="/livre-3d/tex/back.jpg" alt="" loading={chargement} />
+        <img class="f-dos" src="/livre-3d/tex/spine.jpg" alt="" loading={chargement} />
+        <span class="f-tranche"></span>
+        <span class="f-haut"></span>
+        <span class="f-bas"></span>
+      </div>
+      <span class="ombre-livre"></span>
+    </div>
+  ) : s?.type === 'defile' ? (
+    <img class="base defile" src={imgs[0]} alt={couv.alt} loading={chargement} decoding="async" />
+  ) : (
+    <img class="base" src={couv.src} alt={couv.alt} loading={chargement} decoding="async" />
+  )}
+
+  {s?.type === 'eventail' && (
+    <div class="eventail" aria-hidden="true">
+      {imgs.map((src, k) => <img src={src} alt="" loading="lazy" decoding="async" style={`--k: ${k - (imgs.length - 1) / 2}; --ka: ${Math.abs(k - (imgs.length - 1) / 2)}`} />)}
+    </div>
+  )}
+  {s?.type === 'diapo' && (
+    <div class:list={['diapo', `diapo-${imgs.length}`]} aria-hidden="true" style={`--n: ${imgs.length}`}>
+      {imgs.map((src, k) => <img src={src} alt="" loading="lazy" decoding="async" style={`--k: ${k}`} />)}
+    </div>
+  )}
+  {s?.type === 'volet' && <img class="volet" src={imgs[0]} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
+  {s?.type === 'brillance' && <span class="reflet-or" aria-hidden="true"></span>}
+  {s?.type === 'arcenciel' && <span class="trait-arc" aria-hidden="true"></span>}
+  {s?.type === 'coeur' && (
+    <svg class="coeur" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 4.4 2.6.8-1.4 2.3-2.6 4.4-2.6 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z" />
+    </svg>
+  )}
+</div>
+
+<style>
+  .visuel { position: relative; aspect-ratio: 16 / 10; overflow: hidden; container-type: size; }
+  .base { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+  /* Livre en volume (110 × 170 mm, dos 20 mm) */
+  .survol-livre { background: radial-gradient(70% 80% at 50% 45%, #f1ede5, #e2ddd2); }
+  .scene-livre { position: absolute; inset: 0; display: grid; place-items: center; perspective: 900px; }
+  .livre {
+    --h: 74cqh; --w: calc(var(--h) * 110 / 170); --e: calc(var(--h) * 20 / 170);
+    position: relative; width: var(--w); height: var(--h);
+    transform-style: preserve-3d; transform: rotateX(8deg) rotateY(32deg);
+  }
+  .livre > * { position: absolute; backface-visibility: hidden; }
+  .f-av, .f-ar { inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .f-av { transform: translateZ(calc(var(--e) / 2)); }
+  .f-ar { transform: rotateY(180deg) translateZ(calc(var(--e) / 2)); }
+  .f-dos { top: 0; left: calc(50% - var(--e) / 2); width: var(--e); height: 100%; object-fit: cover; transform: rotateY(-90deg) translateZ(calc(var(--w) / 2)); }
+  .f-tranche {
+    top: 1%; left: calc(50% - var(--e) / 2); width: var(--e); height: 98%;
+    transform: rotateY(90deg) translateZ(calc(var(--w) / 2 - 1px));
+    background: repeating-linear-gradient(90deg, #f3eee2 0 2px, #d9d1c0 2px 3px);
+  }
+  .f-haut, .f-bas {
+    left: 0; top: calc(50% - var(--e) / 2); width: 99%; height: var(--e);
+    background: repeating-linear-gradient(0deg, #f3eee2 0 2px, #d9d1c0 2px 3px);
+  }
+  .f-haut { transform: rotateX(90deg) translateZ(calc(var(--h) / 2 - 1px)); }
+  .f-bas { transform: rotateX(-90deg) translateZ(calc(var(--h) / 2 - 1px)); }
+  .ombre-livre {
+    position: absolute; left: 50%; bottom: 8%; width: 44cqh; height: 6cqh; transform: translateX(-50%);
+    background: radial-gradient(closest-side, rgba(40, 30, 20, 0.28), transparent); filter: blur(4px);
+  }
+
+  /* Page qui défile dans le cadre */
+  .defile { object-position: 50% 0; }
+
+  /* Éventail de pages */
+  .eventail { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+  .eventail img {
+    grid-area: 1 / 1; height: 70%; width: auto; max-width: 56%; object-fit: contain; border-radius: 4px;
+    box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.45); opacity: 0;
+    transform: translateY(30%) rotate(0deg);
+  }
+
+  /* Diaporama */
+  .diapo { position: absolute; inset: 0; pointer-events: none; }
+  .diapo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+
+  /* Volet de couleur */
+  .volet { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; clip-path: inset(100% 0 0 0); }
+  .survol-volet::after {
+    content: ''; position: absolute; inset: 0; background: var(--sc); pointer-events: none;
+    transform: scaleY(0); transform-origin: 50% 100%;
+  }
+
+  /* Reflet doré */
+  .reflet-or {
+    position: absolute; inset: -20% -60%; pointer-events: none; transform: translateX(-70%) rotate(8deg);
+    background: linear-gradient(100deg, transparent 40%, rgba(255, 226, 150, 0.0) 42%, rgba(255, 220, 140, 0.85) 50%, rgba(255, 255, 255, 0.0) 58%, transparent 60%);
+    mix-blend-mode: screen;
+  }
+
+  /* Trait arc-en-ciel (logotype Culture Pub) */
+  .trait-arc {
+    position: absolute; inset: 0; pointer-events: none; border-radius: inherit; padding: 6px; opacity: 0;
+    background: conic-gradient(from var(--a, 0deg), #ff3b3b, #ffb13b, #ffe53b, #3bdc6b, #3bb4ff, #8a5bff, #ff3bd0, #ff3b3b);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+  }
+  @property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+  /* Cœur Instagram */
+  .coeur {
+    position: absolute; left: 50%; top: 50%; width: 22cqh; height: 22cqh; margin: -11cqh 0 0 -11cqh;
+    fill: #ff3040; filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.3)); opacity: 0; transform: scale(0.3); pointer-events: none;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    :global(.carte a:hover) .base:not(.defile) { transform: scale(1.03); }
+
+    :global(.carte a:hover) .livre { animation: tourne 5s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+    @keyframes tourne {
+      0% { transform: rotateX(8deg) rotateY(32deg); }
+      100% { transform: rotateX(8deg) rotateY(392deg); }
+    }
+
+    .defile { transition: object-position 0.8s ease; }
+    :global(.carte a:hover) .defile { object-position: 50% 100%; transition: object-position 6s linear; }
+
+    .eventail img { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s; transition-delay: calc((var(--k) + 1) * 50ms); }
+    :global(.carte a:hover) .eventail img {
+      opacity: 1;
+      transform: translate(calc(var(--k) * 48%), calc(var(--ka) * 6%)) rotate(calc(var(--k) * 9deg));
+    }
+    :global(.carte a:hover) .survol-eventail .base { filter: blur(3px) brightness(0.8); }
+    .survol-eventail .base { transition: filter 0.4s, transform 0.7s; }
+
+    :global(.carte a:hover) .diapo img { animation: diapo3 calc(var(--n) * 1.5s) linear infinite; animation-delay: calc(var(--k) * 1.5s); }
+    :global(.carte a:hover) .diapo-2 img { animation-name: diapo2; }
+    @keyframes diapo3 {
+      0% { opacity: 0; transform: scale(1.04); }
+      5% { opacity: 1; }
+      33% { opacity: 1; }
+      38%, 100% { opacity: 0; transform: scale(1); }
+    }
+    @keyframes diapo2 {
+      0% { opacity: 0; transform: scale(1.04); }
+      7% { opacity: 1; }
+      50% { opacity: 1; }
+      57%, 100% { opacity: 0; transform: scale(1); }
+    }
+
+    .volet { transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1) 0.12s; }
+    :global(.carte a:hover) .volet { clip-path: inset(0 0 0 0); }
+    :global(.carte a:hover) .survol-volet::after { animation: volet 0.9s cubic-bezier(0.7, 0, 0.2, 1); }
+    @keyframes volet {
+      0% { transform: scaleY(0); transform-origin: 50% 100%; }
+      45% { transform: scaleY(1); transform-origin: 50% 100%; }
+      46% { transform: scaleY(1); transform-origin: 50% 0; }
+      100% { transform: scaleY(0); transform-origin: 50% 0; }
+    }
+
+    :global(.carte a:hover) .reflet-or { animation: reflet 1.6s ease-in-out infinite; }
+    @keyframes reflet { 0% { transform: translateX(-70%) rotate(8deg); } 70%, 100% { transform: translateX(70%) rotate(8deg); } }
+
+    .trait-arc { transition: opacity 0.3s; }
+    :global(.carte a:hover) .trait-arc { opacity: 1; animation: arc 2.4s linear infinite; }
+    @keyframes arc { to { --a: 360deg; } }
+
+    :global(.carte a:hover) .coeur { animation: coeur 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) infinite; }
+    @keyframes coeur {
+      0% { opacity: 0; transform: scale(0.3); }
+      18% { opacity: 1; transform: scale(1.15); }
+      30% { transform: scale(0.95); }
+      42% { transform: scale(1.05); }
+      70% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.1); }
+    }
+  }
+</style>

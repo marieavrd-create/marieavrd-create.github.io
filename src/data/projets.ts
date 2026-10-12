@@ -32,6 +32,8 @@ export type Projet = {
   /** Les tâches réalisées, affichées en liste */
   taches: string[];
   visuels: Visuel[];
+  /** Animation de la vignette d'accueil au survol (voir CarteVisuel.astro) */
+  survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur'; images?: string[]; couleur?: string };
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
   presentation?: { titre: string; dossier: string; nombre: number };
 };
@@ -66,6 +68,7 @@ export const projets: Projet[] = [
       'Design du site',
       'Présentations pour les entreprises partenaires',
     ],
+    survol: { type: 'volet', images: ['/projets/umyst/u-app.webp'], couleur: '#f6c400' },
     visuels: [
       v('umyst', 'u-cover', "Écran d'accueil de l'application Umyst sur un fond noir et jaune", 'large'),
       v('umyst', 'u-home', 'Nouveau site Umyst : sections de la page d’accueil', 'large'),
@@ -98,6 +101,7 @@ export const projets: Projet[] = [
       'Affiche du festival',
       'Déclinaisons textile et objets',
     ],
+    survol: { type: 'eventail', images: ['/projets/we-love-green/01.webp', '/projets/we-love-green/02.webp', '/projets/we-love-green/03.webp'] },
     visuels: [
       v('we-love-green', 'merch', 'Affiche violette et merchandising We Love Green', 'large'),
       v('we-love-green', '01', 'Affiche We Love Green, version jaune et rouge', 'tiers'),
@@ -131,6 +135,7 @@ export const projets: Projet[] = [
       'Gabarit et mise en page intérieure (378 pages)',
       "Intégration des photographies d'archives et des cartes",
     ],
+    survol: { type: 'livre' },
     visuels: [
       v('deux-guerres-une-vie', 'livre-a-plat', 'Couverture à plat : quatrième, dos et première', 'large'),
       v('deux-guerres-une-vie', '01', 'Maquette du livre fermé', 'moitie'),
@@ -161,6 +166,7 @@ export const projets: Projet[] = [
       'Préparation des fichiers et envoi en production',
       'Déclinaison du logo et adaptation de la charte : monogramme, couleurs, Barlow, iconographie',
     ],
+    survol: { type: 'eventail', images: ['/projets/bureau-des-goodies/01.webp', '/projets/bureau-des-goodies/04.webp', '/projets/bureau-des-goodies/05.webp'] },
     visuels: [
       v('bureau-des-goodies', '03', 'Catalogue, page de la rubrique Sacs et bagages', 'large'),
       v('bureau-des-goodies', '01', 'Couverture du catalogue', 'moitie'),
@@ -195,6 +201,7 @@ export const projets: Projet[] = [
       'Conception des sections : accueil, impact, « Pourquoi E-square », réseau de bornes',
       'Réalisation et mise en ligne du site sous Framer',
     ],
+    survol: { type: 'defile', images: ['/projets/e-square/e-page.webp'] },
     visuels: [
       v('e-square', 'e-cover', 'Page d’accueil du site E-square sur ordinateur', 'large'),
       v('e-square', 'e-logo', 'Logo E-square', 'moitie'),
@@ -225,6 +232,7 @@ export const projets: Projet[] = [
       'Charte graphique : Futura, rouge, jaune',
       "Scénographie : couloir d'écrans d'affiches d'époque, puis salle-ring",
     ],
+    survol: { type: 'diapo', images: ['/projets/mohamed-ali/m-ring.webp', '/projets/mohamed-ali/m-ko.webp'] },
     visuels: [
       v('mohamed-ali', 'm-cover', 'Mohamed Ali devant des affiches de combats', 'large'),
       v('mohamed-ali', 'm-chiffres', 'Mohamed Ali en quelques chiffres', 'large'),
@@ -255,6 +263,7 @@ export const projets: Projet[] = [
       'Choix des formes : camembert, pictogrammes, gros titres',
       "Mise en page d'une infographie lisible en quelques secondes",
     ],
+    survol: { type: 'defile', images: ['/projets/infographie/i-data.webp'] },
     visuels: [
       v('infographie', 'i-cover', 'Infographie « Artiste, un métier à risque »', 'large'),
       v('infographie', 'i-data', 'Infographie complète en format vertical', 'tiers'),
@@ -282,6 +291,7 @@ export const projets: Projet[] = [
       'Maquettes du site et de la boutique',
       'Présentation orale du projet',
     ],
+    survol: { type: 'diapo', images: ['/projets/lana-del-rey/presentation/20.webp', '/projets/lana-del-rey/presentation/22.webp', '/projets/lana-del-rey/04.webp'] },
     visuels: [
       v('lana-del-rey', '03', 'Moodboard de l’univers rétro de l’album', 'large'),
       v('lana-del-rey', '01', 'Affiche avec liens d’écoute', 'moitie'),
@@ -311,6 +321,7 @@ export const projets: Projet[] = [
       'Photomontage',
       'Mise en situation',
     ],
+    survol: { type: 'brillance' },
     visuels: [
       v('paris-2024', 'p-mur', 'Les deux affiches Paris 2024 en situation', 'large'),
       v('paris-2024', 'p-skate', 'Affiche : le skate aussi est une discipline olympique', 'moitie'),
@@ -340,6 +351,7 @@ export const projets: Projet[] = [
       "Logotype encadré d'un trait arc-en-ciel",
       "Maquettes d'une interface sombre qui met les vidéos au premier plan",
     ],
+    survol: { type: 'arcenciel' },
     visuels: [
       v('culture-pub', '01', 'Page d’accueil Culture Pub en perspective', 'large'),
       v('culture-pub', '02', 'Page d’accueil complète, version desktop', 'tiers'),
@@ -366,6 +378,7 @@ export const projets: Projet[] = [
       "Conception d'une série de 6 posts Instagram",
       'Cohérence de la série dans le fil Instagram',
     ],
+    survol: { type: 'coeur' },
     visuels: [
       v('decathlon', 'd-cover', 'Série de posts Décathlon dans le profil et le fil Instagram', 'large'),
     ],
@@ -390,6 +403,7 @@ export const projets: Projet[] = [
       'Planning créatif, échéancier et outils de suivi',
       'Mise en page du support sur une grille stricte, guidée par le rouge AlloCiné',
     ],
+    survol: { type: 'eventail', images: ['/projets/allocine/02.webp', '/projets/allocine/04.webp', '/projets/allocine/05.webp'] },
     visuels: [
       v('allocine', '03', 'Contexte du projet', 'large'),
       v('allocine', '02', 'Sommaire en cinq parties', 'moitie'),

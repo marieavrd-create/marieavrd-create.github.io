@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Ellipse from '../components/Ellipse.astro';
+import CarteVisuel from '../components/CarteVisuel.astro';
 import { projets, filtres } from '../data/projets';
 
 const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.id)));
@@ -43,7 +44,7 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
         <li class="carte" data-filtres={p.filtres.join(' ')} style={`--c: ${p.couleur}`}>
           <a href={`/projets/${p.slug}`}>
             <div class="carte-img">
-              <img src={p.visuels[0].src} alt={p.visuels[0].alt} loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
+              <CarteVisuel projet={p} prioritaire={i < 2} />
             </div>
             <div class="carte-legende">
               <span class="carte-titre"><span class="point" />{p.titre}</span>
@@ -97,8 +98,6 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
   .carte[hidden] { display: none; }
   .carte a { display: block; text-decoration: none; }
   .carte-img { border-radius: var(--rayon); overflow: hidden; background: var(--fond-2); }
-  .carte-img img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .carte a:hover .carte-img img { transform: scale(1.03); }
   .carte-legende { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 12px; }
   .carte-titre { display: inline-flex; align-items: center; gap: 9px; font-size: 0.9375rem; font-weight: 450; }
   .carte-titre .point { transform: translateY(-1px); }
