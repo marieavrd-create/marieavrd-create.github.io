@@ -1,160 +1,133 @@
 ---
 import Base from '../layouts/Base.astro';
-import { projets } from '../data/projets';
+import Ellipse from '../components/Ellipse.astro';
+import { projets, filtres } from '../data/projets';
+
+const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.id)));
 ---
 <Base>
   <section class="ouverture cadre" aria-labelledby="titre-accueil">
-    <p class="surtitre" data-apparait>Graphiste junior · Print et digital · Paris</p>
-    <h1 id="titre-accueil" class="serif titre">
-      <span class="titre-ligne"><span>Des pages</span></span>
-      <span class="titre-ligne"><span><em>bien composées,</em></span></span>
-      <span class="titre-ligne"><span>du catalogue à l’écran.</span></span>
+    <h1 id="titre-accueil" class="titre-fin titre">
+      <span class="ligne" data-apparait>Graphiste &amp; <Ellipse marge={0.14}><span class="it">directrice</span></Ellipse></span>
+      <span class="ligne" data-apparait data-delai="0.08">artistique junior</span>
     </h1>
-    <div class="ouverture-bas grille">
-      <p class="intro" data-apparait data-delai="0.3">
-        Je suis Marie-Ange Viard, graphiste diplômée d’un Master 2 en direction artistique numérique.
-        J’ai mis en page des catalogues produits chez Bureau des goodies et des maquettes pédagogiques
-        chez Belin Éducation. J’aime les documents longs, les grilles solides et les présentations claires.
+    <div class="ouverture-bas">
+      <p class="intro" data-apparait data-delai="0.15">
+        Je conçois des supports print et digitaux clairs et cohérents, de l’édition à l’affiche,
+        de la charte à l’interface. Formée chez <strong>Belin Éducation</strong> et <strong>Bureau des goodies</strong>. Basée à Paris.
       </p>
-      <a class="ancre" href="#projets" data-apparait data-delai="0.4">Voir les projets ↓</a>
+      <ul class="points" aria-hidden="true" data-apparait data-delai="0.2">
+        {projets.map((p) => <li><span class="point" style={`--c: ${p.couleur}`} /></li>)}
+      </ul>
     </div>
+    <dl class="chiffres" data-apparait data-delai="0.25">
+      <div><dt class="titre-fin">300+</dt><dd>pages de catalogues mises en page</dd></div>
+      <div><dt class="titre-fin">4 + 2</dt><dd>graphistes et chefs de production coordonnés chez Belin</dd></div>
+      <div><dt class="titre-fin">Print → BAT</dt><dd>chaîne graphique suivie jusqu’à la production</dd></div>
+    </dl>
   </section>
 
-  <section id="projets" class="cadre" aria-labelledby="titre-sommaire">
-    <div class="sommaire-entete">
-      <h2 id="titre-sommaire" class="surtitre">Sommaire</h2>
-      <span class="surtitre">{String(projets.length).padStart(2, '0')} projets</span>
+  <section id="projets" class="cadre projets" aria-label="Projets">
+    <div class="barre-filtres">
+      <div class="filtres" role="group" aria-label="Filtrer les projets">
+        <button type="button" class="pastille pleine" data-filtre="tout" aria-pressed="true">Tout</button>
+        {presents.map((f) => (
+          <button type="button" class="pastille" data-filtre={f.id} aria-pressed="false">{f.label}</button>
+        ))}
+      </div>
+      <span class="compte" aria-live="polite"><span data-compte>{projets.length}</span> projets</span>
     </div>
-    <ol class="sommaire">
+
+    <ul class="grille-projets">
       {projets.map((p, i) => (
-        <li>
-          <a href={`/projets/${p.slug}`} data-vignette={p.visuels[0].src}>
-            <span class="num">{String(i + 1).padStart(2, '0')}</span>
-            <span class="nom serif">{p.titre}</span>
-            <span class="acc">{p.accroche}</span>
-            <span class="cat">{p.categorie}</span>
+        <li class="carte" data-filtres={p.filtres.join(' ')} style={`--c: ${p.couleur}`}>
+          <a href={`/projets/${p.slug}`}>
+            <div class="carte-img">
+              <img src={p.visuels[0].src} alt={p.visuels[0].alt} loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
+            </div>
+            <div class="carte-legende">
+              <span class="carte-titre"><span class="point" />{p.titre}</span>
+              <span class="it carte-cat">{p.categorie}</span>
+            </div>
           </a>
         </li>
       ))}
-    </ol>
-    <div class="sommaire-vignette" aria-hidden="true"><img src={projets[0].visuels[0].src} alt="" /></div>
-  </section>
-
-  <section class="cadre planches" aria-label="Aperçu des projets">
-    {projets.map((p, i) => (
-      <a class={`planche planche-${i % 3}`} href={`/projets/${p.slug}`} data-apparait>
-        <div class="planche-img reperes">
-          <img src={p.visuels[0].src} alt={p.visuels[0].alt} loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
-        </div>
-        <div class="planche-legende">
-          <span class="num">{String(i + 1).padStart(2, '0')}</span>
-          <span class="serif planche-titre">{p.titre}</span>
-          <span class="cat">{p.cadre}</span>
-        </div>
-      </a>
-    ))}
-  </section>
-
-  <section class="cadre parcours grille" aria-labelledby="titre-parcours">
-    <h2 id="titre-parcours" class="surtitre parcours-titre">Parcours</h2>
-    <ul class="parcours-liste">
-      <li>
-        <span class="annee">2024</span>
-        <span><strong>Belin Éducation · Humensis</strong> Alternance. Conception et déclinaison de maquettes pédagogiques print et digitales, avec une équipe de 4 graphistes et 2 chefs de production.</span>
-      </li>
-      <li>
-        <span class="annee">2021 – 2023</span>
-        <span><strong>Bureau des goodies</strong> Stage puis alternance. Catalogues produits, charte graphique, visuels personnalisés pour le textile et les goodies.</span>
-      </li>
-      <li>
-        <span class="annee">2023 – 2024</span>
-        <span><strong>Master 2 Direction artistique numérique</strong> École Multimédia, Paris</span>
-      </li>
-      <li>
-        <span class="annee">2020 – 2022</span>
-        <span><strong>Bachelor Webdesign</strong> École Multimédia, Paris</span>
-      </li>
     </ul>
   </section>
 </Base>
 
 <style>
-  .ouverture { padding-top: clamp(48px, 10vw, 140px); padding-bottom: clamp(64px, 10vw, 140px); }
-  .titre {
-    margin: 20px 0 0;
-    font-size: clamp(3rem, 10.5vw, 10rem);
-    line-height: 0.92;
-    letter-spacing: -0.02em;
+  .ouverture { padding-top: clamp(56px, 9vw, 128px); }
+  .titre { font-size: clamp(2.6rem, 7.2vw, 6.75rem); }
+  .ligne { display: block; }
+  .titre .it { font-size: 0.98em; }
+
+  .ouverture-bas {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
+    margin-top: clamp(28px, 4vw, 48px);
   }
-  .titre em { color: var(--repere); }
-  .titre-ligne { display: block; overflow: hidden; padding-bottom: 0.06em; }
-  .titre-ligne > span { display: inline-block; }
-  .ouverture-bas { margin-top: clamp(32px, 5vw, 64px); align-items: end; row-gap: 24px; }
-  .intro { grid-column: 1 / span 6; margin: 0; font-size: clamp(1rem, 1.3vw, 1.175rem); max-width: 58ch; }
-  .ancre { grid-column: 11 / span 2; justify-self: end; font-size: 0.875rem; text-decoration: none; border-bottom: 1px solid var(--encre); }
+  .intro { margin: 0; max-width: 46ch; font-size: clamp(0.9375rem, 1.2vw, 1.0625rem); line-height: 1.6; }
+  .intro strong { font-weight: 550; }
+  .points { display: flex; gap: 7px; list-style: none; margin: 0; padding: 0 0 6px; }
 
-  .sommaire-entete { display: flex; justify-content: space-between; border-bottom: 1px solid var(--encre); padding-bottom: 12px; }
-  .sommaire-entete h2 { margin: 0; }
-  .sommaire { list-style: none; margin: 0; padding: 0; }
-  .sommaire a {
-    display: grid;
-    grid-template-columns: 3rem minmax(0, 1.1fr) minmax(0, 1.2fr) minmax(0, 0.7fr);
-    gap: var(--gouttiere);
-    align-items: baseline;
-    padding-block: 18px;
-    border-bottom: 1px solid var(--filet);
-    text-decoration: none;
-    transition: padding 0.35s ease, color 0.2s;
+  .chiffres {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gouttiere);
+    margin: clamp(48px, 7vw, 88px) 0 0;
   }
-  .sommaire a:hover { padding-left: 12px; }
-  .sommaire a:hover .nom { color: var(--repere); }
-  .num { font-size: 0.75rem; color: var(--encre-2); font-variant-numeric: tabular-nums; }
-  .nom { font-size: clamp(1.75rem, 3.2vw, 2.75rem); line-height: 1; transition: color 0.2s; }
-  .acc { color: var(--encre-2); font-size: 0.9375rem; }
-  .cat { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--encre-2); text-align: right; }
+  .chiffres > div { border-top: 1px solid var(--encre); padding-top: 14px; }
+  .chiffres dt { font-size: clamp(1.75rem, 3vw, 2.5rem); }
+  .chiffres dd { margin: 8px 0 0; font-size: 0.8125rem; color: var(--gris); max-width: 28ch; }
 
-  .sommaire-vignette {
-    position: fixed; left: 0; top: 0; z-index: 30;
-    width: 260px; pointer-events: none;
-    opacity: 0; visibility: hidden; transform: scale(0.92);
-    box-shadow: 0 18px 40px rgb(21 20 18 / 0.18);
+  .projets { margin-top: clamp(72px, 10vw, 140px); }
+  .barre-filtres {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding-bottom: 20px; border-bottom: 1px solid var(--filet); margin-bottom: clamp(24px, 3vw, 36px);
   }
+  .filtres { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filtres button { cursor: pointer; font-family: inherit; transition: background 0.2s, color 0.2s; }
+  .filtres button:hover { background: var(--fond-2); }
+  .filtres button[aria-pressed='true'] { background: var(--encre); color: var(--fond); }
+  .compte { font-size: 0.75rem; color: var(--gris); white-space: nowrap; }
 
-  .planches {
-    margin-top: clamp(80px, 12vw, 180px);
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--gouttiere);
-    row-gap: clamp(64px, 9vw, 140px);
+  .grille-projets {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(28px, 4vw, 56px) var(--gouttiere);
   }
-  .planche { text-decoration: none; display: block; }
-  .planche-0 { grid-column: 1 / span 7; }
-  .planche-1 { grid-column: 9 / span 4; margin-top: clamp(40px, 12vw, 200px); }
-  .planche-2 { grid-column: 3 / span 8; }
-  .planche-img { background: var(--papier-2); }
-  .planche-img img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; transition: transform 0.6s ease; }
-  .planche-1 .planche-img img { aspect-ratio: 4 / 5; }
-  .planche:hover .planche-img img { transform: scale(1.015); }
-  .planche-legende { display: flex; gap: 14px; align-items: baseline; margin-top: 14px; flex-wrap: wrap; }
-  .planche-titre { font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1; }
-  .planche-legende .cat { margin-left: auto; }
+  .carte[hidden] { display: none; }
+  .carte a { display: block; text-decoration: none; }
+  .carte-img { border-radius: var(--rayon); overflow: hidden; background: var(--fond-2); }
+  .carte-img img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .carte a:hover .carte-img img { transform: scale(1.03); }
+  .carte-legende { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 12px; }
+  .carte-titre { display: inline-flex; align-items: center; gap: 9px; font-size: 0.9375rem; font-weight: 450; }
+  .carte-titre .point { transform: translateY(-1px); }
+  .carte-cat { font-size: 0.875rem; color: var(--gris); text-align: right; }
 
-  .parcours { margin-top: clamp(96px, 14vw, 200px); border-top: 1px solid var(--encre); padding-top: 24px; }
-  .parcours-titre { grid-column: 1 / span 3; margin: 0; }
-  .parcours-liste { grid-column: 4 / span 9; list-style: none; margin: 0; padding: 0; }
-  .parcours-liste li { display: grid; grid-template-columns: 8rem 1fr; gap: var(--gouttiere); padding-block: 14px; border-bottom: 1px solid var(--filet); }
-  .parcours-liste strong { display: block; font-weight: 600; }
-  .annee { font-size: 0.875rem; color: var(--encre-2); font-variant-numeric: tabular-nums; }
-
-  @media (max-width: 860px) {
-    .intro { grid-column: 1 / -1; }
-    .ancre { grid-column: 1 / -1; justify-self: start; }
-    .sommaire a { grid-template-columns: 2.25rem 1fr; row-gap: 4px; }
-    .acc { grid-column: 2; }
-    .cat { grid-column: 2; text-align: left; }
-    .planche-0, .planche-1, .planche-2 { grid-column: 1 / -1; margin-top: 0; }
-    .parcours-titre, .parcours-liste { grid-column: 1 / -1; }
-    .parcours-titre { margin-bottom: 12px; }
-    .parcours-liste li { grid-template-columns: 1fr; gap: 2px; }
+  @media (max-width: 760px) {
+    .ouverture-bas { flex-direction: column; align-items: flex-start; }
+    .chiffres { grid-template-columns: 1fr; gap: 20px; }
+    .barre-filtres { flex-direction: column; align-items: flex-start; }
+    .filtres { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 4px; scrollbar-width: none; }
+    .grille-projets { grid-template-columns: 1fr; }
   }
 </style>
+
+<script>
+  const boutons = document.querySelectorAll<HTMLButtonElement>('[data-filtre]');
+  const cartes = document.querySelectorAll<HTMLElement>('.carte');
+  const compte = document.querySelector('[data-compte]');
+  boutons.forEach((b) =>
+    b.addEventListener('click', () => {
+      const f = b.dataset.filtre!;
+      boutons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      let n = 0;
+      cartes.forEach((c) => {
+        const ok = f === 'tout' || c.dataset.filtres!.split(' ').includes(f);
+        c.hidden = !ok;
+        if (ok) n++;
+      });
+      if (compte) compte.textContent = String(n);
+    }),
+  );
+</script>

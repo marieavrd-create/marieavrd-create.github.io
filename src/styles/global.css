@@ -1,21 +1,22 @@
-@import '@fontsource/instrument-serif/400.css';
-@import '@fontsource/instrument-serif/400-italic.css';
-@import '@fontsource-variable/inter-tight';
+@import '@fontsource-variable/inter';
+@import '@fontsource/lora/400-italic.css';
 
+/* Système graphique : base sobre + ellipse + une couleur par projet */
 :root {
-  --papier: #f3f0e9;
-  --papier-2: #e9e4d8;
-  --encre: #151412;
-  --encre-2: #5b574f;
-  --filet: #cfc8b8;
-  --repere: #d23c1e;
+  --fond: #fbfaf7;
+  --fond-2: #f1efe9;
+  --encre: #121212;
+  --gris: #6b6a65;
+  --filet: #e2dfd7;
+  --accent: #121212; /* remplacé par la couleur du projet sur sa page */
 
-  --serif: 'Instrument Serif', 'Times New Roman', serif;
-  --sans: 'Inter Tight Variable', 'Helvetica Neue', Arial, sans-serif;
+  --sans: 'Inter Variable', 'Helvetica Neue', Arial, sans-serif;
+  --italique: 'Lora', Georgia, serif;
 
-  --marge: clamp(16px, 4vw, 56px);
-  --gouttiere: clamp(12px, 1.6vw, 24px);
-  --largeur: 1440px;
+  --marge: clamp(16px, 4.2vw, 64px);
+  --gouttiere: clamp(14px, 2vw, 28px);
+  --largeur: 1360px;
+  --rayon: 14px;
 }
 
 *,
@@ -26,22 +27,19 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--papier);
+  background: var(--fond);
   color: var(--encre);
   font-family: var(--sans);
   font-size: 1rem;
+  font-weight: 400;
   line-height: 1.55;
-  font-feature-settings: 'ss01', 'cv11';
   -webkit-font-smoothing: antialiased;
 }
 
 img { display: block; max-width: 100%; height: auto; }
-
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
-
-:focus-visible { outline: 2px solid var(--repere); outline-offset: 3px; }
-
-::selection { background: var(--repere); color: var(--papier); }
+:focus-visible { outline: 2px solid var(--encre); outline-offset: 3px; border-radius: 4px; }
+::selection { background: var(--encre); color: var(--fond); }
 
 .cadre {
   width: 100%;
@@ -50,22 +48,63 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em
   padding-inline: var(--marge);
 }
 
-.grille {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gouttiere);
+/* Titres : Inter très fin, très grand ; un mot en Lora italique */
+.titre-fin {
+  font-weight: 250;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  margin: 0;
+}
+.it {
+  font-family: var(--italique);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 .surtitre {
-  font-family: var(--sans);
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--encre-2);
+  color: var(--gris);
 }
 
-.serif { font-family: var(--serif); font-weight: 400; }
+/* Étiquettes */
+.pastille {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  background: transparent;
+  color: var(--encre);
+  white-space: nowrap;
+}
+.pastille.pleine { background: var(--encre); border-color: var(--encre); color: var(--fond); }
+
+.point {
+  display: inline-block;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--c, var(--encre));
+  flex: none;
+}
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border: 1px solid var(--encre);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  transition: background 0.25s, color 0.25s;
+}
+.bouton:hover { background: var(--encre); color: var(--fond); }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -74,28 +113,13 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em
 
 .lien-evitement {
   position: absolute; left: var(--marge); top: -100px; z-index: 100;
-  background: var(--encre); color: var(--papier); padding: 8px 12px;
+  background: var(--encre); color: var(--fond); padding: 8px 12px; border-radius: 999px;
 }
 .lien-evitement:focus { top: 8px; }
 
-/* Repères de coupe : clin d'œil à l'impression */
-.reperes { position: relative; }
-.reperes::before,
-.reperes::after {
-  content: '';
-  position: absolute;
-  width: 14px; height: 14px;
-  border-color: var(--repere);
-  border-style: solid;
-  pointer-events: none;
-}
-.reperes::before { top: -8px; left: -8px; border-width: 1px 0 0 1px; }
-.reperes::after { bottom: -8px; right: -8px; border-width: 0 1px 1px 0; }
-
 /* Les animations ne démarrent que si JS est actif et le mouvement autorisé */
-html.js-anim [data-apparait] { opacity: 0; transform: translateY(24px); }
+html.js-anim [data-apparait] { opacity: 0; transform: translateY(20px); }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }

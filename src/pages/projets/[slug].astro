@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Ellipse from '../../components/Ellipse.astro';
 import { projets, type Projet } from '../../data/projets';
 
 export function getStaticPaths() {
@@ -12,104 +13,114 @@ export function getStaticPaths() {
 const { projet, index } = Astro.props as { projet: Projet; index: number };
 const suivant = projets[(index + 1) % projets.length];
 const [couverture, ...galerie] = projet.visuels;
-const fiche = [
-  ['Cadre', projet.cadre],
-  ['Année', projet.annee],
+const num = String(index + 1).padStart(2, '0');
+const bandeau = [
   ['Rôle', projet.role],
-  ['Outils', projet.outils?.join(', ')],
-].filter(([, val]) => val) as [string, string][];
+  ['Livrables', projet.livrables],
+  ['Outils', projet.outils],
+  ['Équipe', projet.equipe],
+  ['Cadre', projet.cadre],
+].filter(([, v]) => v) as [string, string][];
 ---
-<Base titre={projet.titre} description={`${projet.titre} : ${projet.accroche}. Projet de Marie-Ange Viard, graphiste.`} image={couverture.src}>
-  <article>
+<Base titre={projet.titre} description={projet.resume} image={couverture.src} accent={projet.couleur}>
+  <article style={`--c: ${projet.couleur}`}>
     <header class="cadre tete">
-      <a class="retour" href="/#projets">← Sommaire</a>
-      <p class="surtitre" data-apparait>{String(index + 1).padStart(2, '0')} · {projet.categorie}</p>
-      <h1 class="serif" data-apparait>{projet.titre}</h1>
-      <p class="accroche serif" data-apparait data-delai="0.1"><em>{projet.accroche}</em></p>
+      <a class="retour" href="/#projets">← Tous les projets</a>
+      <p class="numero" data-apparait>{num} — {projet.categorie}</p>
+      <div class="tete-grille">
+        <h1 class="titre-fin" data-apparait><Ellipse marge={0.16}>{projet.titre}</Ellipse></h1>
+        <p class="resume" data-apparait data-delai="0.1">{projet.resume}</p>
+      </div>
+      <dl class="bandeau" data-apparait data-delai="0.15">
+        {bandeau.map(([k, v]) => (
+          <div><dt class="surtitre">{k}</dt><dd>{v}</dd></div>
+        ))}
+      </dl>
     </header>
 
     <figure class="cadre couverture" data-apparait data-delai="0.2">
-      <div class="reperes"><img src={couverture.src} alt={couverture.alt} fetchpriority="high" /></div>
+      <img src={couverture.src} alt={couverture.alt} fetchpriority="high" />
     </figure>
 
-    <section class="cadre grille corps">
-      <dl class="fiche">
-        {fiche.map(([k, val]) => (
-          <div><dt>{k}</dt><dd>{val}</dd></div>
-        ))}
-        <div>
-          <dt>Livrables</dt>
-          <dd><ul>{projet.livrables.map((l) => <li>{l}</li>)}</ul></dd>
-        </div>
-      </dl>
-      <div class="texte">
-        {projet.texte.map((t) => <p data-apparait>{t}</p>)}
+    <section class="cadre recit">
+      <div class="bloc" data-apparait>
+        <h2 class="surtitre"><span class="point" /> Le contexte</h2>
+        <p>{projet.contexte}</p>
+      </div>
+      <div class="bloc" data-apparait>
+        <h2 class="surtitre"><span class="point" /> Ma part</h2>
+        <p>{projet.maPart}</p>
+        <ul class="etiquettes">
+          {projet.etiquettes.map((e) => <li class="pastille">{e}</li>)}
+        </ul>
       </div>
     </section>
 
     <section class="cadre galerie" aria-label="Visuels du projet">
       {galerie.map((img) => (
-        <figure class={`vis vis-${img.format ?? 'paysage'}`} data-apparait>
+        <figure class={`vis vis-${img.format ?? 'moitie'}`} data-apparait>
           <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
           <figcaption>{img.alt}</figcaption>
         </figure>
       ))}
     </section>
 
-    <nav class="cadre suivant" aria-label="Projet suivant">
-      <span class="surtitre">Projet suivant</span>
-      <a href={`/projets/${suivant.slug}`} class="serif">{suivant.titre} →</a>
+    <nav class="cadre suivant" aria-label="Projet suivant" style={`--c: ${suivant.couleur}`}>
+      <span class="surtitre"><span class="point" /> Projet suivant</span>
+      <a href={`/projets/${suivant.slug}`} class="titre-fin">{suivant.titre} <span class="it">→</span></a>
     </nav>
   </article>
 </Base>
 
 <style>
-  .tete { padding-top: clamp(32px, 6vw, 80px); padding-bottom: clamp(32px, 5vw, 56px); }
-  .retour { font-size: 0.875rem; text-decoration: none; color: var(--encre-2); display: inline-block; margin-bottom: clamp(32px, 5vw, 64px); }
+  .tete { padding-top: clamp(28px, 5vw, 64px); }
+  .retour { font-size: 0.8125rem; text-decoration: none; color: var(--gris); }
   .retour:hover { color: var(--encre); }
-  h1 { margin: 12px 0 0; font-size: clamp(3rem, 9vw, 8.5rem); line-height: 0.92; letter-spacing: -0.02em; }
-  .accroche { margin: 16px 0 0; font-size: clamp(1.35rem, 2.6vw, 2.25rem); line-height: 1.15; color: var(--encre-2); max-width: 30ch; }
+  .numero { margin: clamp(32px, 5vw, 56px) 0 clamp(16px, 2.4vw, 28px); font-size: 0.9375rem; color: var(--c); font-weight: 450; }
+  .numero { filter: saturate(1.1) brightness(0.88); }
+  .tete-grille { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--gouttiere) clamp(24px, 5vw, 80px); align-items: end; }
+  h1 { font-size: clamp(2.75rem, 7.6vw, 7rem); }
+  h1 :global(.ellipse) { white-space: normal; }
+  .resume { margin: 0; font-size: clamp(1rem, 1.3vw, 1.125rem); line-height: 1.6; max-width: 46ch; }
 
-  .couverture { margin: 0 auto; }
-  .couverture img { width: 100%; background: var(--papier-2); }
-
-  .corps { margin-top: clamp(56px, 8vw, 120px); row-gap: 40px; }
-  .fiche { grid-column: 1 / span 4; margin: 0; font-size: 0.875rem; align-self: start; position: sticky; top: 96px; }
-  .fiche > div { display: grid; grid-template-columns: 6.5rem 1fr; gap: 12px; padding-block: 10px; border-top: 1px solid var(--filet); }
-  .fiche > div:last-child { border-bottom: 1px solid var(--filet); }
-  dt { color: var(--encre-2); }
-  dd { margin: 0; }
-  dd ul { margin: 0; padding: 0; list-style: none; }
-  .texte { grid-column: 6 / span 7; }
-  .texte p { margin: 0 0 1.1em; font-size: clamp(1.05rem, 1.35vw, 1.25rem); line-height: 1.6; max-width: 62ch; }
-  .texte p:first-child::first-letter {
-    font-family: var(--serif); float: left; font-size: 4.2em; line-height: 0.82; padding: 0.06em 0.08em 0 0; color: var(--repere);
+  .bandeau {
+    display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: var(--gouttiere);
+    margin: clamp(32px, 5vw, 56px) 0 0; padding: 14px 0; border-top: 1px solid var(--encre); border-bottom: 1px solid var(--filet);
   }
+  .bandeau { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .bandeau dt { margin-bottom: 6px; }
+  .bandeau dd { margin: 0; font-size: 0.8125rem; line-height: 1.45; }
+
+  .couverture { margin: clamp(28px, 4vw, 48px) auto 0; }
+  .couverture img { width: 100%; border-radius: var(--rayon); background: var(--fond-2); }
+
+  .recit {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 5vw, 80px);
+    margin-top: clamp(64px, 9vw, 128px);
+  }
+  .bloc h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; color: var(--encre); }
+  .bloc p { margin: 0; font-size: clamp(1.0625rem, 1.5vw, 1.375rem); line-height: 1.5; font-weight: 350; letter-spacing: -0.005em; }
+  .etiquettes { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 24px 0 0; padding: 0; }
 
   .galerie {
-    margin-top: clamp(72px, 10vw, 160px);
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--gouttiere);
-    row-gap: clamp(40px, 6vw, 96px);
-    align-items: start;
+    display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px) var(--gouttiere);
+    margin-top: clamp(64px, 9vw, 128px); align-items: start;
   }
   .vis { margin: 0; }
-  .vis img { width: 100%; background: var(--papier-2); }
-  .vis figcaption { margin-top: 10px; font-size: 0.8125rem; color: var(--encre-2); }
+  .vis img { width: 100%; border-radius: var(--rayon); background: var(--fond-2); }
+  .vis figcaption { margin-top: 10px; font-size: 0.75rem; color: var(--gris); }
   .vis-large { grid-column: 1 / -1; }
-  .vis-paysage { grid-column: span 6; }
-  .vis-portrait { grid-column: span 4; }
-  .vis-paysage:nth-of-type(4n + 1) { grid-column: 1 / span 7; }
-  .vis-paysage:nth-of-type(4n + 2) { grid-column: 8 / span 5; margin-top: clamp(40px, 8vw, 120px); }
+  .vis-moitie { grid-column: span 3; }
+  .vis-tiers { grid-column: span 2; }
 
-  .suivant { margin-top: clamp(96px, 14vw, 200px); display: grid; gap: 8px; }
-  .suivant a { font-size: clamp(2.25rem, 7vw, 6rem); line-height: 1; text-decoration: none; width: fit-content; }
-  .suivant a:hover { color: var(--repere); }
+  .suivant { margin-top: clamp(96px, 12vw, 160px); display: grid; gap: 14px; }
+  .suivant .surtitre { display: flex; align-items: center; gap: 10px; }
+  .suivant a { font-size: clamp(2.25rem, 6vw, 5.5rem); text-decoration: none; width: fit-content; }
+  .suivant a:hover { color: var(--gris); }
 
-  @media (max-width: 860px) {
-    .fiche, .texte { grid-column: 1 / -1; position: static; }
-    .vis-paysage, .vis-portrait,
-    .vis-paysage:nth-of-type(4n + 1), .vis-paysage:nth-of-type(4n + 2) { grid-column: 1 / -1; margin-top: 0; }
+  @media (max-width: 760px) {
+    .tete-grille, .recit { grid-template-columns: 1fr; }
+    .bandeau { grid-template-columns: 1fr 1fr; }
+    .vis-moitie, .vis-tiers { grid-column: 1 / -1; }
   }
 </style>

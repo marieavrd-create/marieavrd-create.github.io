@@ -1,68 +1,92 @@
 ---
 import Base from '../layouts/Base.astro';
+import Ellipse from '../components/Ellipse.astro';
+
+const parcours = [
+  { annee: '2025', titre: 'E-square', detail: 'Graphiste freelance · site vitrine conçu et réalisé sous Framer' },
+  { annee: '2023 – 2024', titre: 'Belin Éducation (Humensis)', detail: 'Assistante directrice artistique en alternance · manuels scolaires print et digitaux, affiches, PLV, jaquettes, suivi des BAT' },
+  { annee: '2023 – 2024', titre: 'Master 2 Direction artistique numérique', detail: 'École Multimédia, Paris' },
+  { annee: '2021 – 2023', titre: 'Bureau des goodies', detail: 'Graphiste en stage puis en alternance · catalogues de plus de 300 pages, chaîne graphique, chartes' },
+  { annee: '2020 – 2022', titre: 'Bachelor Webdesign', detail: 'École Multimédia, Paris' },
+  { annee: '2020', titre: 'Espace Bremontier', detail: 'Chargée de communication digitale en stage · réseaux sociaux et contenus' },
+];
+const outils = ['InDesign', 'Illustrator', 'Photoshop', 'Figma', 'Framer'];
+const savoirFaire = [
+  'Mise en page print & numérique',
+  'Chaîne graphique, BAT, suivi de fabrication',
+  'Chartes graphiques',
+  'Identité visuelle & affiches',
+  'Direction artistique digitale, UI, design system',
+  'Coordination d’équipe créative',
+];
 ---
-<Base titre="À propos" description="Marie-Ange Viard, graphiste junior print et digital : parcours, compétences et outils.">
-  <section class="cadre grille apropos">
-    <div class="photo">
-      <div class="reperes"><img src="/portrait.webp" alt="Portrait de Marie-Ange Viard" width="710" height="888" /></div>
+<Base titre="À propos" description="Marie-Ange Viard, graphiste diplômée d’un Master 2 Direction Artistique Numérique : parcours, savoir-faire et outils.">
+  <section class="cadre apropos">
+    <div class="haut">
+      <img class="photo" src="/portrait.webp" alt="Portrait de Marie-Ange Viard" width="710" height="888" data-apparait />
+      <h1 class="titre-fin" data-apparait>Bonjour, je suis <Ellipse marge={0.14}><span class="it">Marie-Ange</span></Ellipse></h1>
     </div>
-    <div class="contenu">
-      <p class="surtitre" data-apparait>À propos</p>
-      <h1 class="serif" data-apparait>Graphiste, entre l’édition et l’écran.</h1>
-      <div class="texte">
-        <p data-apparait>
-          Je suis graphiste junior, diplômée d’un Master 2 Direction artistique numérique et d’un Bachelor Webdesign
-          à l’École Multimédia de Paris.
+
+    <div class="corps">
+      <div class="texte" data-apparait>
+        <p>
+          Graphiste diplômée d’un Master 2 Direction Artistique Numérique, formée en alternance chez
+          <strong>Belin Éducation</strong> (groupe Humensis) et <strong>Bureau des goodies</strong>.
         </p>
-        <p data-apparait>
-          Chez Belin Éducation (groupe Humensis), j’ai conçu et décliné des maquettes pédagogiques print et digitales,
-          au sein d’une équipe de 4 graphistes et 2 chefs de production : cohérence visuelle, contraintes éditoriales,
-          suivi des deadlines et intégration des retours.
+        <p>
+          J’aime les projets où la forme sert le fond : une mise en page qui guide la lecture, une charte qui tient
+          sur tous les supports, une donnée rendue claire en un coup d’œil.
         </p>
-        <p data-apparait>
-          Chez Bureau des goodies, en stage puis en alternance, j’ai mis en page des catalogues produits, travaillé
-          la charte graphique de la marque et créé des visuels personnalisés avec les équipes commerciales.
-        </p>
-        <p data-apparait>
-          Ce qui me plaît : faire tenir beaucoup d’information dans une page qui reste claire, construire des grilles
-          et des gabarits qui durent, et soigner chaque détail jusqu’à l’impression ou la mise en ligne.
+        <p class="liens">
+          <a class="bouton" href="/cv-marie-ange-viard.pdf" download>Télécharger mon CV</a>
+          <a class="bouton" href="https://www.linkedin.com/in/marieangeviard/" rel="me noopener">LinkedIn</a>
         </p>
       </div>
 
-      <dl class="competences">
-        <div><dt>Mise en page</dt><dd>Édition à forte pagination, catalogues, maquettes pédagogiques, gabarits et styles</dd></div>
-        <div><dt>Identité</dt><dd>Logotypes, chartes graphiques, déclinaisons print et digitales</dd></div>
-        <div><dt>Digital</dt><dd>Direction artistique digitale, UI design, design system, wireframes et prototypes</dd></div>
-        <div><dt>Outils</dt><dd>InDesign, Illustrator, Photoshop, Figma</dd></div>
-        <div><dt>Langues</dt><dd>Français, anglais B2</dd></div>
-      </dl>
+      <div class="colonne">
+        <h2 class="surtitre">Parcours</h2>
+        <ol class="frise">
+          {parcours.map((e) => (
+            <li data-apparait>
+              <span class="annee">{e.annee}</span>
+              <span><strong>{e.titre}</strong><span class="detail">{e.detail}</span></span>
+            </li>
+          ))}
+        </ol>
 
-      <p class="liens">
-        <a href="/cv-marie-ange-viard.pdf" download>Télécharger mon CV (PDF)</a>
-        <a href="https://www.linkedin.com/in/marieangeviard/" rel="me noopener">LinkedIn</a>
-      </p>
+        <h2 class="surtitre">Savoir-faire</h2>
+        <ul class="pastilles">{savoirFaire.map((s) => <li class="pastille">{s}</li>)}</ul>
+
+        <h2 class="surtitre">Outils</h2>
+        <ul class="pastilles">{outils.map((o) => <li class="pastille pleine">{o}</li>)}</ul>
+
+        <h2 class="surtitre">Langues</h2>
+        <p class="petit">Français · Anglais B2</p>
+      </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .apropos { padding-top: clamp(40px, 8vw, 120px); row-gap: 40px; }
-  .photo { grid-column: 1 / span 4; align-self: start; position: sticky; top: 96px; }
-  .photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-  .contenu { grid-column: 6 / span 7; }
-  h1 { margin: 12px 0 32px; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: -0.02em; }
-  .texte p { font-size: clamp(1.05rem, 1.35vw, 1.25rem); margin: 0 0 1em; max-width: 60ch; }
-  .competences { margin: 48px 0 0; font-size: 0.9375rem; }
-  .competences > div { display: grid; grid-template-columns: 8rem 1fr; gap: 16px; padding-block: 12px; border-top: 1px solid var(--filet); }
-  .competences > div:last-child { border-bottom: 1px solid var(--filet); }
-  dt { color: var(--encre-2); }
-  dd { margin: 0; }
-  .liens { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 40px; }
-  .liens a { text-decoration: none; border-bottom: 1px solid var(--repere); }
-
-  @media (max-width: 860px) {
-    .photo { grid-column: 1 / span 8; position: static; max-width: 320px; }
-    .contenu { grid-column: 1 / -1; }
-    .competences > div { grid-template-columns: 1fr; gap: 2px; }
+  .apropos { padding-top: clamp(40px, 7vw, 96px); }
+  .haut { display: flex; align-items: flex-end; gap: clamp(20px, 3vw, 40px); flex-wrap: wrap; }
+  .photo { width: clamp(96px, 11vw, 150px); aspect-ratio: 1; object-fit: cover; object-position: 50% 30%; border-radius: 50%; border: 1px solid var(--encre); }
+  h1 { font-size: clamp(2.25rem, 6vw, 5.5rem); }
+  .corps { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(32px, 6vw, 96px); margin-top: clamp(48px, 7vw, 96px); }
+  .texte p { margin: 0 0 1em; font-size: clamp(1.0625rem, 1.5vw, 1.375rem); line-height: 1.5; font-weight: 350; max-width: 34ch; }
+  .texte strong { font-weight: 550; }
+  .liens { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px !important; }
+  .colonne h2 { margin: 0 0 14px; padding-top: 12px; border-top: 1px solid var(--encre); }
+  .colonne h2:not(:first-child) { margin-top: 48px; }
+  .frise { list-style: none; margin: 0; padding: 0; }
+  .frise li { display: grid; grid-template-columns: 7.5rem 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--filet); font-size: 0.875rem; }
+  .frise strong { display: block; font-weight: 550; }
+  .detail { color: var(--gris); }
+  .annee { color: var(--gris); font-variant-numeric: tabular-nums; }
+  .pastilles { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+  .petit { margin: 0; font-size: 0.875rem; }
+  @media (max-width: 760px) {
+    .corps { grid-template-columns: 1fr; }
+    .frise li { grid-template-columns: 1fr; gap: 2px; }
   }
 </style>

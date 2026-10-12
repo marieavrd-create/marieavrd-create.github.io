@@ -1,0 +1,41 @@
+---
+// La signature graphique : une ellipse au trait, inclinée de -6°, qui se
+// dessine autour d'un mot. `marge` agrandit l'ellipse autour du texte.
+interface Props {
+  marge?: number;
+  class?: string;
+}
+const { marge = 0.22, class: classe = '' } = Astro.props;
+---
+<span class={`ellipse ${classe}`} style={`--m: ${marge}em`}>
+  <slot />
+  <svg viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <ellipse cx="100" cy="30" rx="98" ry="27" />
+  </svg>
+</span>
+
+<style>
+  .ellipse {
+    position: relative;
+    display: inline-block;
+    padding: var(--m) calc(var(--m) * 1.6);
+    margin: calc(var(--m) * -1) calc(var(--m) * -0.6);
+    white-space: nowrap;
+  }
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    transform: rotate(-6deg);
+    pointer-events: none;
+  }
+  ellipse {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.1;
+    vector-effect: non-scaling-stroke;
+  }
+  :global(html.js-anim) svg { opacity: 0; }
+</style>

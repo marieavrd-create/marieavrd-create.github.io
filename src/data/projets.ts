@@ -1,180 +1,303 @@
 // Liste des projets du portfolio.
 // Pour ajouter ou modifier un projet : éditer ce fichier, puis déposer les
-// visuels dans public/projets/<slug>/ (01.webp, 02.webp…). Le premier visuel
-// sert de couverture. L'ordre de la liste est l'ordre d'affichage.
+// visuels dans public/projets/<slug>/. Le premier visuel sert de couverture
+// (ratio 16:10 sur l'accueil). L'ordre de la liste est l'ordre d'affichage.
 
-export type Visuel = { src: string; alt: string; format?: 'large' | 'portrait' | 'paysage' };
+export const filtres = [
+  { id: 'edition', label: 'Édition & print' },
+  { id: 'identite', label: 'Identité' },
+  { id: 'affiche', label: 'Affiche' },
+  { id: 'digital', label: 'Digital & UI' },
+  { id: 'presentation', label: 'Présentation & data' },
+] as const;
+
+export type Filtre = (typeof filtres)[number]['id'];
+
+export type Visuel = { src: string; alt: string; format?: 'large' | 'moitie' | 'tiers' };
 
 export type Projet = {
   slug: string;
   titre: string;
-  accroche: string;
-  categorie: string;
-  cadre: string;
-  annee?: string;
+  categorie: string; // en italique sur la carte
+  couleur: string;
+  filtres: Filtre[];
+  etiquettes: string[];
+  resume: string;
   role: string;
-  outils?: string[];
-  livrables: string[];
-  texte: string[];
+  livrables: string;
+  outils?: string;
+  equipe?: string;
+  cadre: string;
+  contexte: string;
+  maPart: string;
   visuels: Visuel[];
 };
 
-const v = (slug: string, n: number, alt: string, format?: Visuel['format']): Visuel => ({
-  src: `/projets/${slug}/${String(n).padStart(2, '0')}.webp`,
+const v = (slug: string, fichier: string, alt: string, format?: Visuel['format']): Visuel => ({
+  src: `/projets/${slug}/${fichier}.webp`,
   alt,
   format,
 });
 
 export const projets: Projet[] = [
   {
-    slug: 'bureau-des-goodies',
-    titre: 'Bureau des goodies',
-    accroche: 'Catalogue produits de 141 pages et charte graphique',
-    categorie: 'Édition · Identité',
-    cadre: 'Stage puis alternance',
-    annee: '2021 – 2023',
-    role: 'Graphiste',
-    outils: ['InDesign', 'Illustrator', 'Photoshop'],
-    livrables: ['Catalogue produits de 141 pages', 'Charte graphique', 'Déclinaisons du logotype', 'Supports de communication'],
-    texte: [
-      "Bureau des goodies personnalise textiles et objets pour les étudiants, les associations et les entreprises. J'y ai d'abord fait mon stage, puis mon alternance, au sein de la chaîne graphique.",
-      "Pour le catalogue, j'ai conçu une maquette capable de tenir plus de 140 pages : un gabarit par famille de produits, un code couleur par rubrique, des blocs produit répétables avec référence, visuel et descriptif. La structure permet de mettre à jour une gamme sans casser la mise en page.",
-      "En parallèle, j'ai travaillé la charte graphique de la marque : construction du monogramme, déclinaisons couleur et noir, univers typographique en Barlow, iconographie et mises en situation sur les réseaux et le merchandising.",
-    ],
+    slug: 'umyst',
+    titre: 'Umyst',
+    categorie: 'Cofondatrice — DA & UI',
+    couleur: '#f6c400',
+    filtres: ['identite', 'digital'],
+    etiquettes: ['Identité', 'UI mobile', 'Site', 'Pitch'],
+    resume:
+      "Une application qui relie consommateurs et entreprises locales pour réinventer ensemble l'expérience client. J'en suis cofondatrice et j'en ai porté la direction artistique et l'UI.",
+    role: 'Cofondatrice · DA & UI',
+    livrables: 'Logo et mascotte, application, site, présentations',
+    outils: 'Figma',
+    equipe: 'Projet cofondé en équipe',
+    cadre: 'Projet entrepreneurial · Blois et Tours',
+    contexte:
+      "Projet entrepreneurial que j'ai cofondé : une application qui relie consommateurs et entreprises locales (Blois, Tours) pour améliorer ensemble l'expérience client.",
+    maPart:
+      "Direction artistique et UI : logo et mascotte, application mobile, site, présentations aux entreprises partenaires. Une identité chaleureuse portée par un jaune franc, pensée pour être expliquée simplement à des publics différents.",
     visuels: [
-      v('bureau-des-goodies', 3, 'Catalogue Bureau des goodies, page de la rubrique Sacs et bagages', 'large'),
-      v('bureau-des-goodies', 1, 'Couverture du catalogue', 'paysage'),
-      v('bureau-des-goodies', 2, 'Page « Qui sommes-nous ? » du catalogue', 'paysage'),
-      v('bureau-des-goodies', 4, 'Page produits Écritures', 'paysage'),
-      v('bureau-des-goodies', 5, 'Page produits Alimentaire et boisson', 'paysage'),
-      v('bureau-des-goodies', 6, 'Page produits Pack été', 'paysage'),
-      v('bureau-des-goodies', 7, 'Page produits Pack ski', 'paysage'),
-      v('bureau-des-goodies', 8, 'Page produits Pack WEI', 'paysage'),
-      v('bureau-des-goodies', 9, 'Charte graphique Bureau des goodies, page de titre', 'large'),
-      v('bureau-des-goodies', 10, 'Contexte et identité visuelle', 'paysage'),
-      v('bureau-des-goodies', 11, 'Couleurs et déclinaisons du logotype', 'paysage'),
-      v('bureau-des-goodies', 12, "L'univers chromatique", 'paysage'),
-      v('bureau-des-goodies', 13, "L'univers typographique, Barlow", 'paysage'),
-      v('bureau-des-goodies', 14, 'Logo mis en situation sur Instagram et en merchandising', 'paysage'),
-      v('bureau-des-goodies', 15, 'Les quatre déclinaisons couleur du monogramme', 'large'),
-    ],
-  },
-  {
-    slug: 'deux-guerres-une-vie',
-    titre: 'Deux guerres, une vie',
-    accroche: 'Mise en page d’une autobiographie de 378 pages',
-    categorie: 'Édition',
-    cadre: 'Projet d’édition',
-    annee: '2026',
-    role: 'Maquettiste',
-    outils: ['InDesign'],
-    livrables: ['Maquette intérieure de 378 pages', 'Couverture, dos et quatrième', 'Intégration de photographies d’archives'],
-    texte: [
-      "Deux guerres, une vie est l'autobiographie de Gabriel Lafon, qui retrace son existence à travers les deux conflits mondiaux. Le texte est long et dense, ponctué de photographies et de documents d'époque.",
-      "J'ai composé l'intérieur dans un format de poche, avec une typographie à empattements choisie pour le confort de lecture sur la durée, des marges généreuses et un traitement sobre des photographies d'archives, légendées et calées sur la grille.",
-      "La couverture reprend un portrait de l'auteur en noir et blanc, avec un titre en capitales qui laisse toute la place au document.",
-    ],
-    visuels: [
-      v('deux-guerres-une-vie', 1, 'Maquette de la couverture du livre Deux guerres, une vie', 'large'),
-      v('deux-guerres-une-vie', 2, 'Double page intérieure avec un portrait d’archives', 'large'),
-      v('deux-guerres-une-vie', 3, 'Page qui tourne, texte et photographies', 'paysage'),
-      v('deux-guerres-une-vie', 4, 'Tranche du livre', 'paysage'),
-    ],
-  },
-  {
-    slug: 'lana-del-rey',
-    titre: 'Lana Del Rey',
-    accroche: 'Charte graphique pour l’album Chemtrails over the Country Club',
-    categorie: 'Identité · Présentation',
-    cadre: 'Projet d’études',
-    role: 'Direction artistique, graphisme',
-    livrables: ['Moodboard', 'Logotype et zone de protection', 'Charte typographique', 'Affiche', 'Packaging CD', 'Page web et boutique', 'Présentation orale'],
-    texte: [
-      "Le brief : créer l'univers graphique du huitième album de Lana Del Rey, Chemtrails over the Country Club (2021), entre Americana des années 1970, glamour rétro et mélancolie.",
-      "Le logotype est composé en Rousseau Deco, une typographie Art déco. La palette reprend les tons délavés des photographies de l'album. La charte est ensuite déclinée en affiche, en packaging CD et en pages web avec une boutique de merchandising.",
-      "Le projet a été présenté à l'oral à partir d'un support de présentation conçu pour l'occasion.",
-    ],
-    visuels: [
-      v('lana-del-rey', 1, 'Affiche Chemtrails over the Country Club avec liens d’écoute', 'portrait'),
-      v('lana-del-rey', 2, 'Page projet : moodboard, logotype, affiche et boutique', 'portrait'),
-      v('lana-del-rey', 3, 'Moodboard de l’univers rétro de l’album', 'large'),
-      v('lana-del-rey', 4, 'Packaging CD et livret', 'paysage'),
-      v('lana-del-rey', 5, 'Page À propos du site de l’album', 'paysage'),
-      v('lana-del-rey', 6, 'Page boutique, t-shirts de la collection', 'paysage'),
-    ],
-  },
-  {
-    slug: 'allocine',
-    titre: 'AlloCiné',
-    accroche: 'Présentation de cadrage et de pilotage d’un projet de refonte',
-    categorie: 'Présentation · Gestion de projet',
-    cadre: 'Projet d’études, Master 2',
-    annee: '2024',
-    role: 'Direction artistique, conception de la présentation',
-    livrables: ['Présentation d’une trentaine de slides', 'Cadrage et périmètre', 'Échéancier et calendrier détaillé', 'Organisation de l’équipe et outils'],
-    texte: [
-      "Le cas : AlloCiné relance la refonte de son site, de son application et de sa ligne éditoriale sociale après une première collaboration décevante avec une agence. L'enjeu de la présentation est de regagner la confiance du client.",
-      "J'ai construit le support comme un document de pilotage : analyse, équipe et supervision, cadrage avec ce qui est inclus et exclu, planning créatif, échéancier et outils de suivi. Une grille stricte et un rouge AlloCiné guident la lecture d'une partie à l'autre.",
-      "C'est le type de document que l'on produit au quotidien en studio ou en cabinet : beaucoup d'information à hiérarchiser, et une mise en forme qui doit rester claire à chaque page.",
-    ],
-    visuels: [
-      v('allocine', 3, 'Contexte du projet', 'paysage'),
-      v('allocine', 1, 'Slide d’ouverture de la présentation', 'large'),
-      v('allocine', 2, 'Sommaire en cinq parties', 'paysage'),
-      v('allocine', 4, 'Pourquoi ce projet', 'paysage'),
-      v('allocine', 5, 'Portée et limites : ce qui est inclus et exclu', 'paysage'),
-      v('allocine', 6, 'Échéancier des tâches', 'paysage'),
-      v('allocine', 7, 'Calendrier détaillé', 'paysage'),
-      v('allocine', 8, 'Outils de communication interne', 'paysage'),
-    ],
-  },
-  {
-    slug: 'culture-pub',
-    titre: 'Culture Pub',
-    accroche: 'Refonte de l’identité et du site de l’émission culte',
-    categorie: 'Web · UI design',
-    cadre: 'Projet d’études',
-    role: 'Direction artistique, UI design',
-    livrables: ['Logotype', 'Design system', 'Maquettes desktop et mobile', 'Page catégories et page vidéo'],
-    texte: [
-      "Culture Pub, émission culte de M6 consacrée à la publicité, veut redevenir la référence qu'elle était. Le brief demandait de refondre l'identité graphique et le site, en desktop et en mobile.",
-      "J'ai dessiné un logotype encadré d'un trait arc-en-ciel, puis un design system sombre qui met les vidéos au premier plan : boutons, icônes, cartes et étiquettes colorées par secteur.",
-      "Les maquettes couvrent la page d'accueil, la page vidéo, les catégories et leurs versions mobiles.",
-    ],
-    visuels: [
-      v('culture-pub', 1, 'Page d’accueil Culture Pub en perspective', 'large'),
-      v('culture-pub', 2, 'Page d’accueil complète, version desktop', 'portrait'),
-      v('culture-pub', 3, 'Page vidéo en perspective', 'paysage'),
-      v('culture-pub', 4, 'Page d’accueil, version mobile', 'portrait'),
-      v('culture-pub', 5, 'Page catégories', 'portrait'),
-      v('culture-pub', 6, 'Design system : logo, icônes et bouton', 'portrait'),
-      v('culture-pub', 7, 'Page vidéo, version desktop', 'paysage'),
-      v('culture-pub', 8, 'Page vidéo, étiquettes par secteur', 'paysage'),
+      v('umyst', 'u-cover', "Écran d'accueil de l'application Umyst sur un fond noir et jaune", 'large'),
+      v('umyst', 'u-home', 'Nouveau site Umyst : sections de la page d’accueil', 'large'),
+      v('umyst', 'u-mobile', 'Nouveau site Umyst présenté sur ordinateur', 'moitie'),
+      v('umyst', 'u-desk', 'Sections du site Umyst en perspective', 'moitie'),
+      v('umyst', 'u-app', "Écrans de l'application : communauté et filtres", 'large'),
+      v('umyst', 'u-dash', 'Tableau de bord entreprise', 'moitie'),
+      v('umyst', 'u-tarifs', 'Page tarification', 'moitie'),
+      v('umyst', 'u-collab', 'Présentation : récoltez les fruits de votre collaboration', 'large'),
     ],
   },
   {
     slug: 'we-love-green',
     titre: 'We Love Green',
-    accroche: 'Identité visuelle du festival, de l’affiche au merchandising',
-    categorie: 'Identité · Print',
-    cadre: 'Projet d’études',
+    categorie: 'Identité de festival',
+    couleur: '#ff4fa3',
+    filtres: ['identite', 'affiche'],
+    etiquettes: ['Identité', 'Affiche', 'Merch', 'Charte'],
+    resume:
+      "Identité visuelle d'une édition du festival We Love Green, à Paris : logotype, charte, affiches et déclinaisons textile et objets.",
     role: 'Direction artistique, graphisme',
-    livrables: ['Logotype', 'Charte graphique', 'Affiches', 'Merchandising', 'Posts Instagram'],
-    texte: [
-      "We Love Green est un festival de musique organisé chaque année au bois de Vincennes, à Paris. Le projet consistait à imaginer son identité complète pour une édition.",
-      "Le logotype s'inspire des années 1970 : des lettres volontairement décalées, des ondes concentriques et deux dégradés, jaune vers rouge et rose vers violet. Les typographies PT Sans et Akzidenz-Grotesk structurent les informations.",
-      "L'identité est déclinée en affiches, en mobilier urbain, en merchandising (sweats, t-shirts, sac, vinyle) et en posts Instagram.",
-    ],
+    livrables: 'Logotype, charte, affiches, merchandising, posts Instagram',
+    outils: 'Illustrator',
+    cadre: 'Projet d’études',
+    contexte:
+      "Identité visuelle d'une édition du festival We Love Green (Paris) : logo, palette, typographies, affiche et déclinaisons.",
+    maPart:
+      "Création du logotype typographique, inspiré des années 1970, de la charte (palette en deux dégradés, PT Sans, Akzidenz-Grotesk), de l'affiche et des déclinaisons textile et objets.",
     visuels: [
-      v('we-love-green', 4, 'Affiche dans un abribus', 'large'),
-      v('we-love-green', 1, 'Affiche We Love Green, version jaune et rouge', 'portrait'),
-      v('we-love-green', 2, 'Affiche We Love Green, version violette', 'portrait'),
-      v('we-love-green', 3, 'Affiche We Love Green, ondes concentriques', 'portrait'),
-      v('we-love-green', 5, 'Affiche collée sur un mur', 'paysage'),
-      v('we-love-green', 6, 'Affiche en situation dans la végétation', 'paysage'),
-      v('we-love-green', 7, 'Charte : référence, logotype et applications', 'large'),
-      v('we-love-green', 8, 'Charte : couleurs et typographies', 'large'),
-      v('we-love-green', 9, 'Affiches et merchandising', 'large'),
+      v('we-love-green', 'merch', 'Affiche violette et merchandising We Love Green', 'large'),
+      v('we-love-green', '01', 'Affiche We Love Green, version jaune et rouge', 'tiers'),
+      v('we-love-green', '02', 'Affiche We Love Green, version violette', 'tiers'),
+      v('we-love-green', '03', 'Affiche We Love Green, ondes concentriques', 'tiers'),
+      v('we-love-green', '04', 'Affiche dans un abribus', 'large'),
+      v('we-love-green', '05', 'Affiche collée sur un mur', 'moitie'),
+      v('we-love-green', '06', 'Affiche en situation dans la végétation', 'moitie'),
+      v('we-love-green', '07', 'Charte : référence, logotype et applications', 'large'),
+      v('we-love-green', '08', 'Charte : couleurs et typographies', 'large'),
+    ],
+  },
+  {
+    slug: 'deux-guerres-une-vie',
+    titre: 'Deux guerres, une vie',
+    categorie: 'Édition',
+    couleur: '#8a6d4b',
+    filtres: ['edition'],
+    etiquettes: ['Édition', 'Couverture', 'Typographie'],
+    resume:
+      "Couverture complète d'un ouvrage biographique de 378 pages : première, dos et quatrième de couverture.",
+    role: 'Graphiste',
+    livrables: 'Première, dos et quatrième de couverture',
+    outils: 'InDesign',
+    cadre: 'Édition',
+    contexte:
+      "Deux guerres, une vie est l'autobiographie de Gabriel Lafon, qui traverse les deux conflits mondiaux. Le livre demandait une couverture complète : première, dos et quatrième.",
+    maPart:
+      "Composition sobre, portée par un titre en capitales, un portrait d'archive en noir et blanc et un texte de quatrième calé sur la grille.",
+    visuels: [
+      v('deux-guerres-une-vie', 'livre-a-plat', 'Couverture à plat : quatrième, dos et première', 'large'),
+      v('deux-guerres-une-vie', '01', 'Maquette du livre fermé', 'moitie'),
+      v('deux-guerres-une-vie', '04', 'Tranche du livre', 'moitie'),
+      v('deux-guerres-une-vie', '02', 'Double page intérieure avec un portrait d’archives', 'large'),
+      v('deux-guerres-une-vie', '03', 'Page qui tourne, texte et photographies', 'large'),
+    ],
+  },
+  {
+    slug: 'bureau-des-goodies',
+    titre: 'Bureau des goodies',
+    categorie: 'Catalogues & charte',
+    couleur: '#3d7be0',
+    filtres: ['edition', 'identite'],
+    etiquettes: ['Catalogue', 'Mise en page', 'Charte'],
+    resume:
+      'Catalogues produits de plus de 300 pages et charte graphique, en stage puis en alternance, de la conception jusqu’à l’envoi en production.',
+    role: 'Graphiste, stage puis alternance',
+    livrables: 'Catalogues produits, charte graphique, visuels personnalisés',
+    outils: 'InDesign, Illustrator, Photoshop',
+    cadre: 'Entreprise · 2021 – 2023',
+    contexte:
+      "Bureau des goodies personnalise textiles et objets pour les étudiants, les associations et les entreprises. J'y ai géré la chaîne graphique : conception, validation client, préparation des fichiers et envoi en production.",
+    maPart:
+      "Conception et mise en page de catalogues de plus de 300 pages, avec suivi des corrections : un gabarit par famille de produits, un code couleur par rubrique et des blocs produit répétables. En parallèle, déclinaison du logo et adaptation de la charte : monogramme, couleurs, Barlow, iconographie.",
+    visuels: [
+      v('bureau-des-goodies', '03', 'Catalogue, page de la rubrique Sacs et bagages', 'large'),
+      v('bureau-des-goodies', '01', 'Couverture du catalogue', 'moitie'),
+      v('bureau-des-goodies', '02', 'Page « Qui sommes-nous ? » du catalogue', 'moitie'),
+      v('bureau-des-goodies', '04', 'Page produits Écritures', 'moitie'),
+      v('bureau-des-goodies', '05', 'Page produits Alimentaire et boisson', 'moitie'),
+      v('bureau-des-goodies', '06', 'Page produits Pack été', 'moitie'),
+      v('bureau-des-goodies', '07', 'Page produits Pack ski', 'moitie'),
+      v('bureau-des-goodies', '09', 'Charte graphique Bureau des goodies, page de titre', 'large'),
+      v('bureau-des-goodies', '11', 'Couleurs et déclinaisons du logotype', 'moitie'),
+      v('bureau-des-goodies', '13', "L'univers typographique, Barlow", 'moitie'),
+      v('bureau-des-goodies', '15', 'Les quatre déclinaisons couleur du monogramme', 'large'),
+    ],
+  },
+  {
+    slug: 'mohamed-ali',
+    titre: 'Sur les pas de Mohamed Ali',
+    categorie: 'Expérience muséale',
+    couleur: '#d7262e',
+    filtres: ['digital', 'identite'],
+    etiquettes: ['Scénographie digitale', 'UX', 'Charte'],
+    resume:
+      'Une expérience digitale autour de Mohamed Ali pour la Collection Pinault : un couloir d’écrans d’affiches d’époque, puis une salle-ring où l’on rejoue ses déplacements.',
+    role: 'Concept, UX, direction artistique',
+    livrables: 'Concept, personas, parcours utilisateur, moodboard, charte',
+    cadre: 'Projet de Master',
+    contexte: 'Brief : concevoir une expérience digitale autour de Mohamed Ali pour la Collection Pinault.',
+    maPart:
+      'Concept, personas, parcours utilisateur, moodboard et charte (Futura, rouge, jaune). Le visiteur traverse un couloir d’écrans d’affiches d’époque, puis rejoue les déplacements du champion dans une salle-ring.',
+    visuels: [
+      v('mohamed-ali', 'm-cover', 'Mohamed Ali devant des affiches de combats', 'large'),
+      v('mohamed-ali', 'm-chiffres', 'Mohamed Ali en quelques chiffres', 'large'),
+      v('mohamed-ali', 'm-moodboard', 'Moodboard d’affiches de combats', 'moitie'),
+      v('mohamed-ali', 'm-charte', 'Charte : couleurs et typographie Futura', 'moitie'),
+      v('mohamed-ali', 'm-ring', 'Salle-ring vue de dessus : mettez-vous en position', 'moitie'),
+      v('mohamed-ali', 'm-parcours', 'Parcours utilisateur entre le couloir et la salle de boxe', 'moitie'),
+      v('mohamed-ali', 'm-ko', 'Salle-ring : séquence KO', 'moitie'),
+      v('mohamed-ali', 'm-coin', 'Salle-ring : séquence dans le coin', 'moitie'),
+    ],
+  },
+  {
+    slug: 'infographie',
+    titre: 'Données & infographie',
+    categorie: 'Valorisation',
+    couleur: '#e63946',
+    filtres: ['presentation', 'affiche'],
+    etiquettes: ['Infographie', 'Réseaux sociaux', 'Data'],
+    resume:
+      '« Artiste, un métier à risque » : une infographie qui met en regard les risques du métier d’artiste et ceux du quotidien. Et une série de posts Instagram pour les 45 ans de Décathlon.',
+    role: 'Graphisme, data visualisation',
+    livrables: 'Infographie verticale, série de 6 posts Instagram',
+    cadre: 'Projets d’études',
+    contexte:
+      '« Artiste, un métier à risque » : une infographie qui met en regard les risques du métier d’artiste et ceux du quotidien. Et une série de posts Instagram pour les 45 ans de Décathlon.',
+    maPart:
+      'Hiérarchiser les chiffres, choisir la bonne forme (camembert, pictogrammes, gros titres) et garder un message lisible en quelques secondes.',
+    visuels: [
+      v('infographie', 'i-cover', 'Infographie « Artiste, un métier à risque »', 'large'),
+      v('infographie', 'i-data', 'Infographie complète en format vertical', 'tiers'),
+      v('infographie', 'i-deca', 'Série de 6 posts Instagram pour les 45 ans de Décathlon', 'tiers'),
+      v('infographie', 'i-feed', 'Post Décathlon dans le fil Instagram', 'tiers'),
+    ],
+  },
+  {
+    slug: 'chemtrails',
+    titre: 'Chemtrails Over the Country Club',
+    categorie: 'Site événementiel',
+    couleur: '#e8474c',
+    filtres: ['identite', 'affiche', 'digital'],
+    etiquettes: ['Logo', 'Affiche', 'Site', 'Boutique'],
+    resume:
+      "Un site événementiel pour la sortie de l'album de Lana Del Rey, avec logo, charte, affiche et boutique.",
+    role: 'Direction artistique, graphisme',
+    livrables: 'Moodboard, logo, charte, affiche, maquettes du site et de la boutique',
+    equipe: 'Projet d’équipe (4 personnes)',
+    cadre: 'Projet d’études',
+    contexte: "Créer un site événementiel pour la sortie de l'album de Lana Del Rey et donner envie de le découvrir.",
+    maPart:
+      'Moodboard années 70, logo, charte (Rousseau Deco, Bodoni Moda, Avenir), affiche et maquettes du site et de la boutique.',
+    visuels: [
+      v('lana-del-rey', '03', 'Moodboard de l’univers rétro de l’album', 'large'),
+      v('lana-del-rey', '01', 'Affiche avec liens d’écoute', 'moitie'),
+      v('lana-del-rey', 'abribus', 'Affiche dans un abribus', 'moitie'),
+      v('lana-del-rey', '04', 'Packaging CD et livret', 'large'),
+      v('lana-del-rey', '05', 'Page À propos du site', 'moitie'),
+      v('lana-del-rey', '06', 'Page boutique', 'moitie'),
+    ],
+  },
+  {
+    slug: 'paris-2024',
+    titre: 'Paris 2024',
+    categorie: 'Affiches A3',
+    couleur: '#c9a94f',
+    filtres: ['affiche'],
+    etiquettes: ['Affiche', 'Retouche photo', 'Mockup'],
+    resume: 'Deux affiches promotionnelles au format A3 pour les Jeux de Paris 2024, dans le respect de l’identité existante.',
+    role: 'Graphisme, retouche photo',
+    livrables: '2 affiches A3, mises en situation',
+    outils: 'Photoshop',
+    cadre: 'Projet d’études',
+    contexte: "Deux affiches promotionnelles au format A3 pour les Jeux de Paris 2024, à partir d'une analyse de l'identité existante.",
+    maPart:
+      "Recherche d'inspiration, composition dans l'esprit Art déco de la charte Paris 2024 (or, noir, blanc), photomontage puis mise en situation.",
+    visuels: [
+      v('paris-2024', 'p-mur', 'Les deux affiches Paris 2024 en situation', 'large'),
+      v('paris-2024', 'p-skate', 'Affiche : le skate aussi est une discipline olympique', 'moitie'),
+      v('paris-2024', 'p-surf', 'Affiche : le surf aussi est une discipline olympique', 'moitie'),
+      v('paris-2024', 'p-vitrine', 'Affiche en vitrine', 'large'),
+    ],
+  },
+  {
+    slug: 'culture-pub',
+    titre: 'Culture Pub',
+    categorie: 'Interface & design system',
+    couleur: '#8b85e8',
+    filtres: ['digital', 'identite'],
+    etiquettes: ['UI', 'Design system', 'Identité'],
+    resume: "Nouvelle identité et nouvelle plateforme pour l'émission culte, afin de toucher une nouvelle cible.",
+    role: 'Direction artistique, UI design',
+    livrables: 'Logotype, design system, maquettes desktop et mobile',
+    outils: 'Figma',
+    cadre: 'Projet d’études',
+    contexte:
+      "Culture Pub, émission culte de M6 consacrée à la publicité, veut redevenir la référence qu'elle était : nouvelle identité et nouvelle plateforme pour toucher une nouvelle cible.",
+    maPart:
+      'Benchmark, personas, wireframes, design system et maquettes : un logotype encadré d’un trait arc-en-ciel et une interface sombre qui met les vidéos au premier plan.',
+    visuels: [
+      v('culture-pub', '01', 'Page d’accueil Culture Pub en perspective', 'large'),
+      v('culture-pub', '02', 'Page d’accueil complète, version desktop', 'tiers'),
+      v('culture-pub', '05', 'Page catégories', 'tiers'),
+      v('culture-pub', '04', 'Page d’accueil, version mobile', 'tiers'),
+      v('culture-pub', '03', 'Page vidéo en perspective', 'large'),
+      v('culture-pub', '06', 'Design system : logo, icônes et bouton', 'moitie'),
+      v('culture-pub', '08', 'Page vidéo, étiquettes par secteur', 'moitie'),
+    ],
+  },
+  {
+    slug: 'allocine',
+    titre: 'AlloCiné',
+    categorie: 'Présentation de projet',
+    couleur: '#ff6a2a',
+    filtres: ['presentation'],
+    etiquettes: ['Présentation', 'Cadrage', 'Planning'],
+    resume: "Une présentation de cadrage et de pilotage pour la refonte du site, de l'application et de la ligne éditoriale d'AlloCiné.",
+    role: 'Direction artistique, conception de la présentation',
+    livrables: 'Présentation d’une trentaine de slides',
+    cadre: 'Projet d’études, Master 2 · 2024',
+    contexte:
+      "AlloCiné relance la refonte de son site, de son application et de sa ligne éditoriale sociale après une première collaboration décevante avec une agence. L'enjeu : regagner la confiance du client.",
+    maPart:
+      "Construire le support comme un document de pilotage : analyse, équipe et supervision, cadrage (ce qui est inclus et exclu), planning créatif, échéancier et outils de suivi. Une grille stricte et le rouge AlloCiné guident la lecture d'une partie à l'autre.",
+    visuels: [
+      v('allocine', '03', 'Contexte du projet', 'large'),
+      v('allocine', '02', 'Sommaire en cinq parties', 'moitie'),
+      v('allocine', '04', 'Pourquoi ce projet', 'moitie'),
+      v('allocine', '05', 'Portée et limites', 'moitie'),
+      v('allocine', '06', 'Échéancier des tâches', 'moitie'),
+      v('allocine', '07', 'Calendrier détaillé', 'large'),
     ],
   },
 ];

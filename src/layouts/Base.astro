@@ -1,29 +1,31 @@
 ---
 import '../styles/global.css';
+import Ellipse from '../components/Ellipse.astro';
 
 interface Props {
   titre?: string;
   description?: string;
   image?: string;
+  accent?: string;
 }
 
 const {
   titre,
-  description = 'Marie-Ange Viard, graphiste junior print et digital à Paris : mise en page, édition, identité visuelle et présentations.',
-  image = '/projets/bureau-des-goodies/03.webp',
+  description = 'Marie-Ange Viard, graphiste et directrice artistique junior à Paris : édition, identité visuelle, affiches et interfaces.',
+  image = '/projets/umyst/u-cover.webp',
+  accent,
 } = Astro.props;
 
-const titreComplet = titre ? `${titre} · Marie-Ange Viard` : 'Marie-Ange Viard · Graphiste print et digital';
+const titreComplet = titre ? `${titre} · Marie-Ange Viard` : 'Marie-Ange Viard · Graphiste à Paris';
 const url = new URL(Astro.url.pathname, Astro.site);
 const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
-  { href: '/#projets', label: 'Projets' },
+  { href: '/', label: 'Projets' },
   { href: '/a-propos', label: 'À propos' },
-  { href: '/contact', label: 'Contact' },
 ];
 ---
 <!doctype html>
-<html lang="fr">
+<html lang="fr" style={accent ? `--accent: ${accent}` : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,7 +39,7 @@ const nav = [
     <meta property="og:description" content={description} />
     <meta property="og:url" content={url} />
     <meta property="og:image" content={new URL(image, Astro.site)} />
-    <meta name="theme-color" content="#f3f0e9" />
+    <meta name="theme-color" content="#fbfaf7" />
     <script is:inline>
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('js-anim');
@@ -47,17 +49,16 @@ const nav = [
   <body>
     <a class="lien-evitement" href="#contenu">Aller au contenu</a>
     <header class="entete cadre">
-      <a class="signature" href="/" aria-label="Marie-Ange Viard, accueil">
-        <span class="serif">Marie-Ange Viard</span>
-      </a>
+      <a class="signature" href="/">Marie-Ange Viard</a>
       <nav aria-label="Navigation principale">
         <ul>
           {nav.map((l) => (
-            <li>
+            <li class={l.href === '/' ? 'lien-nav cache-mobile' : 'lien-nav'}>
               <a href={l.href} aria-current={chemin === l.href ? 'page' : undefined}>{l.label}</a>
             </li>
           ))}
-          <li><a class="cv" href="/cv-marie-ange-viard.pdf" download>CV</a></li>
+          <li class="lien-nav cache-mobile"><a href="/cv-marie-ange-viard.pdf" download>CV</a></li>
+          <li><a class="bouton" href="/contact" aria-current={chemin === '/contact' ? 'page' : undefined}>Me contacter</a></li>
         </ul>
       </nav>
     </header>
@@ -67,16 +68,16 @@ const nav = [
     </main>
 
     <footer class="pied cadre">
-      <div class="pied-haut">
-        <p class="serif pied-titre">Un projet, un poste, une question ?</p>
-        <a class="pied-mail serif" href="mailto:ma.projetgraphique@gmail.com">ma.projetgraphique@gmail.com</a>
-      </div>
+      <p class="pied-titre titre-fin">
+        Un poste, un projet ?<br />
+        <a href="mailto:ma.projetgraphique@gmail.com" class="pied-mail"><Ellipse marge={0.18}><span class="it">Écrivez-moi</span></Ellipse></a>
+      </p>
       <div class="pied-bas">
         <span>© {new Date().getFullYear()} Marie-Ange Viard · Paris</span>
-        <span>
+        <span class="pied-liens">
+          <a href="mailto:ma.projetgraphique@gmail.com">ma.projetgraphique@gmail.com</a>
           <a href="https://www.linkedin.com/in/marieangeviard/" rel="me noopener">LinkedIn</a>
         </span>
-        <span>Site conçu et codé avec Astro</span>
       </div>
     </footer>
 
@@ -90,42 +91,34 @@ const nav = [
   .entete {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     gap: 16px;
-    padding-block: 20px;
+    padding-block: 22px;
     position: sticky;
     top: 0;
     z-index: 20;
-    background: color-mix(in srgb, var(--papier) 92%, transparent);
-    backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--fond) 90%, transparent);
+    backdrop-filter: blur(10px);
   }
-  .signature { text-decoration: none; font-size: 1.5rem; line-height: 1; }
-  nav ul { display: flex; gap: clamp(12px, 2.4vw, 32px); list-style: none; margin: 0; padding: 0; font-size: 0.875rem; }
-  nav a { text-decoration: none; color: var(--encre-2); transition: color 0.2s; }
-  nav a:hover, nav a[aria-current='page'] { color: var(--encre); }
-  nav a[aria-current='page'] { text-decoration: underline; }
-  .cv { color: var(--encre) !important; border-bottom: 1px solid var(--repere); }
+  .signature { text-decoration: none; font-size: 0.9375rem; font-weight: 450; letter-spacing: -0.01em; }
+  nav ul { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 32px); list-style: none; margin: 0; padding: 0; font-size: 0.8125rem; }
+  .lien-nav a { text-decoration: none; color: var(--gris); transition: color 0.2s; }
+  .lien-nav a:hover, .lien-nav a[aria-current='page'] { color: var(--encre); }
 
-  .pied { margin-top: clamp(96px, 14vw, 200px); padding-bottom: 32px; }
-  .pied-haut { border-top: 1px solid var(--encre); padding-top: 32px; display: grid; gap: 8px; }
-  .pied-titre { margin: 0; font-size: clamp(1.25rem, 2.4vw, 1.75rem); color: var(--encre-2); }
-  .pied-mail {
-    font-size: clamp(1.75rem, 6vw, 5rem);
-    line-height: 1;
-    text-decoration: none;
-    overflow-wrap: anywhere;
-    width: fit-content;
-    background: linear-gradient(var(--repere), var(--repere)) 0 100% / 0 1px no-repeat;
-    transition: background-size 0.4s ease;
-  }
-  .pied-mail:hover { background-size: 100% 1px; }
+  .pied { margin-top: clamp(120px, 16vw, 220px); padding-bottom: 28px; }
+  .pied-titre { font-size: clamp(2.5rem, 7vw, 6rem); padding-top: 40px; border-top: 1px solid var(--encre); }
+  .pied-mail { text-decoration: none; display: inline-block; margin-top: 0.12em; }
+  .pied-mail:hover { color: var(--gris); }
   .pied-bas {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
-    margin-top: 64px; font-size: 0.8125rem; color: var(--encre-2);
+    margin-top: clamp(56px, 8vw, 96px); font-size: 0.8125rem; color: var(--gris);
   }
+  .pied-liens { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .pied-liens a { text-decoration: none; }
+  .pied-liens a:hover { color: var(--encre); }
 
-  @media (max-width: 560px) {
-    .entete { flex-direction: column; align-items: flex-start; gap: 10px; padding-block: 14px; }
-    .signature { font-size: 1.35rem; }
+  @media (max-width: 600px) {
+    .entete { padding-block: 14px; }
+    .cache-mobile { display: none; }
   }
 </style>
