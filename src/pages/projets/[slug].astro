@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Ellipse from '../../components/Ellipse.astro';
 import Livre3D from '../../components/Livre3D.astro';
+import Diaporama from '../../components/Diaporama.astro';
 import { projets, type Projet } from '../../data/projets';
 
 export function getStaticPaths() {
@@ -67,6 +68,8 @@ const bandeau = [
         </figure>
       ))}
     </section>
+
+    {projet.presentation && <Diaporama {...projet.presentation} couleur={projet.couleur} />}
 
     <nav class="cadre suivant" aria-label="Projet suivant" style={`--c: ${suivant.couleur}`}>
       <span class="surtitre"><span class="point" /> Projet suivant</span>

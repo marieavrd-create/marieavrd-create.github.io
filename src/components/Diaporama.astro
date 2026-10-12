@@ -1,0 +1,194 @@
+---
+// Une présentation (PDF exporté en images) montrée dans un écran d'ordinateur,
+// avec flèches, clavier, glissement au doigt et vignettes.
+interface Props {
+  titre: string;
+  dossier: string;
+  nombre: number;
+  couleur: string;
+}
+const { titre, dossier, nombre, couleur } = Astro.props;
+const n = (i: number) => String(i).padStart(2, '0');
+const slides = Array.from({ length: nombre }, (_, i) => ({
+  src: `${dossier}/${n(i + 1)}.webp`,
+  mini: `${dossier}/${n(i + 1)}-m.webp`,
+}));
+---
+<section class="cadre diapo" style={`--c: ${couleur}`} aria-roledescription="carrousel" aria-label={titre} data-diapo>
+  <div class="diapo-fond">
+    <div class="diapo-tete" data-apparait>
+      <h2 class="titre-fin">La présentation <span class="it">orale</span></h2>
+      <p>Les {nombre} diapositives présentées au jury, de l’analyse à la boutique en ligne.</p>
+    </div>
+
+    <div class="ecran-zone" data-apparait>
+      <div class="halo" aria-hidden="true"></div>
+      <div class="ordi">
+        <div class="ecran">
+          <span class="camera" aria-hidden="true"></span>
+          <div class="vitre" data-vitre tabindex="0" aria-live="polite">
+            {slides.map((s, i) => (
+              <img
+                src={i === 0 ? s.src : undefined}
+                data-src={s.src}
+                alt={`Diapositive ${i + 1} sur ${nombre}`}
+                width="1600" height="900"
+                class:list={['slide', { actif: i === 0 }]}
+                decoding="async"
+                aria-hidden={i === 0 ? undefined : 'true'}
+              />
+            ))}
+            <span class="reflet" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="socle" aria-hidden="true"><span></span></div>
+      </div>
+    </div>
+
+    <div class="commandes">
+      <button type="button" class="fleche" data-prec aria-label="Diapositive précédente">←</button>
+      <span class="compteur"><span data-num>01</span> / {n(nombre)}</span>
+      <button type="button" class="fleche" data-suiv aria-label="Diapositive suivante">→</button>
+    </div>
+
+    <ol class="vignettes" aria-label="Toutes les diapositives">
+      {slides.map((s, i) => (
+        <li>
+          <button type="button" data-aller={i} aria-label={`Aller à la diapositive ${i + 1}`} aria-current={i === 0 ? 'true' : undefined}>
+            <img src={s.mini} alt="" width="320" height="180" loading="lazy" decoding="async" />
+          </button>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .diapo { margin-top: clamp(64px, 9vw, 128px); }
+  .diapo-fond {
+    position: relative; overflow: hidden;
+    background: #121212; color: #fbfaf7;
+    border-radius: var(--rayon);
+    padding: clamp(28px, 5vw, 72px) clamp(16px, 4vw, 64px) clamp(24px, 3vw, 40px);
+  }
+  .diapo-tete { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .diapo-tete h2 { margin: 0; font-size: clamp(2rem, 4.6vw, 4rem); color: inherit; }
+  .diapo-tete p { margin: 0; max-width: 34ch; font-size: 0.875rem; color: rgba(251, 250, 247, 0.6); }
+
+  .ecran-zone { position: relative; margin: clamp(32px, 5vw, 64px) auto 0; max-width: 1040px; }
+  .halo {
+    position: absolute; inset: 8% 4% 0; border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--c) 55%, transparent), transparent);
+    filter: blur(40px); opacity: 0.55;
+  }
+  .ordi { position: relative; }
+  .ecran {
+    position: relative; margin: 0 6%;
+    padding: clamp(8px, 1.4vw, 16px);
+    background: linear-gradient(#1d1d1f, #0b0b0c);
+    border-radius: clamp(10px, 1.6vw, 20px) clamp(10px, 1.6vw, 20px) 4px 4px;
+    box-shadow: 0 0 0 1px #2c2c2e inset, 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+  }
+  .camera {
+    position: absolute; top: clamp(3px, 0.6vw, 7px); left: 50%; width: 5px; height: 5px; margin-left: -2.5px;
+    border-radius: 50%; background: #2a2a2d;
+  }
+  .vitre { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 3px; background: #000; outline: none; cursor: grab; touch-action: pan-y; }
+  .vitre:focus-visible { box-shadow: 0 0 0 2px var(--c); }
+  .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.45s ease; }
+  .slide.actif { opacity: 1; }
+  .reflet {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0) 38%);
+  }
+  .socle {
+    position: relative; height: clamp(10px, 1.6vw, 18px);
+    background: linear-gradient(#d8d6d2, #a9a7a3 60%, #7d7b78);
+    border-radius: 2px 2px clamp(10px, 1.6vw, 18px) clamp(10px, 1.6vw, 18px);
+    box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.9);
+  }
+  .socle span {
+    position: absolute; top: 0; left: 50%; width: 16%; height: 45%; transform: translateX(-50%);
+    background: linear-gradient(#9d9b97, #c2c0bc); border-radius: 0 0 8px 8px;
+  }
+
+  .commandes { display: flex; justify-content: center; align-items: center; gap: 18px; margin-top: clamp(24px, 3vw, 36px); }
+  .fleche {
+    width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    border: 1px solid rgba(251, 250, 247, 0.35); background: transparent; color: inherit; font: inherit; font-size: 1.1rem;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .fleche:hover { background: #fbfaf7; color: #121212; border-color: #fbfaf7; }
+  .fleche:focus-visible { outline: 2px solid var(--c); outline-offset: 3px; }
+  .compteur { min-width: 5.5em; text-align: center; font-size: 0.8125rem; font-variant-numeric: tabular-nums; color: rgba(251, 250, 247, 0.6); }
+  .compteur [data-num] { color: #fbfaf7; }
+
+  .vignettes {
+    display: flex; gap: 8px; list-style: none; margin: clamp(20px, 2.6vw, 32px) 0 0; padding: 4px 2px 10px;
+    overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #3a3a3c transparent;
+  }
+  .vignettes li { flex: 0 0 auto; scroll-snap-align: center; }
+  .vignettes button { display: block; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 4px; opacity: 0.45; transition: opacity 0.2s; }
+  .vignettes button:hover { opacity: 0.85; }
+  .vignettes button[aria-current='true'] { opacity: 1; box-shadow: 0 0 0 2px var(--c); }
+  .vignettes button:focus-visible { outline: 2px solid #fbfaf7; outline-offset: 2px; }
+  .vignettes img { display: block; width: clamp(88px, 9vw, 120px); height: auto; border-radius: 4px; }
+
+  @media (max-width: 760px) {
+    .ecran { margin: 0 2%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slide, .fleche, .vignettes button { transition: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-diapo]').forEach((racine) => {
+    const slides = [...racine.querySelectorAll<HTMLImageElement>('.slide')];
+    const vignettes = [...racine.querySelectorAll<HTMLButtonElement>('[data-aller]')];
+    const num = racine.querySelector('[data-num]')!;
+    const vitre = racine.querySelector<HTMLElement>('[data-vitre]')!;
+    const doux = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let actuel = 0;
+
+    const charger = (i: number) => {
+      const img = slides[i];
+      if (img && !img.getAttribute('src')) img.src = img.dataset.src!;
+    };
+
+    const aller = (i: number) => {
+      i = (i + slides.length) % slides.length;
+      [i, i + 1, i - 1].forEach((k) => charger((k + slides.length) % slides.length));
+      slides[actuel].classList.remove('actif');
+      slides[actuel].setAttribute('aria-hidden', 'true');
+      vignettes[actuel].removeAttribute('aria-current');
+      actuel = i;
+      slides[i].classList.add('actif');
+      slides[i].removeAttribute('aria-hidden');
+      vignettes[i].setAttribute('aria-current', 'true');
+      vignettes[i].scrollIntoView({ block: 'nearest', inline: 'center', behavior: doux ? 'smooth' : 'auto' });
+      num.textContent = String(i + 1).padStart(2, '0');
+    };
+
+    charger(1);
+    racine.querySelector('[data-prec]')!.addEventListener('click', () => aller(actuel - 1));
+    racine.querySelector('[data-suiv]')!.addEventListener('click', () => aller(actuel + 1));
+    vignettes.forEach((b) => b.addEventListener('click', () => aller(Number(b.dataset.aller))));
+    let glisse = false;
+    vitre.addEventListener('click', () => { if (glisse) { glisse = false; return; } aller(actuel + 1); });
+    vitre.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); aller(actuel + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); aller(actuel - 1); }
+    });
+
+    // glissement au doigt (le clic qui suit est ignoré)
+    let x0: number | null = null;
+    vitre.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
+    vitre.addEventListener('pointerup', (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0;
+      x0 = null;
+      if (Math.abs(dx) > 40) { glisse = true; aller(actuel + (dx < 0 ? 1 : -1)); }
+    });
+  });
+</script>

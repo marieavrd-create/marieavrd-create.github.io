@@ -31,6 +31,8 @@ export type Projet = {
   contexte: string;
   maPart: string;
   visuels: Visuel[];
+  /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
+  presentation?: { titre: string; dossier: string; nombre: number };
 };
 
 const v = (slug: string, fichier: string, alt: string, format?: Visuel['format']): Visuel => ({
@@ -112,7 +114,7 @@ export const projets: Projet[] = [
     outils: 'InDesign, Photoshop',
     cadre: 'Projet personnel',
     contexte:
-      "Deux guerres, une vie est l'autobiographie de Gabriel Lafon, mon arrière-grand-père, qui traverse les deux conflits mondiaux. Un format broché de 110 × 170 mm, 378 pages de texte et d'archives.",
+      "Deux guerres, une vie est l'autobiographie de mon arrière-grand-père, qui traverse les deux conflits mondiaux. Un format broché de 110 × 170 mm, 378 pages de texte et d'archives.",
     maPart:
       "J'ai repris son manuscrit, réécrit le texte et composé le livre : couverture, gabarit intérieur, intégration des photographies d'archives et des cartes.",
     visuels: [
@@ -252,6 +254,7 @@ export const projets: Projet[] = [
       v('lana-del-rey', '05', 'Page À propos du site', 'moitie'),
       v('lana-del-rey', '06', 'Page boutique', 'moitie'),
     ],
+    presentation: { titre: 'La présentation orale du projet', dossier: '/projets/lana-del-rey/presentation', nombre: 44 },
   },
   {
     slug: 'paris-2024',
