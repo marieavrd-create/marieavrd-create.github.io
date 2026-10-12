@@ -29,7 +29,7 @@ const bandeau = [
   <article style={`--c: ${projet.couleur}`}>
     <header class="cadre tete">
       <a class="retour" href="/#projets">← Tous les projets</a>
-      <p class="numero" data-apparait>{num} — {projet.categorie}</p>
+      <p class="numero" data-apparait><span class="point" /><span>{num}</span><span class="numero-cat">{projet.categorie}</span></p>
       <div class="tete-grille">
         <h1 class="titre-fin" data-apparait><Ellipse marge={0.16}>{projet.titre}</Ellipse></h1>
         <p class="resume" data-apparait data-delai="0.1">{projet.resume}</p>
@@ -47,11 +47,11 @@ const bandeau = [
 
     <section class="cadre recit">
       <div class="bloc" data-apparait>
-        <h2 class="surtitre"><span class="point" /> Le contexte</h2>
+        <h2 class="surtitre">Le contexte</h2>
         <p>{projet.contexte}</p>
       </div>
       <div class="bloc" data-apparait>
-        <h2 class="surtitre"><span class="point" /> Réalisations</h2>
+        <h2 class="surtitre">Réalisations</h2>
         <ol class="taches">
           {projet.taches.map((t) => <li>{t}</li>)}
         </ol>
@@ -68,7 +68,7 @@ const bandeau = [
       {galerie.map((img) => (
         <figure class={`vis vis-${img.format ?? 'moitie'}`} data-apparait>
           <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
-          <figcaption>{img.alt}</figcaption>
+          <figcaption aria-hidden="true">{img.alt}</figcaption>
         </figure>
       ))}
     </section>
@@ -86,8 +86,12 @@ const bandeau = [
   .tete { padding-top: clamp(28px, 5vw, 64px); }
   .retour { font-size: 0.8125rem; text-decoration: none; color: var(--gris); }
   .retour:hover { color: var(--encre); }
-  .numero { margin: clamp(32px, 5vw, 56px) 0 clamp(16px, 2.4vw, 28px); font-size: 0.9375rem; color: var(--c); font-weight: 450; }
-  .numero { filter: saturate(1.1) brightness(0.88); }
+  .numero {
+    display: flex; align-items: center; gap: 12px;
+    margin: clamp(32px, 5vw, 56px) 0 clamp(16px, 2.4vw, 28px);
+    font-size: 0.9375rem; font-weight: 450; font-variant-numeric: tabular-nums;
+  }
+  .numero-cat { color: var(--gris); font-weight: 400; }
   .tete-grille { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--gouttiere) clamp(24px, 5vw, 80px); align-items: end; }
   h1 { font-size: clamp(2.75rem, 7.6vw, 7rem); }
   h1 :global(.ellipse) { white-space: normal; }

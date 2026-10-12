@@ -220,9 +220,9 @@ groups.forEach(gr=>{const lab=gr.pop();tl.addLabel(lab+'_go','+=.6');
 tl.to({}, {duration:.5});
 
 const caps=[['couv','<b>Couverture</b> · photographie d’archive','110 × 170 mm'],['dos','<b>Dos</b> · auteur et titre','dos 20 mm'],
-  ['quatrieme','<b>Quatrième de couverture</b> · extrait des mémoires','110 × 170 mm'],['tranche','<b>Tranche</b> · 378 pages, 189 feuillets','110 × 170 mm'],['s12','<b>Ouverture</b> · le village natal','p. 12–13'],
-  ['s38','<b>Le front</b> · portrait en uniforme','p. 38–39'],['s98','<b>Archives</b> · photographies des tranchées','p. 98–99'],
-  ['s142','<b>Cavalerie</b> · les chevaux du régiment','p. 142–143'],['s286','<b>Seconde Guerre</b> · portrait','p. 286–287']]
+  ['quatrieme','<b>Quatrième de couverture</b> · extrait des mémoires','110 × 170 mm'],['tranche','<b>Tranche</b> · 378 pages, 189 feuillets','110 × 170 mm'],['s12','<b>Ouverture</b> · le village natal','p. 12-13'],
+  ['s38','<b>Le front</b> · portrait en uniforme','p. 38-39'],['s98','<b>Archives</b> · photographies des tranchées','p. 98-99'],
+  ['s142','<b>Cavalerie</b> · les chevaux du régiment','p. 142-143'],['s286','<b>Seconde Guerre</b> · portrait','p. 286-287']]
   .map(c=>[(tl.labels[c[0]]-(c[0]==='couv'?0:.35))/tl.duration(),c[1],c[2]]);
 const capL=stage.querySelector('.livre-legende'),capN=stage.querySelector('.livre-num');let lastCap=-1;
 function setCap(p){let k=0;caps.forEach((c,i)=>{if(p>=c[0])k=i});if(k!==lastCap){lastCap=k;capL.innerHTML=caps[k][1];capN.textContent=caps[k][2]}}

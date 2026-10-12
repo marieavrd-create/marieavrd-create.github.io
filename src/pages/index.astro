@@ -14,16 +14,13 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
     </h1>
     <div class="ouverture-bas">
       <p class="intro" data-apparait data-delai="0.15">
-        Je conçois des supports print et digitaux clairs et cohérents, de l’édition à l’affiche,
-        de la charte à l’interface. Formée chez <strong>Belin Éducation</strong> et <strong>Bureau des goodies</strong>. Basée à Paris.
+        Je mets en page des documents print et digitaux clairs et rigoureux : éditions, présentations, chartes.
+        Formée chez <strong>Belin Éducation</strong> et <strong>Bureau des goodies</strong>.
       </p>
-      <ul class="points" aria-hidden="true" data-apparait data-delai="0.2">
-        {projets.map((p) => <li><span class="point" style={`--c: ${p.couleur}`} /></li>)}
-      </ul>
     </div>
     <dl class="chiffres" data-apparait data-delai="0.25">
       <div><dt class="titre-fin">300+</dt><dd>pages de catalogues mises en page</dd></div>
-      <div><dt class="titre-fin">Print → BAT</dt><dd>chaîne graphique suivie jusqu’à la production</dd></div>
+      <div><dt class="titre-fin">Jusqu’au BAT</dt><dd>chaîne graphique suivie jusqu’à la production</dd></div>
     </dl>
   </section>
 
@@ -57,7 +54,7 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
 </Base>
 
 <style>
-  .ouverture { padding-top: clamp(56px, 9vw, 128px); }
+  .ouverture { padding-top: clamp(48px, 7vw, 96px); }
   .titre { font-size: clamp(2.6rem, 7.2vw, 6.75rem); }
   .ligne { display: block; }
   .titre .it { font-size: 0.98em; }
@@ -68,7 +65,6 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
   }
   .intro { margin: 0; max-width: 46ch; font-size: clamp(0.9375rem, 1.2vw, 1.0625rem); line-height: 1.6; }
   .intro strong { font-weight: 550; }
-  .points { display: flex; gap: 7px; list-style: none; margin: 0; padding: 0 0 6px; }
 
   .chiffres {
     display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gouttiere);
@@ -104,7 +100,9 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
 
   @media (max-width: 760px) {
     .ouverture-bas { flex-direction: column; align-items: flex-start; }
-    .chiffres { grid-template-columns: 1fr; gap: 20px; }
+    .chiffres { grid-template-columns: 1fr; gap: 16px; }
+    .chiffres > div { padding-top: 10px; }
+    .chiffres dd { margin-top: 4px; }
     .barre-filtres { flex-direction: column; align-items: flex-start; }
     .filtres { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 4px; scrollbar-width: none; }
     .grille-projets { grid-template-columns: 1fr; }

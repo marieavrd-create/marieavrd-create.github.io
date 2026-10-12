@@ -48,7 +48,7 @@ export const projets: Projet[] = [
   {
     slug: 'umyst',
     titre: 'Umyst',
-    categorie: 'Cofondatrice — DA & UI',
+    categorie: 'Application & identité',
     couleur: '#f6c400',
     filtres: ['identite', 'digital'],
     etiquettes: ['Identité', 'UI mobile', 'Site', 'Pitch'],
@@ -156,7 +156,7 @@ export const projets: Projet[] = [
     role: 'Graphiste, stage puis alternance',
     livrables: 'Catalogues produits, charte graphique, visuels personnalisés',
     outils: 'InDesign, Illustrator, Photoshop',
-    cadre: 'Entreprise · 2021 – 2023',
+    cadre: 'Entreprise · 2021-2023',
     contexte:
       "Bureau des goodies personnalise textiles et objets pour les étudiants, les associations et les entreprises. J'y ai géré la chaîne graphique : conception, validation client, préparation des fichiers et envoi en production.",
     taches: [
