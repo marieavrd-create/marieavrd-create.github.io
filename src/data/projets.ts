@@ -29,7 +29,8 @@ export type Projet = {
   equipe?: string;
   cadre: string;
   contexte: string;
-  maPart: string;
+  /** Les tâches réalisées, affichées en liste */
+  taches: string[];
   visuels: Visuel[];
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
   presentation?: { titre: string; dossier: string; nombre: number };
@@ -58,8 +59,13 @@ export const projets: Projet[] = [
     cadre: 'Projet entrepreneurial · Blois et Tours',
     contexte:
       "Projet entrepreneurial que j'ai cofondé : une application qui relie consommateurs et entreprises locales (Blois, Tours) pour améliorer ensemble l'expérience client.",
-    maPart:
-      "Direction artistique et UI : logo et mascotte, application mobile, site, présentations aux entreprises partenaires. Une identité chaleureuse portée par un jaune franc, pensée pour être expliquée simplement à des publics différents.",
+    taches: [
+      'Direction artistique du projet',
+      'Logo et mascotte',
+      "Design de l'application mobile (UI)",
+      'Design du site',
+      'Présentations pour les entreprises partenaires',
+    ],
     visuels: [
       v('umyst', 'u-cover', "Écran d'accueil de l'application Umyst sur un fond noir et jaune", 'large'),
       v('umyst', 'u-home', 'Nouveau site Umyst : sections de la page d’accueil', 'large'),
@@ -86,8 +92,12 @@ export const projets: Projet[] = [
     cadre: 'Projet d’études',
     contexte:
       "Identité visuelle d'une édition du festival We Love Green (Paris) : logo, palette, typographies, affiche et déclinaisons.",
-    maPart:
-      "Création du logotype typographique, inspiré des années 1970, de la charte (palette en deux dégradés, PT Sans, Akzidenz-Grotesk), de l'affiche et des déclinaisons textile et objets.",
+    taches: [
+      'Logotype typographique inspiré des années 1970',
+      'Charte graphique : palette en deux dégradés, PT Sans, Akzidenz-Grotesk',
+      'Affiche du festival',
+      'Déclinaisons textile et objets',
+    ],
     visuels: [
       v('we-love-green', 'merch', 'Affiche violette et merchandising We Love Green', 'large'),
       v('we-love-green', '01', 'Affiche We Love Green, version jaune et rouge', 'tiers'),
@@ -115,8 +125,12 @@ export const projets: Projet[] = [
     cadre: 'Projet personnel',
     contexte:
       "Deux guerres, une vie est l'autobiographie de mon arrière-grand-père, qui traverse les deux conflits mondiaux. Un format broché de 110 × 170 mm, 378 pages de texte et d'archives.",
-    maPart:
-      "J'ai repris son manuscrit, réécrit le texte et composé le livre : couverture, gabarit intérieur, intégration des photographies d'archives et des cartes.",
+    taches: [
+      'Reprise et réécriture du manuscrit',
+      'Couverture : première, dos et quatrième',
+      'Gabarit et mise en page intérieure (378 pages)',
+      "Intégration des photographies d'archives et des cartes",
+    ],
     visuels: [
       v('deux-guerres-une-vie', 'livre-a-plat', 'Couverture à plat : quatrième, dos et première', 'large'),
       v('deux-guerres-une-vie', '01', 'Maquette du livre fermé', 'moitie'),
@@ -140,8 +154,13 @@ export const projets: Projet[] = [
     cadre: 'Entreprise · 2021 – 2023',
     contexte:
       "Bureau des goodies personnalise textiles et objets pour les étudiants, les associations et les entreprises. J'y ai géré la chaîne graphique : conception, validation client, préparation des fichiers et envoi en production.",
-    maPart:
-      "Conception et mise en page de catalogues de plus de 300 pages, avec suivi des corrections : un gabarit par famille de produits, un code couleur par rubrique et des blocs produit répétables. En parallèle, déclinaison du logo et adaptation de la charte : monogramme, couleurs, Barlow, iconographie.",
+    taches: [
+      'Conception et mise en page de catalogues de plus de 300 pages',
+      'Gabarits par famille de produits, code couleur par rubrique, blocs produit répétables',
+      'Suivi des corrections et validation client',
+      'Préparation des fichiers et envoi en production',
+      'Déclinaison du logo et adaptation de la charte : monogramme, couleurs, Barlow, iconographie',
+    ],
     visuels: [
       v('bureau-des-goodies', '03', 'Catalogue, page de la rubrique Sacs et bagages', 'large'),
       v('bureau-des-goodies', '01', 'Couverture du catalogue', 'moitie'),
@@ -165,14 +184,17 @@ export const projets: Projet[] = [
     etiquettes: ['Site vitrine', 'Framer', 'UI'],
     resume:
       'Le site vitrine d’E-square, solution de recharge pour scooters et motos électriques, conçu et réalisé sous Framer.',
-    role: 'Graphiste freelance',
+    role: 'Webdesign (freelance)',
     livrables: 'Site vitrine (desktop et mobile)',
     outils: 'Framer',
     cadre: 'Freelance, 2025',
     contexte:
       'E-square propose des bornes de recharge pour deux-roues électriques, pour les particuliers et les entreprises. Il fallait un site vitrine pour présenter l’offre.',
-    maPart:
-      'J’ai conçu et réalisé le site sous Framer, en version desktop et mobile.',
+    taches: [
+      "Design de l'interface, en version desktop et mobile",
+      'Conception des sections : accueil, impact, « Pourquoi E-square », réseau de bornes',
+      'Réalisation et mise en ligne du site sous Framer',
+    ],
     visuels: [
       v('e-square', 'e-cover', 'Page d’accueil du site E-square sur ordinateur', 'large'),
       v('e-square', 'e-logo', 'Logo E-square', 'moitie'),
@@ -196,8 +218,13 @@ export const projets: Projet[] = [
     livrables: 'Concept, personas, parcours utilisateur, moodboard, charte',
     cadre: 'Projet de Master',
     contexte: 'Brief : concevoir une expérience digitale autour de Mohamed Ali pour la Collection Pinault.',
-    maPart:
-      'Concept, personas, parcours utilisateur, moodboard et charte (Futura, rouge, jaune). Le visiteur traverse un couloir d’écrans d’affiches d’époque, puis rejoue les déplacements du champion dans une salle-ring.',
+    taches: [
+      "Concept de l'expérience",
+      'Personas et parcours utilisateur',
+      'Moodboard',
+      'Charte graphique : Futura, rouge, jaune',
+      "Scénographie : couloir d'écrans d'affiches d'époque, puis salle-ring",
+    ],
     visuels: [
       v('mohamed-ali', 'm-cover', 'Mohamed Ali devant des affiches de combats', 'large'),
       v('mohamed-ali', 'm-chiffres', 'Mohamed Ali en quelques chiffres', 'large'),
@@ -223,8 +250,11 @@ export const projets: Projet[] = [
     cadre: 'Projet d’études',
     contexte:
       'Une infographie qui met en regard les risques du métier d’artiste et ceux du quotidien.',
-    maPart:
-      'Hiérarchiser les chiffres, choisir la bonne forme (camembert, pictogrammes, gros titres) et garder un message lisible en quelques secondes.',
+    taches: [
+      'Hiérarchisation des chiffres',
+      'Choix des formes : camembert, pictogrammes, gros titres',
+      "Mise en page d'une infographie lisible en quelques secondes",
+    ],
     visuels: [
       v('infographie', 'i-cover', 'Infographie « Artiste, un métier à risque »', 'large'),
       v('infographie', 'i-data', 'Infographie complète en format vertical', 'tiers'),
@@ -244,8 +274,14 @@ export const projets: Projet[] = [
     equipe: 'Projet d’équipe (4 personnes)',
     cadre: 'Projet d’études',
     contexte: "Créer un site événementiel pour la sortie de l'album de Lana Del Rey et donner envie de le découvrir.",
-    maPart:
-      'Moodboard années 70, logo, charte (Rousseau Deco, Bodoni Moda, Avenir), affiche et maquettes du site et de la boutique.',
+    taches: [
+      'Moodboard années 70',
+      'Logo',
+      'Charte graphique : Rousseau Deco, Bodoni Moda, Avenir',
+      'Affiche',
+      'Maquettes du site et de la boutique',
+      'Présentation orale du projet',
+    ],
     visuels: [
       v('lana-del-rey', '03', 'Moodboard de l’univers rétro de l’album', 'large'),
       v('lana-del-rey', '01', 'Affiche avec liens d’écoute', 'moitie'),
@@ -269,8 +305,12 @@ export const projets: Projet[] = [
     outils: 'Photoshop',
     cadre: 'Projet d’études',
     contexte: "Deux affiches promotionnelles au format A3 pour les Jeux de Paris 2024, à partir d'une analyse de l'identité existante.",
-    maPart:
-      "Recherche d'inspiration, composition dans l'esprit Art déco de la charte Paris 2024 (or, noir, blanc), photomontage puis mise en situation.",
+    taches: [
+      "Recherche d'inspiration",
+      "Composition dans l'esprit Art déco de la charte Paris 2024 (or, noir, blanc)",
+      'Photomontage',
+      'Mise en situation',
+    ],
     visuels: [
       v('paris-2024', 'p-mur', 'Les deux affiches Paris 2024 en situation', 'large'),
       v('paris-2024', 'p-skate', 'Affiche : le skate aussi est une discipline olympique', 'moitie'),
@@ -292,8 +332,14 @@ export const projets: Projet[] = [
     cadre: 'Projet d’études',
     contexte:
       "Culture Pub, émission culte de M6 consacrée à la publicité, veut redevenir la référence qu'elle était : nouvelle identité et nouvelle plateforme pour toucher une nouvelle cible.",
-    maPart:
-      'Benchmark, personas, wireframes, design system et maquettes : un logotype encadré d’un trait arc-en-ciel et une interface sombre qui met les vidéos au premier plan.',
+    taches: [
+      'Benchmark',
+      'Personas',
+      'Wireframes',
+      'Design system',
+      "Logotype encadré d'un trait arc-en-ciel",
+      "Maquettes d'une interface sombre qui met les vidéos au premier plan",
+    ],
     visuels: [
       v('culture-pub', '01', 'Page d’accueil Culture Pub en perspective', 'large'),
       v('culture-pub', '02', 'Page d’accueil complète, version desktop', 'tiers'),
@@ -316,7 +362,10 @@ export const projets: Projet[] = [
     livrables: 'Série de 6 posts Instagram',
     cadre: 'Projet d’études',
     contexte: 'Une série de posts Instagram pour les 45 ans de Décathlon.',
-    maPart: 'Concevoir 6 posts qui fonctionnent seuls et forment un ensemble cohérent dans le fil Instagram.',
+    taches: [
+      "Conception d'une série de 6 posts Instagram",
+      'Cohérence de la série dans le fil Instagram',
+    ],
     visuels: [
       v('decathlon', 'd-cover', 'Série de posts Décathlon dans le profil et le fil Instagram', 'large'),
     ],
@@ -334,8 +383,13 @@ export const projets: Projet[] = [
     cadre: 'Projet d’études, Master 2 · 2024',
     contexte:
       "AlloCiné relance la refonte de son site, de son application et de sa ligne éditoriale sociale après une première collaboration décevante avec une agence. L'enjeu : regagner la confiance du client.",
-    maPart:
-      "Construire le support comme un document de pilotage : analyse, équipe et supervision, cadrage (ce qui est inclus et exclu), planning créatif, échéancier et outils de suivi. Une grille stricte et le rouge AlloCiné guident la lecture d'une partie à l'autre.",
+    taches: [
+      'Analyse du besoin client',
+      "Présentation de l'équipe et de la supervision",
+      'Cadrage : ce qui est inclus et exclu',
+      'Planning créatif, échéancier et outils de suivi',
+      'Mise en page du support sur une grille stricte, guidée par le rouge AlloCiné',
+    ],
     visuels: [
       v('allocine', '03', 'Contexte du projet', 'large'),
       v('allocine', '02', 'Sommaire en cinq parties', 'moitie'),

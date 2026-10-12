@@ -1,0 +1,157 @@
+---
+// Mockup 3D du site E-square : un ordinateur s'ouvre, se redresse, puis la page
+// défile dans l'écran, entouré de deux visuels de marque qui flottent.
+// Sans animation (« réduire les animations ») : l'ordinateur ouvert, de face.
+---
+<section class="esq" data-esq aria-label="Le site E-square présenté sur un ordinateur">
+  <div class="esq-colle">
+    <div class="esq-scene">
+      <figure class="flotte flotte-a" data-flotte="a">
+        <img src="/projets/e-square/e-marque.webp" alt="Visuel de marque E-square avec une borne de recharge" width="1201" height="631" loading="lazy" />
+      </figure>
+      <figure class="flotte flotte-b" data-flotte="b">
+        <img src="/projets/e-square/e-logo.webp" alt="Logo E-square" width="892" height="558" loading="lazy" />
+      </figure>
+
+      <div class="portable" data-portable>
+        <div class="couvercle" data-couvercle>
+          <div class="cadre-ecran">
+            <div class="ecran">
+              <img data-page src="/projets/e-square/e-page.webp" alt="Page d'accueil du site E-square : accueil, impact et « Pourquoi E-square »" width="1200" height="2228" loading="lazy" />
+            </div>
+          </div>
+          <div class="dos" aria-hidden="true"></div>
+        </div>
+        <div class="base" aria-hidden="true">
+          <div class="clavier"></div>
+          <div class="pave"></div>
+        </div>
+      </div>
+    </div>
+    <p class="esq-legende">Faites défiler pour ouvrir le site</p>
+  </div>
+</section>
+
+<style>
+  .esq { position: relative; height: 380vh; margin-top: clamp(64px, 9vw, 128px); }
+  .esq-colle {
+    position: sticky; top: var(--haut, 0px);
+    height: calc(100vh - var(--haut, 0px)); height: calc(100svh - var(--haut, 0px));
+    overflow: hidden;
+    background:
+      radial-gradient(60% 50% at 70% 20%, rgba(156, 39, 214, 0.55), transparent 70%),
+      radial-gradient(50% 45% at 20% 85%, rgba(31, 214, 160, 0.18), transparent 70%),
+      linear-gradient(160deg, #120a3d 0%, #1d0f6b 45%, #3a0f80 100%);
+  }
+  .esq-scene {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    perspective: 1800px; perspective-origin: 50% 30%;
+  }
+
+  /* L'ordinateur, en CSS 3D */
+  .portable {
+    --l: min(54vw, 720px);
+    position: relative; width: var(--l); aspect-ratio: 16 / 10.4;
+    transform-style: preserve-3d;
+    transform: translateY(-16%) rotateX(-12deg);
+  }
+  .couvercle {
+    position: absolute; inset: 0; transform-origin: 50% 100%;
+    transform-style: preserve-3d; transform: rotateX(8deg);
+  }
+  .cadre-ecran {
+    position: absolute; inset: 0; padding: 2.2% 2.2% 3.4%;
+    background: linear-gradient(#202024, #0c0c0e); border-radius: 2.4% 2.4% 0.8% 0.8% / 3.6% 3.6% 1.2% 1.2%;
+    box-shadow: 0 0 0 1px #34343a inset;
+    backface-visibility: hidden;
+  }
+  .ecran { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 0.5%; background: #120a3d; }
+  .ecran img { display: block; width: 100%; height: auto; will-change: transform; }
+  .ecran::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(118deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0) 40%);
+  }
+  .dos {
+    position: absolute; inset: 0; border-radius: 2.4% / 3.6%;
+    background: linear-gradient(135deg, #d9d9de, #a7a7ad); transform: rotateY(180deg) translateZ(1px);
+    backface-visibility: hidden;
+  }
+  .base {
+    position: absolute; left: -4%; right: -4%; top: 100%; height: 66%;
+    transform-origin: 50% 0; transform: rotateX(90deg);
+    background: linear-gradient(#cfcfd4, #b4b4ba);
+    border-radius: 1.5% 1.5% 4% 4% / 2% 2% 6% 6%;
+    box-shadow: 0 0 0 1px #9c9ca2 inset;
+  }
+  .clavier {
+    position: absolute; left: 9%; right: 9%; top: 7%; height: 46%; border-radius: 1.5%;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 calc(100% / 14 - 3px), #b8b8be calc(100% / 14 - 3px) calc(100% / 14)),
+      repeating-linear-gradient(0deg, transparent 0 calc(100% / 6 - 3px), #b8b8be calc(100% / 6 - 3px) calc(100% / 6)),
+      #2a2a2e;
+  }
+  .pave { position: absolute; left: 34%; right: 34%; top: 60%; height: 32%; border-radius: 3%; background: #c4c4ca; box-shadow: 0 0 0 1px #a9a9af inset; }
+
+  /* Visuels qui flottent */
+  .flotte { position: absolute; margin: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6); }
+  .flotte img { display: block; width: 100%; height: auto; }
+  .flotte-a { width: min(24vw, 300px); right: 3%; top: 6%; transform: translateZ(120px) rotateY(-14deg) rotateZ(3deg); }
+  .flotte-b { width: min(18vw, 220px); left: 3%; top: 48%; transform: translateZ(80px) rotateY(16deg) rotateZ(-4deg); }
+
+  .esq-legende {
+    position: absolute; left: 0; right: 0; bottom: 16px; margin: 0; text-align: center;
+    font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* Sans animation : une seule vue, ordinateur ouvert de face */
+  .esq.fixe { height: auto; }
+  .esq.fixe .esq-colle { position: relative; height: auto; aspect-ratio: 16 / 11; min-height: 360px; }
+  .esq.fixe .esq-legende { display: none; }
+
+  @media (max-width: 760px) {
+    .portable { --l: 84vw; }
+    .flotte-a { width: 38vw; right: 3%; top: 8%; }
+    .flotte-b { width: 30vw; left: 3%; bottom: 10%; }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  const racine = document.querySelector<HTMLElement>('[data-esq]');
+  if (racine) {
+    const entete = document.querySelector<HTMLElement>('.entete');
+    if (entete) racine.style.setProperty('--haut', entete.offsetHeight + 'px');
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      racine.classList.add('fixe');
+    } else {
+      gsap.registerPlugin(ScrollTrigger);
+      const portable = racine.querySelector('[data-portable]');
+      const couvercle = racine.querySelector('[data-couvercle]');
+      const page = racine.querySelector<HTMLImageElement>('[data-page]')!;
+      const ecran = page.parentElement!;
+      const a = racine.querySelector('[data-flotte="a"]');
+      const b = racine.querySelector('[data-flotte="b"]');
+
+      // fermé, vu de dessus et de biais
+      gsap.set(portable, { rotateX: -52, rotateY: -26, rotateZ: -8, scale: 0.8, y: '-30%' });
+      gsap.set(couvercle, { rotateX: -86 });
+      gsap.set(a, { autoAlpha: 0, x: 80, y: 40 });
+      gsap.set(b, { autoAlpha: 0, x: -80, y: -40 });
+
+      const tl = gsap.timeline({ defaults: { ease: 'power2.inOut' } });
+      tl.to(couvercle, { rotateX: 8, duration: 1.2 })
+        .to(portable, { rotateX: -12, rotateY: 0, rotateZ: 0, scale: 1, y: '-16%', duration: 1.4 }, 0.2)
+        .to(a, { autoAlpha: 1, x: 0, y: 0, duration: 0.8, ease: 'power3.out' }, 1)
+        .to(b, { autoAlpha: 1, x: 0, y: 0, duration: 0.8, ease: 'power3.out' }, 1.15)
+        .to(page, { y: () => -(page.offsetHeight - ecran.clientHeight), duration: 2.6, ease: 'none' }, 1.8)
+        .to(a, { y: -60, rotateZ: 6, duration: 2.6, ease: 'none' }, 1.8)
+        .to(b, { y: 50, rotateZ: -8, duration: 2.6, ease: 'none' }, 1.8)
+        .to(portable, { rotateY: -10, duration: 2.6, ease: 'sine.inOut' }, 1.8);
+
+      ScrollTrigger.create({ trigger: racine, start: () => `top ${entete?.offsetHeight ?? 0}px`, end: 'bottom bottom', scrub: 0.8, animation: tl, invalidateOnRefresh: true });
+    }
+  }
+</script>

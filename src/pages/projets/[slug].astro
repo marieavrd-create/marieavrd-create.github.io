@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Ellipse from '../../components/Ellipse.astro';
 import Livre3D from '../../components/Livre3D.astro';
 import Diaporama from '../../components/Diaporama.astro';
+import EsquareScene from '../../components/EsquareScene.astro';
 import { projets, type Projet } from '../../data/projets';
 
 export function getStaticPaths() {
@@ -50,8 +51,10 @@ const bandeau = [
         <p>{projet.contexte}</p>
       </div>
       <div class="bloc" data-apparait>
-        <h2 class="surtitre"><span class="point" /> Ma part</h2>
-        <p>{projet.maPart}</p>
+        <h2 class="surtitre"><span class="point" /> Mes tâches</h2>
+        <ol class="taches">
+          {projet.taches.map((t) => <li>{t}</li>)}
+        </ol>
         <ul class="etiquettes">
           {projet.etiquettes.map((e) => <li class="pastille">{e}</li>)}
         </ul>
@@ -59,6 +62,7 @@ const bandeau = [
     </section>
 
     {projet.slug === 'deux-guerres-une-vie' && <Livre3D />}
+    {projet.slug === 'e-square' && <EsquareScene />}
 
     <section class="cadre galerie" aria-label="Visuels du projet">
       {galerie.map((img) => (
@@ -106,6 +110,14 @@ const bandeau = [
   }
   .bloc h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; color: var(--encre); }
   .bloc p { margin: 0; font-size: clamp(1.0625rem, 1.5vw, 1.375rem); line-height: 1.5; font-weight: 350; letter-spacing: -0.005em; }
+  .taches { list-style: none; margin: 0; padding: 0; counter-reset: t; }
+  .taches li {
+    counter-increment: t; display: grid; grid-template-columns: 2.25rem 1fr; gap: 8px;
+    padding: 10px 0; border-bottom: 1px solid var(--filet);
+    font-size: clamp(1rem, 1.25vw, 1.1875rem); line-height: 1.45; font-weight: 350;
+  }
+  .taches li:first-child { border-top: 1px solid var(--filet); }
+  .taches li::before { content: counter(t, decimal-leading-zero); font-size: 0.75rem; color: var(--gris); padding-top: 0.3em; font-variant-numeric: tabular-nums; }
   .etiquettes { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 24px 0 0; padding: 0; }
 
   .galerie {
