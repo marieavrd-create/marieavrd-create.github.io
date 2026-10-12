@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base titre="À propos" description="Marie-Ange Viard, graphiste junior print et digital : parcours, compétences et outils.">
+  <section class="cadre grille apropos">
+    <div class="photo">
+      <div class="reperes"><img src="/portrait.webp" alt="Portrait de Marie-Ange Viard" width="710" height="888" /></div>
+    </div>
+    <div class="contenu">
+      <p class="surtitre" data-apparait>À propos</p>
+      <h1 class="serif" data-apparait>Graphiste, entre l’édition et l’écran.</h1>
+      <div class="texte">
+        <p data-apparait>
+          Je suis graphiste junior, diplômée d’un Master 2 Direction artistique numérique et d’un Bachelor Webdesign
+          à l’École Multimédia de Paris.
+        </p>
+        <p data-apparait>
+          Chez Belin Éducation (groupe Humensis), j’ai conçu et décliné des maquettes pédagogiques print et digitales,
+          au sein d’une équipe de 4 graphistes et 2 chefs de production : cohérence visuelle, contraintes éditoriales,
+          suivi des deadlines et intégration des retours.
+        </p>
+        <p data-apparait>
+          Chez Bureau des goodies, en stage puis en alternance, j’ai mis en page des catalogues produits, travaillé
+          la charte graphique de la marque et créé des visuels personnalisés avec les équipes commerciales.
+        </p>
+        <p data-apparait>
+          Ce qui me plaît : faire tenir beaucoup d’information dans une page qui reste claire, construire des grilles
+          et des gabarits qui durent, et soigner chaque détail jusqu’à l’impression ou la mise en ligne.
+        </p>
+      </div>
+
+      <dl class="competences">
+        <div><dt>Mise en page</dt><dd>Édition à forte pagination, catalogues, maquettes pédagogiques, gabarits et styles</dd></div>
+        <div><dt>Identité</dt><dd>Logotypes, chartes graphiques, déclinaisons print et digitales</dd></div>
+        <div><dt>Digital</dt><dd>Direction artistique digitale, UI design, design system, wireframes et prototypes</dd></div>
+        <div><dt>Outils</dt><dd>InDesign, Illustrator, Photoshop, Figma</dd></div>
+        <div><dt>Langues</dt><dd>Français, anglais B2</dd></div>
+      </dl>
+
+      <p class="liens">
+        <a href="/cv-marie-ange-viard.pdf" download>Télécharger mon CV (PDF)</a>
+        <a href="https://www.linkedin.com/in/marieangeviard/" rel="me noopener">LinkedIn</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .apropos { padding-top: clamp(40px, 8vw, 120px); row-gap: 40px; }
+  .photo { grid-column: 1 / span 4; align-self: start; position: sticky; top: 96px; }
+  .photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .contenu { grid-column: 6 / span 7; }
+  h1 { margin: 12px 0 32px; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: -0.02em; }
+  .texte p { font-size: clamp(1.05rem, 1.35vw, 1.25rem); margin: 0 0 1em; max-width: 60ch; }
+  .competences { margin: 48px 0 0; font-size: 0.9375rem; }
+  .competences > div { display: grid; grid-template-columns: 8rem 1fr; gap: 16px; padding-block: 12px; border-top: 1px solid var(--filet); }
+  .competences > div:last-child { border-bottom: 1px solid var(--filet); }
+  dt { color: var(--encre-2); }
+  dd { margin: 0; }
+  .liens { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 40px; }
+  .liens a { text-decoration: none; border-bottom: 1px solid var(--repere); }
+
+  @media (max-width: 860px) {
+    .photo { grid-column: 1 / span 8; position: static; max-width: 320px; }
+    .contenu { grid-column: 1 / -1; }
+    .competences > div { grid-template-columns: 1fr; gap: 2px; }
+  }
+</style>

@@ -1,0 +1,131 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  titre?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  titre,
+  description = 'Marie-Ange Viard, graphiste junior print et digital à Paris : mise en page, édition, identité visuelle et présentations.',
+  image = '/projets/bureau-des-goodies/03.webp',
+} = Astro.props;
+
+const titreComplet = titre ? `${titre} · Marie-Ange Viard` : 'Marie-Ange Viard · Graphiste print et digital';
+const url = new URL(Astro.url.pathname, Astro.site);
+const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
+const nav = [
+  { href: '/#projets', label: 'Projets' },
+  { href: '/a-propos', label: 'À propos' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titreComplet}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={titreComplet} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta name="theme-color" content="#f3f0e9" />
+    <script is:inline>
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js-anim');
+      }
+    </script>
+  </head>
+  <body>
+    <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+    <header class="entete cadre">
+      <a class="signature" href="/" aria-label="Marie-Ange Viard, accueil">
+        <span class="serif">Marie-Ange Viard</span>
+      </a>
+      <nav aria-label="Navigation principale">
+        <ul>
+          {nav.map((l) => (
+            <li>
+              <a href={l.href} aria-current={chemin === l.href ? 'page' : undefined}>{l.label}</a>
+            </li>
+          ))}
+          <li><a class="cv" href="/cv-marie-ange-viard.pdf" download>CV</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="contenu">
+      <slot />
+    </main>
+
+    <footer class="pied cadre">
+      <div class="pied-haut">
+        <p class="serif pied-titre">Un projet, un poste, une question ?</p>
+        <a class="pied-mail serif" href="mailto:ma.projetgraphique@gmail.com">ma.projetgraphique@gmail.com</a>
+      </div>
+      <div class="pied-bas">
+        <span>© {new Date().getFullYear()} Marie-Ange Viard · Paris</span>
+        <span>
+          <a href="https://www.linkedin.com/in/marieangeviard/" rel="me noopener">LinkedIn</a>
+        </span>
+        <span>Site conçu et codé avec Astro</span>
+      </div>
+    </footer>
+
+    <script>
+      import '../scripts/animations.ts';
+    </script>
+  </body>
+</html>
+
+<style>
+  .entete {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding-block: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--papier) 92%, transparent);
+    backdrop-filter: blur(8px);
+  }
+  .signature { text-decoration: none; font-size: 1.5rem; line-height: 1; }
+  nav ul { display: flex; gap: clamp(12px, 2.4vw, 32px); list-style: none; margin: 0; padding: 0; font-size: 0.875rem; }
+  nav a { text-decoration: none; color: var(--encre-2); transition: color 0.2s; }
+  nav a:hover, nav a[aria-current='page'] { color: var(--encre); }
+  nav a[aria-current='page'] { text-decoration: underline; }
+  .cv { color: var(--encre) !important; border-bottom: 1px solid var(--repere); }
+
+  .pied { margin-top: clamp(96px, 14vw, 200px); padding-bottom: 32px; }
+  .pied-haut { border-top: 1px solid var(--encre); padding-top: 32px; display: grid; gap: 8px; }
+  .pied-titre { margin: 0; font-size: clamp(1.25rem, 2.4vw, 1.75rem); color: var(--encre-2); }
+  .pied-mail {
+    font-size: clamp(1.75rem, 6vw, 5rem);
+    line-height: 1;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    width: fit-content;
+    background: linear-gradient(var(--repere), var(--repere)) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.4s ease;
+  }
+  .pied-mail:hover { background-size: 100% 1px; }
+  .pied-bas {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
+    margin-top: 64px; font-size: 0.8125rem; color: var(--encre-2);
+  }
+
+  @media (max-width: 560px) {
+    .entete { flex-direction: column; align-items: flex-start; gap: 10px; padding-block: 14px; }
+    .signature { font-size: 1.35rem; }
+  }
+</style>
