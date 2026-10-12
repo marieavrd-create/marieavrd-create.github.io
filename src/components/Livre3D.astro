@@ -1,0 +1,236 @@
+---
+// Le livre « Deux guerres, une vie » en 3D : il tourne puis s'ouvre et se
+// feuillette au défilement. Image fixe sur mobile et en « réduire les animations ».
+---
+<section id="livre-scene" class="livre" aria-label="Le livre en 3D, qui s’ouvre au défilement">
+  <div class="livre-colle">
+    <div class="livre-vue">
+      <canvas aria-hidden="true"></canvas>
+      <img class="livre-repli" src="/livre-3d/fallback.webp" alt="Le livre « Deux guerres, une vie », couverture et double page intérieure" width="1576" height="945" hidden />
+    </div>
+    <div class="livre-bas">
+      <span class="livre-legende"><b>Couverture</b> · photographie d’archive</span>
+      <span class="livre-num">110 × 170 mm</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .livre { position: relative; height: 520vh; margin-top: clamp(64px, 9vw, 128px); }
+  .livre-colle {
+    position: sticky; top: var(--haut, 0px); height: calc(100vh - var(--haut, 0px)); height: calc(100svh - var(--haut, 0px));
+    display: grid; grid-template-rows: 1fr auto; background: var(--fond-2);
+  }
+  .livre-vue { position: relative; min-height: 0; }
+  canvas { width: 100%; height: 100%; display: block; }
+  .livre-repli { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 6vh 16px; }
+  .livre-bas {
+    display: flex; justify-content: space-between; gap: 16px;
+    padding: 14px var(--marge, 24px); border-top: 1px solid var(--filet);
+    font-size: 0.75rem; color: var(--gris);
+  }
+  .livre-bas :global(b) { color: var(--encre); font-weight: 550; }
+  .livre-num { flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .livre-repli[hidden], canvas[hidden] { display: none; }
+  .livre.fixe { height: auto; }
+  .livre.fixe .livre-colle { position: relative; height: auto; }
+  .livre.fixe .livre-vue { aspect-ratio: 1576 / 945; }
+  .livre.fixe .livre-repli { padding: 12px; }
+  .livre.fixe .livre-bas { display: none; }
+</style>
+
+<script>
+import * as THREE from 'three';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+(function(){
+
+const stage=document.getElementById('livre-scene');if(!stage)return;
+const canvas=stage.querySelector('canvas'), fb=stage.querySelector('.livre-repli');
+function showFallback(){canvas.hidden=true;fb.hidden=false;stage.classList.add('fixe')}
+// Image fixe sur mobile et si « réduire les animations » est activé
+if(matchMedia('(prefers-reduced-motion: reduce), (max-width: 760px)').matches){showFallback();return}
+// la scène se cale sous l'en-tête collant du site
+const entete=document.querySelector('.entete');if(entete)stage.style.setProperty('--haut',entete.offsetHeight+'px');
+let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,preserveDrawingBuffer:true})}catch(e){showFallback();return}
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(28,1,.5,30);
+// la table : un plan fixe sur lequel le livre se pose (l'inclinaison de vue s'applique à l'ensemble)
+const world=new THREE.Group();scene.add(world);
+scene.add(new THREE.HemisphereLight(0xfffaf2,0xcfc8bb,.5));
+const fill=new THREE.DirectionalLight(0xeef2ff,.12);fill.position.set(3,-1,4);world.add(fill);
+const key=new THREE.DirectionalLight(0xfff3e2,.6);key.position.set(-1.7,2.3,5.6);key.castShadow=true;
+key.shadow.mapSize.set(1024,1024);key.shadow.radius=16;key.shadow.bias=-.0006;key.shadow.normalBias=.006;
+Object.assign(key.shadow.camera,{left:-4,right:4,top:4,bottom:-4,near:.5,far:20});
+world.add(key);world.add(key.target);
+
+// Dimensions réelles : 110 × 170 mm, dos 20 mm, 189 feuillets (1 unité = 100 mm)
+const W=1.1,H=1.7,T=.2,CT=.005,bw=W-.025,bh=H-.03,bt=T-2*CT-.012;
+const aniso=renderer.capabilities.getMaxAnisotropy();
+let needs=true;
+const loader=new THREE.TextureLoader();
+function tex(n,mirror){const t=loader.load('/livre-3d/tex/'+n+'.jpg',()=>needs=true);t.encoding=THREE.sRGBEncoding;t.anisotropy=aniso;
+  if(mirror){t.wrapS=THREE.RepeatWrapping;t.repeat.x=-1;t.offset.x=1}return t}
+function canvasTex(w,h,draw,srgb){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);
+  const t=new THREE.CanvasTexture(c);if(srgb)t.encoding=THREE.sRGBEncoding;t.anisotropy=aniso;return t}
+const rnd=(a,b)=>a+Math.random()*(b-a);
+
+// Grain du papier et de la couverture souple (relief)
+function grain(g,w,h,amp){const d=g.createImageData(w,h);for(let i=0;i<d.data.length;i+=4){const v=128+rnd(-amp,amp)|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}g.putImageData(d,0,0)}
+const paperBump=canvasTex(512,512,(g,w,h)=>grain(g,w,h,40));paperBump.wrapS=paperBump.wrapT=THREE.RepeatWrapping;paperBump.repeat.set(3,4.6);
+// rainage de charnière à 8 mm du dos, comme sur un broché
+function coverBumpTex(hingeAt){return canvasTex(512,792,(g,w,h)=>{grain(g,w,h,26);
+  const x=w*hingeAt;const gr=g.createLinearGradient(x-6,0,x+6,0);gr.addColorStop(0,'rgba(128,128,128,0)');gr.addColorStop(.5,'rgba(40,40,40,.9)');gr.addColorStop(1,'rgba(128,128,128,0)');
+  g.fillStyle=gr;g.fillRect(x-6,0,12,h)})}
+const spineBump=canvasTex(128,792,(g,w,h)=>{grain(g,w,h,26);g.fillStyle='rgba(50,50,50,.8)';g.fillRect(3,0,3,h);g.fillRect(w-6,0,3,h);
+  for(let k=0;k<5;k++){g.fillStyle='rgba(90,90,90,.35)';g.fillRect(rnd(15,w-15),rnd(0,h*.2),1.5,rnd(h*.2,h*.7))}});
+// tranche : 189 feuillets visibles
+function edgeDraw(vertical,bump){return (g,w,h)=>{const n=189,len=vertical?w:h,cross=vertical?h:w,st=len/n;
+  g.fillStyle=bump?'#9a9a9a':'#efe9dc';g.fillRect(0,0,w,h);
+  for(let i=0;i<n;i++){const p0=i*st,l=rnd(.9,1.05),ph=rnd(0,6.28),amp=rnd(.05,.3);
+    // chaque feuillet : un trait légèrement ondulé, de teinte variable
+    g.strokeStyle=bump?`rgba(20,20,20,${rnd(.5,.9)})`:`rgba(${105*l|0},${96*l|0},${80*l|0},${rnd(.22,.5)})`;
+    g.lineWidth=Math.max(.8,st*rnd(.18,.34));g.beginPath();
+    for(let c=0;c<=cross;c+=cross/24){const o=p0+st*.8+Math.sin(c/cross*6.28*1.3+ph)*amp;if(vertical)c?g.lineTo(o,c):g.moveTo(o,c);else c?g.lineTo(c,o):g.moveTo(c,o)}
+    g.stroke();
+    if(!bump&&Math.random()<.18){g.fillStyle=`rgba(255,252,244,${rnd(.25,.5)})`;vertical?g.fillRect(p0,0,st*.6,h):g.fillRect(0,p0,w,st*.6)}}
+  if(!bump){// occlusion près des couvertures et vers les extrémités
+    const gr=vertical?g.createLinearGradient(0,0,w,0):g.createLinearGradient(0,0,0,h);
+    gr.addColorStop(0,'rgba(70,60,45,.35)');gr.addColorStop(.06,'rgba(70,60,45,0)');gr.addColorStop(.94,'rgba(70,60,45,0)');gr.addColorStop(1,'rgba(70,60,45,.35)');
+    g.fillStyle=gr;g.fillRect(0,0,w,h);
+    const g2=vertical?g.createLinearGradient(0,0,0,h):g.createLinearGradient(0,0,w,0);
+    g2.addColorStop(0,'rgba(60,50,40,.12)');g2.addColorStop(.12,'rgba(60,50,40,0)');g2.addColorStop(.88,'rgba(60,50,40,0)');g2.addColorStop(1,'rgba(60,50,40,.12)');
+    g.fillStyle=g2;g.fillRect(0,0,w,h)}
+  const d=g.getImageData(0,0,w,h);for(let i=0;i<d.data.length;i+=4){const v=rnd(-6,6);d.data[i]+=v;d.data[i+1]+=v;d.data[i+2]+=v}g.putImageData(d,0,0)}}
+const edgeV=canvasTex(2048,256,edgeDraw(true),true), edgeH=canvasTex(256,2048,edgeDraw(false),true);
+const edgeVb=canvasTex(2048,256,edgeDraw(true,1)), edgeHb=canvasTex(256,2048,edgeDraw(false,1));
+
+const coverMat=(t,bump,o={})=>new THREE.MeshStandardMaterial(Object.assign({map:t,roughness:.62,metalness:0,bumpMap:bump,bumpScale:.0035},o));
+const pageMat=(t,o={})=>new THREE.MeshStandardMaterial(Object.assign({map:t,roughness:.92,metalness:0,bumpMap:paperBump,bumpScale:.0012},o));
+const edgeMatV=new THREE.MeshStandardMaterial({map:edgeV,bumpMap:edgeVb,bumpScale:.004,roughness:.97});
+const edgeMatH=new THREE.MeshStandardMaterial({map:edgeH,bumpMap:edgeHb,bumpScale:.004,roughness:.97});
+const white=new THREE.MeshStandardMaterial({color:0xf4f0e6,roughness:.9});
+
+const book=new THREE.Group();world.add(book);
+const inner=new THREE.Group();book.add(inner); // origine = dos
+
+// 4e de couverture
+const back=new THREE.Mesh(new THREE.BoxGeometry(W,H,CT),[white,white,white,white,white,coverMat(tex('back'),coverBumpTex(.93))]);
+back.position.set(W/2,0,-T/2+CT/2);back.castShadow=back.receiveShadow=true;inner.add(back);
+// dos
+const spine=new THREE.Mesh(new THREE.PlaneGeometry(T,H,1,1),coverMat(tex('spine'),spineBump));
+spine.rotation.y=-Math.PI/2;inner.add(spine);
+// bloc de pages de droite (dessus = p. 287)
+// le bloc est fait de couches de feuillets légèrement décalées : la tranche a du relief et de vraies lignes de pages
+const SL=26;
+function sliceTex(t,k,vertical){const c=t.clone();c.needsUpdate=true;c.wrapS=c.wrapT=THREE.RepeatWrapping;
+  if(vertical){c.repeat.set(1/SL,1);c.offset.set(k/SL,0)}else{c.repeat.set(1,1/SL);c.offset.set(0,k/SL)}return c}
+function pageBlock(left,topMat){
+  const g=new THREE.Group(),st=bt/SL;
+  for(let k=0;k<SL;k++){
+    const w=bw-rnd(0,.0025),h=bh-rnd(0,.002);
+    const mv=new THREE.MeshStandardMaterial({map:sliceTex(edgeV,k,true),bumpMap:sliceTex(edgeVb,k,true),bumpScale:.004,roughness:.97});
+    const mh=new THREE.MeshStandardMaterial({map:sliceTex(edgeH,k,false),bumpMap:sliceTex(edgeHb,k,false),bumpScale:.004,roughness:.97});
+    const geo=new THREE.BoxGeometry(w,h,st*.998);geo.translate(left?-w/2:w/2,0,0);
+    const m=new THREE.Mesh(geo,left?[white,mv,mh,mh,white,white]:[mv,white,mh,mh,k===SL-1&&topMat?topMat:white,white]);
+    m.position.set(rnd(-.0008,.0008),rnd(-.0006,.0006),-bt/2+st*(k+.5));m.castShadow=m.receiveShadow=true;g.add(m)}
+  return g}
+const block=pageBlock(false,pageMat(tex('p287')));block.position.set(.003,0,-CT/2);inner.add(block);
+// bloc de gauche, qui prend forme quand le livre s'ouvre
+const lblock=pageBlock(true);lblock.position.set(-.003,0,-CT/2);lblock.visible=false;inner.add(lblock);
+
+// Feuillets souples : chaque page se courbe en tournant (coin bas en premier)
+const SPREADS=[['p13','p14'],['p15','p38'],['p39','p40'],['p41','p42'],['p43','p98'],['p99','p100'],['p101','p102'],['p103','p142'],['p143','p144'],['p145','p146'],['p147','p286']];
+const N=SPREADS.length;
+function flexLeaf(frontMat,backMat,zr,zl,stiff,lw=bw,lh=bh,x0=.003){
+  const geo=new THREE.PlaneGeometry(lw,lh,36,6);geo.translate(lw/2,0,0);
+  const base=geo.attributes.position.array.slice();
+  const f=new THREE.Mesh(geo,frontMat),b=new THREE.Mesh(geo,backMat);
+  f.castShadow=b.castShadow=true;f.receiveShadow=b.receiveShadow=true;
+  const g=new THREE.Group();g.add(f,b);g.position.x=x0;
+  g.userData={geo,base,zr,zl,stiff,lw,lh,last:-1};inner.add(g);return g}
+function bendLeaf(g,a){
+  const u=g.userData,key=a+'|'+S.cover;if(u.last===key)return;u.last=key;
+  const gut=.028*S.cover*(u.lw===W?.4:1),p=u.geo.attributes.position.array,base=u.base,phi=Math.PI*a,sa=Math.sin(Math.PI*a);
+  for(let j=0;j<p.length;j+=3){
+    const s=base[j]/u.lw,v=base[j+1]/u.lh+.5;
+    let c=sa*u.stiff*(1+.45*(1-v));c=Math.min(c,Math.PI*(1-a)*.97);
+    let x,z;if(c<1e-4){x=s*Math.cos(phi);z=s*Math.sin(phi)}
+    else{x=(Math.sin(phi+c*s)-Math.sin(phi))/c;z=(Math.cos(phi)-Math.cos(phi+c*s))/c}
+    p[j]=x*u.lw;p[j+2]=z*u.lw+gut*Math.pow(1-s,3);
+  }
+  u.geo.attributes.position.needsUpdate=true;u.geo.computeVertexNormals();
+  const e=a*a*(3-2*a);g.position.z=u.zr+(u.zl-u.zr)*e;
+}
+const top=T/2-CT/2,blockTop=-CT/2+bt/2;
+const leaves=SPREADS.map(([r,v],i)=>flexLeaf(pageMat(tex(r)),pageMat(tex(v,true),{side:THREE.BackSide}),
+  blockTop+.0006+(N-1-i)*.0005, top+.0016+i*.0012, 1.25));
+// 1re de couverture souple (intérieur = p. 12)
+const cover=flexLeaf(coverMat(tex('front'),coverBumpTex(.07)),pageMat(tex('p12',true),{side:THREE.BackSide}),top,top,.55,W,H,0);
+
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(14,14),new THREE.ShadowMaterial({opacity:.14}));
+ground.position.z=-T/2-.002;ground.receiveShadow=true;world.add(ground);
+// ombre de contact : un halo flou sous l'empreinte du livre, qui s'efface quand il se soulève
+const blobTex=canvasTex(256,256,(g,w,h)=>{g.filter='blur(22px)';g.fillStyle='rgba(30,26,20,1)';g.fillRect(48,48,w-96,h-96)});
+const blob=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:blobTex,transparent:true,depthWrite:false,opacity:.4}));
+blob.position.z=-T/2-.001;world.add(blob);
+const bbox=new THREE.Box3();
+
+// État piloté par le défilement
+const S={ry:-.78,rx:-.14,rz:.04,shift:-W/2,cover:0,dist:4.5};
+for(let i=0;i<N;i++)S['l'+i]=0;
+function apply(){
+  inner.position.x=S.shift;world.rotation.x=S.rx;book.rotation.set(0,S.ry,S.rz);
+  const sy=Math.abs(Math.sin(S.ry)),cy=Math.abs(Math.cos(S.ry)),lift=sy*W/2+cy*T/2-T/2;book.position.z=lift*(1-S.cover);
+  bendLeaf(cover,S.cover);
+  const o=Math.min(1,Math.max(0,(S.cover-.45)/.55));lblock.visible=o>0;lblock.scale.x=Math.max(o,.001);
+  let firstUn=N,lastDone=-1;
+  for(let i=0;i<N;i++){const a=S['l'+i];if(a<=0&&firstUn===N)firstUn=i;if(a>=1)lastDone=i}
+  leaves.forEach((g,i)=>{const a=S['l'+i];bendLeaf(g,a);g.visible=(a>0&&a<1)||i===firstUn||i===lastDone});
+  book.updateMatrixWorld(true);world.updateMatrixWorld(true);
+  const inv=new THREE.Matrix4().copy(world.matrixWorld).invert();bbox.setFromObject(inner).applyMatrix4(inv);
+  const lz=bbox.min.z-(-T/2);blob.position.x=(bbox.min.x+bbox.max.x)/2;blob.position.y=(bbox.min.y+bbox.max.y)/2;
+  blob.scale.set((bbox.max.x-bbox.min.x)*1.45+.05,(bbox.max.y-bbox.min.y)*1.18,1);blob.material.opacity=0;blob.visible=false;
+  const tn=Math.tan(camera.fov*Math.PI/360),need=1.75+1.05*S.cover;
+  const c=new THREE.Vector3(0,0,book.position.z).applyMatrix4(world.matrixWorld);
+  camera.position.set(c.x,c.y-.1,c.z+book.position.z*.9+Math.max(S.dist,need/(2*tn*camera.aspect)));camera.lookAt(c);
+  needs=true;
+}
+function resize(){const r=canvas.parentElement.getBoundingClientRect();renderer.setSize(r.width,r.height,false);
+  camera.aspect=r.width/Math.max(r.height,1);camera.updateProjectionMatrix();apply()}
+addEventListener('resize',resize);
+
+const tl=gsap.timeline({paused:true,defaults:{ease:'power2.inOut'}});
+tl.addLabel('couv')
+  .to(S,{ry:Math.PI/2-.5,rx:-.08,rz:0,duration:1}).addLabel('dos')
+  .to(S,{ry:Math.PI-.12,rx:-.1,duration:1},'+=.4').addLabel('quatrieme')
+  .to(S,{ry:Math.PI*1.5-.32,rx:-.12,duration:.9},'+=.4').addLabel('tranche')
+  .to(S,{ry:Math.PI*2+.18,rx:-.22,duration:.9},'+=.4')
+  .to(S,{ry:Math.PI*2-.1,rx:-.5,rz:.03,shift:0,dist:4.4,duration:1.2},'+=.1')
+  .to(S,{cover:1,duration:1.3,ease:'power1.inOut'},'-=.7').addLabel('s12');
+const groups=[[0,1,'s38'],[2,3,4,'s98'],[5,6,7,'s142'],[8,9,10,'s286']];
+groups.forEach(gr=>{const lab=gr.pop();tl.addLabel(lab+'_go','+=.6');
+  gr.forEach((i,k)=>tl.to(S,{['l'+i]:1,duration:1.05,ease:'power1.inOut'},lab+'_go+='+(k*.3)));tl.addLabel(lab)});
+tl.to({}, {duration:.5});
+
+const caps=[['couv','<b>Couverture</b> · photographie d’archive','110 × 170 mm'],['dos','<b>Dos</b> · auteur et titre','dos 20 mm'],
+  ['quatrieme','<b>Quatrième de couverture</b> · extrait des mémoires','110 × 170 mm'],['tranche','<b>Tranche</b> · 378 pages, 189 feuillets','110 × 170 mm'],['s12','<b>Ouverture</b> · le village natal','p. 12–13'],
+  ['s38','<b>Le front</b> · portrait en uniforme','p. 38–39'],['s98','<b>Archives</b> · photographies des tranchées','p. 98–99'],
+  ['s142','<b>Cavalerie</b> · les chevaux du régiment','p. 142–143'],['s286','<b>Seconde Guerre</b> · portrait','p. 286–287']]
+  .map(c=>[(tl.labels[c[0]]-(c[0]==='couv'?0:.35))/tl.duration(),c[1],c[2]]);
+const capL=stage.querySelector('.livre-legende'),capN=stage.querySelector('.livre-num');let lastCap=-1;
+function setCap(p){let k=0;caps.forEach((c,i)=>{if(p>=c[0])k=i});if(k!==lastCap){lastCap=k;capL.innerHTML=caps[k][1];capN.textContent=caps[k][2]}}
+tl.eventCallback('onUpdate',()=>{apply();setCap(tl.progress())});
+
+resize();
+gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.create({trigger:stage,start:'top top',end:'bottom bottom',scrub:.8,animation:tl});
+(function loop(){if(needs){renderer.render(scene,camera);needs=false}requestAnimationFrame(loop)})();
+})();
+</script>

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Ellipse from '../../components/Ellipse.astro';
+import Livre3D from '../../components/Livre3D.astro';
 import { projets, type Projet } from '../../data/projets';
 
 export function getStaticPaths() {
@@ -55,6 +56,8 @@ const bandeau = [
         </ul>
       </div>
     </section>
+
+    {projet.slug === 'deux-guerres-une-vie' && <Livre3D />}
 
     <section class="cadre galerie" aria-label="Visuels du projet">
       {galerie.map((img) => (

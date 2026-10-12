@@ -104,17 +104,17 @@ export const projets: Projet[] = [
     categorie: 'Édition',
     couleur: '#8a6d4b',
     filtres: ['edition'],
-    etiquettes: ['Édition', 'Couverture', 'Typographie'],
+    etiquettes: ['Édition', 'Couverture', 'Mise en page', 'Typographie'],
     resume:
-      "Couverture complète d'un ouvrage biographique de 378 pages : première, dos et quatrième de couverture.",
-    role: 'Graphiste',
-    livrables: 'Première, dos et quatrième de couverture',
-    outils: 'InDesign',
-    cadre: 'Édition',
+      'Les mémoires de mon arrière-grand-père, témoin des deux guerres mondiales : réécriture du manuscrit et mise en page complète d’un livre de 378 pages.',
+    role: 'Réécriture et mise en page',
+    livrables: 'Couverture (première, dos, quatrième) et gabarit intérieur',
+    outils: 'InDesign, Photoshop',
+    cadre: 'Projet personnel',
     contexte:
-      "Deux guerres, une vie est l'autobiographie de Gabriel Lafon, qui traverse les deux conflits mondiaux. Le livre demandait une couverture complète : première, dos et quatrième.",
+      "Deux guerres, une vie est l'autobiographie de Gabriel Lafon, mon arrière-grand-père, qui traverse les deux conflits mondiaux. Un format broché de 110 × 170 mm, 378 pages de texte et d'archives.",
     maPart:
-      "Composition sobre, portée par un titre en capitales, un portrait d'archive en noir et blanc et un texte de quatrième calé sur la grille.",
+      "J'ai repris son manuscrit, réécrit le texte et composé le livre : couverture, gabarit intérieur, intégration des photographies d'archives et des cartes.",
     visuels: [
       v('deux-guerres-une-vie', 'livre-a-plat', 'Couverture à plat : quatrième, dos et première', 'large'),
       v('deux-guerres-une-vie', '01', 'Maquette du livre fermé', 'moitie'),
@@ -152,6 +152,33 @@ export const projets: Projet[] = [
       v('bureau-des-goodies', '11', 'Couleurs et déclinaisons du logotype', 'moitie'),
       v('bureau-des-goodies', '13', "L'univers typographique, Barlow", 'moitie'),
       v('bureau-des-goodies', '15', 'Les quatre déclinaisons couleur du monogramme', 'large'),
+    ],
+  },
+  {
+    slug: 'e-square',
+    titre: 'E-square',
+    categorie: 'Site vitrine',
+    couleur: '#5b2bd6',
+    filtres: ['digital'],
+    etiquettes: ['Site vitrine', 'Framer', 'UI'],
+    resume:
+      'Le site vitrine d’E-square, solution de recharge pour scooters et motos électriques, conçu et réalisé sous Framer.',
+    role: 'Graphiste freelance',
+    livrables: 'Site vitrine (desktop et mobile)',
+    outils: 'Framer',
+    cadre: 'Freelance, 2025',
+    contexte:
+      'E-square propose des bornes de recharge pour deux-roues électriques, pour les particuliers et les entreprises. Il fallait un site vitrine pour présenter l’offre.',
+    maPart:
+      'J’ai conçu et réalisé le site sous Framer, en version desktop et mobile.',
+    visuels: [
+      v('e-square', 'e-cover', 'Page d’accueil du site E-square sur ordinateur', 'large'),
+      v('e-square', 'e-logo', 'Logo E-square', 'moitie'),
+      v('e-square', 'e-laptop', 'Le site affiché sur un ordinateur portable', 'moitie'),
+      v('e-square', 'e-mobile', 'Version mobile de la page d’accueil', 'moitie'),
+      v('e-square', 'e-reseau', 'Section « Un réseau de bornes adapté à vos besoins »', 'moitie'),
+      v('e-square', 'e-pourquoi', 'Section « Pourquoi choisir E-square pour votre entreprise ? »', 'moitie'),
+      v('e-square', 'e-impact', 'Section « Soutenir la transition vers une mobilité durable »', 'moitie'),
     ],
   },
   {
