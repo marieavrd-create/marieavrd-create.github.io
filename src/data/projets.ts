@@ -182,25 +182,23 @@ export const projets: Projet[] = [
   },
   {
     slug: 'infographie',
-    titre: 'Données & infographie',
-    categorie: 'Valorisation',
+    titre: 'Artiste, un métier à risque',
+    categorie: 'Infographie',
     couleur: '#e63946',
-    filtres: ['presentation', 'affiche'],
-    etiquettes: ['Infographie', 'Réseaux sociaux', 'Data'],
+    filtres: ['presentation'],
+    etiquettes: ['Infographie', 'Data'],
     resume:
-      '« Artiste, un métier à risque » : une infographie qui met en regard les risques du métier d’artiste et ceux du quotidien. Et une série de posts Instagram pour les 45 ans de Décathlon.',
+      '« Artiste, un métier à risque » : une infographie qui met en regard les risques du métier d’artiste et ceux du quotidien.',
     role: 'Graphisme, data visualisation',
-    livrables: 'Infographie verticale, série de 6 posts Instagram',
-    cadre: 'Projets d’études',
+    livrables: 'Infographie verticale',
+    cadre: 'Projet d’études',
     contexte:
-      '« Artiste, un métier à risque » : une infographie qui met en regard les risques du métier d’artiste et ceux du quotidien. Et une série de posts Instagram pour les 45 ans de Décathlon.',
+      'Une infographie qui met en regard les risques du métier d’artiste et ceux du quotidien.',
     maPart:
       'Hiérarchiser les chiffres, choisir la bonne forme (camembert, pictogrammes, gros titres) et garder un message lisible en quelques secondes.',
     visuels: [
       v('infographie', 'i-cover', 'Infographie « Artiste, un métier à risque »', 'large'),
       v('infographie', 'i-data', 'Infographie complète en format vertical', 'tiers'),
-      v('infographie', 'i-deca', 'Série de 6 posts Instagram pour les 45 ans de Décathlon', 'tiers'),
-      v('infographie', 'i-feed', 'Post Décathlon dans le fil Instagram', 'tiers'),
     ],
   },
   {
@@ -274,6 +272,23 @@ export const projets: Projet[] = [
       v('culture-pub', '03', 'Page vidéo en perspective', 'large'),
       v('culture-pub', '06', 'Design system : logo, icônes et bouton', 'moitie'),
       v('culture-pub', '08', 'Page vidéo, étiquettes par secteur', 'moitie'),
+    ],
+  },
+  {
+    slug: 'decathlon',
+    titre: 'Décathlon',
+    categorie: 'Réseaux sociaux',
+    couleur: '#0082c3',
+    filtres: ['digital'],
+    etiquettes: ['Instagram', 'Réseaux sociaux'],
+    resume: 'Une série de posts Instagram pour les 45 ans de Décathlon.',
+    role: 'Graphisme',
+    livrables: 'Série de 6 posts Instagram',
+    cadre: 'Projet d’études',
+    contexte: 'Une série de posts Instagram pour les 45 ans de Décathlon.',
+    maPart: 'Concevoir 6 posts qui fonctionnent seuls et forment un ensemble cohérent dans le fil Instagram.',
+    visuels: [
+      v('decathlon', 'd-cover', 'Série de posts Décathlon dans le profil et le fil Instagram', 'large'),
     ],
   },
   {
