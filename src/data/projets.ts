@@ -53,14 +53,14 @@ export const projets: Projet[] = [
     filtres: ['identite', 'digital'],
     etiquettes: ['Identité', 'UI mobile', 'Site', 'Pitch'],
     resume:
-      "Une application qui relie consommateurs et entreprises locales pour réinventer ensemble l'expérience client. J'en suis cofondatrice et j'en ai porté la direction artistique et l'UI.",
-    role: 'Cofondatrice · DA & UI',
+      "Une application qui relie consommateurs et entreprises locales pour réinventer ensemble l'expérience client. J'en ai porté la direction artistique et l'UI.",
+    role: 'Directrice artistique · DA & UI',
     livrables: 'Logo et mascotte, application, site, présentations',
     outils: 'Figma',
-    equipe: 'Projet cofondé en équipe',
+    equipe: 'Projet en équipe',
     cadre: 'Projet entrepreneurial · Blois et Tours',
     contexte:
-      "Projet entrepreneurial que j'ai cofondé : une application qui relie consommateurs et entreprises locales (Blois, Tours) pour améliorer ensemble l'expérience client.",
+      "Un projet entrepreneurial : une application qui relie consommateurs et entreprises locales (Blois, Tours) pour améliorer ensemble l'expérience client.",
     taches: [
       'Direction artistique du projet',
       'Logo et mascotte',
