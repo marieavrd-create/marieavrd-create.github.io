@@ -6,8 +6,10 @@ interface Props {
   dossier: string;
   nombre: number;
   couleur: string;
+  texte?: string;
+  mot?: string;
 }
-const { titre, dossier, nombre, couleur } = Astro.props;
+const { titre, dossier, nombre, couleur, mot = 'orale', texte = `Les ${nombre} diapositives présentées au jury, de l’analyse à la boutique en ligne.` } = Astro.props;
 const n = (i: number) => String(i).padStart(2, '0');
 const slides = Array.from({ length: nombre }, (_, i) => ({
   src: `${dossier}/${n(i + 1)}.webp`,
@@ -17,8 +19,8 @@ const slides = Array.from({ length: nombre }, (_, i) => ({
 <section class="cadre diapo" style={`--c: ${couleur}`} aria-roledescription="carrousel" aria-label={titre} data-diapo>
   <div class="diapo-fond">
     <div class="diapo-tete" data-apparait>
-      <h2 class="titre-fin">La présentation <span class="it">orale</span></h2>
-      <p>Les {nombre} diapositives présentées au jury, de l’analyse à la boutique en ligne.</p>
+      <h2 class="titre-fin">La présentation <span class="it">{mot}</span></h2>
+      <p>{texte}</p>
     </div>
 
     <div class="ecran-zone" data-apparait>

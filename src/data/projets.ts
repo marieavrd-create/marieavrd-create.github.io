@@ -35,7 +35,7 @@ export type Projet = {
   /** Animation de la vignette d'accueil au survol (voir CarteVisuel.astro) */
   survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur'; images?: string[]; couleur?: string };
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
-  presentation?: { titre: string; dossier: string; nombre: number };
+  presentation?: { titre: string; dossier: string; nombre: number; texte?: string; mot?: string };
 };
 
 const v = (slug: string, fichier: string, alt: string, format?: Visuel['format']): Visuel => ({
@@ -45,75 +45,6 @@ const v = (slug: string, fichier: string, alt: string, format?: Visuel['format']
 });
 
 export const projets: Projet[] = [
-  {
-    slug: 'umyst',
-    titre: 'Umyst',
-    categorie: 'Application & identité',
-    couleur: '#f6c400',
-    filtres: ['identite', 'digital'],
-    etiquettes: ['Identité', 'UI mobile', 'Site', 'Pitch'],
-    resume:
-      "Une application qui relie consommateurs et entreprises locales pour réinventer ensemble l'expérience client. J'en ai porté la direction artistique et l'UI.",
-    role: 'Directrice artistique · DA & UI',
-    livrables: 'Logo et mascotte, application, site, présentations',
-    outils: 'Figma',
-    equipe: 'Projet en équipe',
-    cadre: 'Projet entrepreneurial · Blois et Tours',
-    contexte:
-      "Un projet entrepreneurial : une application qui relie consommateurs et entreprises locales (Blois, Tours) pour améliorer ensemble l'expérience client.",
-    taches: [
-      'Direction artistique du projet',
-      'Logo et mascotte',
-      "Design de l'application mobile (UI)",
-      'Design du site',
-      'Présentations pour les entreprises partenaires',
-    ],
-    survol: { type: 'volet', images: ['/projets/umyst/u-app.webp'], couleur: '#f6c400' },
-    visuels: [
-      v('umyst', 'u-cover', "Écran d'accueil de l'application Umyst sur un fond noir et jaune", 'large'),
-      v('umyst', 'u-home', 'Nouveau site Umyst : sections de la page d’accueil', 'large'),
-      v('umyst', 'u-mobile', 'Nouveau site Umyst présenté sur ordinateur', 'moitie'),
-      v('umyst', 'u-desk', 'Sections du site Umyst en perspective', 'moitie'),
-      v('umyst', 'u-app', "Écrans de l'application : communauté et filtres", 'large'),
-      v('umyst', 'u-dash', 'Tableau de bord entreprise', 'moitie'),
-      v('umyst', 'u-tarifs', 'Page tarification', 'moitie'),
-      v('umyst', 'u-collab', 'Présentation : récoltez les fruits de votre collaboration', 'large'),
-    ],
-  },
-  {
-    slug: 'we-love-green',
-    titre: 'We Love Green',
-    categorie: 'Identité de festival',
-    couleur: '#ff4fa3',
-    filtres: ['identite', 'affiche'],
-    etiquettes: ['Identité', 'Affiche', 'Merch', 'Charte'],
-    resume:
-      "Identité visuelle d'une édition du festival We Love Green, à Paris : logotype, charte, affiches et déclinaisons textile et objets.",
-    role: 'Direction artistique, graphisme',
-    livrables: 'Logotype, charte, affiches, merchandising, posts Instagram',
-    outils: 'Illustrator',
-    cadre: 'Projet d’études',
-    contexte:
-      "Identité visuelle d'une édition du festival We Love Green (Paris) : logo, palette, typographies, affiche et déclinaisons.",
-    taches: [
-      'Logotype typographique inspiré des années 1970',
-      'Charte graphique : palette en deux dégradés, PT Sans, Akzidenz-Grotesk',
-      'Affiche du festival',
-      'Déclinaisons textile et objets',
-    ],
-    survol: { type: 'eventail', images: ['/projets/we-love-green/01.webp', '/projets/we-love-green/02.webp', '/projets/we-love-green/03.webp'] },
-    visuels: [
-      v('we-love-green', 'merch', 'Affiche violette et merchandising We Love Green', 'large'),
-      v('we-love-green', '01', 'Affiche We Love Green, version jaune et rouge', 'tiers'),
-      v('we-love-green', '02', 'Affiche We Love Green, version violette', 'tiers'),
-      v('we-love-green', '03', 'Affiche We Love Green, ondes concentriques', 'tiers'),
-      v('we-love-green', '04', 'Affiche dans un abribus', 'large'),
-      v('we-love-green', '05', 'Affiche collée sur un mur', 'moitie'),
-      v('we-love-green', '06', 'Affiche en situation dans la végétation', 'moitie'),
-      v('we-love-green', '07', 'Charte : référence, logotype et applications', 'large'),
-      v('we-love-green', '08', 'Charte : couleurs et typographies', 'large'),
-    ],
-  },
   {
     slug: 'deux-guerres-une-vie',
     titre: 'Deux guerres, une vie',
@@ -142,43 +73,6 @@ export const projets: Projet[] = [
       v('deux-guerres-une-vie', '04', 'Tranche du livre', 'moitie'),
       v('deux-guerres-une-vie', '02', 'Double page intérieure avec un portrait d’archives', 'large'),
       v('deux-guerres-une-vie', '03', 'Page qui tourne, texte et photographies', 'large'),
-    ],
-  },
-  {
-    slug: 'bureau-des-goodies',
-    titre: 'Bureau des goodies',
-    categorie: 'Catalogues & charte',
-    couleur: '#3d7be0',
-    filtres: ['edition', 'identite'],
-    etiquettes: ['Catalogue', 'Mise en page', 'Charte'],
-    resume:
-      'Catalogues produits de plus de 300 pages et charte graphique, en stage puis en alternance, de la conception jusqu’à l’envoi en production.',
-    role: 'Graphiste, stage puis alternance',
-    livrables: 'Catalogues produits, charte graphique, visuels personnalisés',
-    outils: 'InDesign, Illustrator, Photoshop',
-    cadre: 'Entreprise · 2021-2023',
-    contexte:
-      "Bureau des goodies personnalise textiles et objets pour les étudiants, les associations et les entreprises. J'y ai géré la chaîne graphique : conception, validation client, préparation des fichiers et envoi en production.",
-    taches: [
-      'Conception et mise en page de catalogues de plus de 300 pages',
-      'Gabarits par famille de produits, code couleur par rubrique, blocs produit répétables',
-      'Suivi des corrections et validation client',
-      'Préparation des fichiers et envoi en production',
-      'Déclinaison du logo et adaptation de la charte : monogramme, couleurs, Barlow, iconographie',
-    ],
-    survol: { type: 'eventail', images: ['/projets/bureau-des-goodies/01.webp', '/projets/bureau-des-goodies/04.webp', '/projets/bureau-des-goodies/05.webp'] },
-    visuels: [
-      v('bureau-des-goodies', '03', 'Catalogue, page de la rubrique Sacs et bagages', 'large'),
-      v('bureau-des-goodies', '01', 'Couverture du catalogue', 'moitie'),
-      v('bureau-des-goodies', '02', 'Page « Qui sommes-nous ? » du catalogue', 'moitie'),
-      v('bureau-des-goodies', '04', 'Page produits Écritures', 'moitie'),
-      v('bureau-des-goodies', '05', 'Page produits Alimentaire et boisson', 'moitie'),
-      v('bureau-des-goodies', '06', 'Page produits Pack été', 'moitie'),
-      v('bureau-des-goodies', '07', 'Page produits Pack ski', 'moitie'),
-      v('bureau-des-goodies', '09', 'Charte graphique Bureau des goodies, page de titre', 'large'),
-      v('bureau-des-goodies', '11', 'Couleurs et déclinaisons du logotype', 'moitie'),
-      v('bureau-des-goodies', '13', "L'univers typographique, Barlow", 'moitie'),
-      v('bureau-des-goodies', '15', 'Les quatre déclinaisons couleur du monogramme', 'large'),
     ],
   },
   {
@@ -233,6 +127,13 @@ export const projets: Projet[] = [
       "Scénographie : couloir d'écrans d'affiches d'époque, puis salle-ring",
     ],
     survol: { type: 'diapo', images: ['/projets/mohamed-ali/m-ring.webp', '/projets/mohamed-ali/m-ko.webp'] },
+    presentation: {
+      titre: 'La présentation du projet',
+      dossier: '/projets/mohamed-ali/presentation',
+      nombre: 30,
+      mot: 'du projet',
+      texte: 'Les 30 diapositives du projet, du brief au planning, en passant par les personas et la salle-ring.',
+    },
     visuels: [
       v('mohamed-ali', 'm-cover', 'Mohamed Ali devant des affiches de combats', 'large'),
       v('mohamed-ali', 'm-chiffres', 'Mohamed Ali en quelques chiffres', 'large'),
@@ -242,6 +143,111 @@ export const projets: Projet[] = [
       v('mohamed-ali', 'm-parcours', 'Parcours utilisateur entre le couloir et la salle de boxe', 'moitie'),
       v('mohamed-ali', 'm-ko', 'Salle-ring : séquence KO', 'moitie'),
       v('mohamed-ali', 'm-coin', 'Salle-ring : séquence dans le coin', 'moitie'),
+    ],
+  },
+  {
+    slug: 'we-love-green',
+    titre: 'We Love Green',
+    categorie: 'Identité de festival',
+    couleur: '#ff4fa3',
+    filtres: ['identite', 'affiche'],
+    etiquettes: ['Identité', 'Affiche', 'Merch', 'Charte'],
+    resume:
+      "Identité visuelle d'une édition du festival We Love Green, à Paris : logotype, charte, affiches et déclinaisons textile et objets.",
+    role: 'Direction artistique, graphisme',
+    livrables: 'Logotype, charte, affiches, merchandising, posts Instagram',
+    outils: 'Illustrator',
+    cadre: 'Projet d’études',
+    contexte:
+      "Identité visuelle d'une édition du festival We Love Green (Paris) : logo, palette, typographies, affiche et déclinaisons.",
+    taches: [
+      'Logotype typographique inspiré des années 1970',
+      'Charte graphique : palette en deux dégradés, PT Sans, Akzidenz-Grotesk',
+      'Affiche du festival',
+      'Déclinaisons textile et objets',
+    ],
+    survol: { type: 'eventail', images: ['/projets/we-love-green/01.webp', '/projets/we-love-green/02.webp', '/projets/we-love-green/04.webp'] },
+    visuels: [
+      v('we-love-green', 'merch', 'Affiche violette et merchandising We Love Green', 'large'),
+      v('we-love-green', '01', 'Affiche We Love Green, version jaune et rouge', 'moitie'),
+      v('we-love-green', '02', 'Affiche We Love Green, version violette', 'moitie'),
+      v('we-love-green', '04', 'Affiche dans un abribus', 'large'),
+      v('we-love-green', '05', 'Affiche collée sur un mur', 'moitie'),
+      v('we-love-green', '06', 'Affiche en situation dans la végétation', 'moitie'),
+      v('we-love-green', '07', 'Charte : référence, logotype et applications', 'large'),
+      v('we-love-green', '08', 'Charte : couleurs et typographies', 'large'),
+    ],
+  },
+  {
+    slug: 'umyst',
+    titre: 'Umyst',
+    categorie: 'Application & identité',
+    couleur: '#f6c400',
+    filtres: ['identite', 'digital'],
+    etiquettes: ['Identité', 'UI mobile', 'Site', 'Pitch'],
+    resume:
+      "Une application qui relie consommateurs et entreprises locales pour réinventer ensemble l'expérience client. J'en ai porté la direction artistique et l'UI.",
+    role: 'Directrice artistique · DA & UI',
+    livrables: 'Logo et mascotte, application, site, présentations',
+    outils: 'Figma',
+    equipe: 'Projet en équipe',
+    cadre: 'Projet entrepreneurial · Blois et Tours',
+    contexte:
+      "Un projet entrepreneurial : une application qui relie consommateurs et entreprises locales (Blois, Tours) pour améliorer ensemble l'expérience client.",
+    taches: [
+      'Direction artistique du projet',
+      'Logo et mascotte',
+      "Design de l'application mobile (UI)",
+      'Design du site',
+      'Présentations pour les entreprises partenaires',
+    ],
+    survol: { type: 'volet', images: ['/projets/umyst/u-app.webp'], couleur: '#f6c400' },
+    visuels: [
+      v('umyst', 'u-cover', "Écran d'accueil de l'application Umyst sur un fond noir et jaune", 'large'),
+      v('umyst', 'u-home', 'Nouveau site Umyst : sections de la page d’accueil', 'large'),
+      v('umyst', 'u-mobile', 'Nouveau site Umyst présenté sur ordinateur', 'moitie'),
+      v('umyst', 'u-desk', 'Sections du site Umyst en perspective', 'moitie'),
+      v('umyst', 'u-app', "Écrans de l'application : communauté et filtres", 'large'),
+      v('umyst', 'u-dash', 'Tableau de bord entreprise', 'moitie'),
+      v('umyst', 'u-tarifs', 'Page tarification', 'moitie'),
+      v('umyst', 'u-collab', 'Présentation : récoltez les fruits de votre collaboration', 'large'),
+    ],
+  },
+  {
+    slug: 'bureau-des-goodies',
+    titre: 'Bureau des goodies',
+    categorie: 'Catalogues & charte',
+    couleur: '#3d7be0',
+    filtres: ['edition', 'identite'],
+    etiquettes: ['Catalogue', 'Mise en page', 'Charte'],
+    resume:
+      'Catalogues produits de plus de 300 pages et charte graphique, en stage puis en alternance, de la conception jusqu’à l’envoi en production.',
+    role: 'Graphiste, stage puis alternance',
+    livrables: 'Catalogues produits, charte graphique, visuels personnalisés',
+    outils: 'InDesign, Illustrator, Photoshop',
+    cadre: 'Entreprise · 2021-2023',
+    contexte:
+      "Bureau des goodies personnalise textiles et objets pour les étudiants, les associations et les entreprises. J'y ai géré la chaîne graphique : conception, validation client, préparation des fichiers et envoi en production.",
+    taches: [
+      'Conception et mise en page de catalogues de plus de 300 pages',
+      'Gabarits par famille de produits, code couleur par rubrique, blocs produit répétables',
+      'Suivi des corrections et validation client',
+      'Préparation des fichiers et envoi en production',
+      'Déclinaison du logo et adaptation de la charte : monogramme, couleurs, Barlow, iconographie',
+    ],
+    survol: { type: 'eventail', images: ['/projets/bureau-des-goodies/01.webp', '/projets/bureau-des-goodies/04.webp', '/projets/bureau-des-goodies/05.webp'] },
+    visuels: [
+      v('bureau-des-goodies', '03', 'Catalogue, page de la rubrique Sacs et bagages', 'large'),
+      v('bureau-des-goodies', '01', 'Couverture du catalogue', 'moitie'),
+      v('bureau-des-goodies', '02', 'Page « Qui sommes-nous ? » du catalogue', 'moitie'),
+      v('bureau-des-goodies', '04', 'Page produits Écritures', 'moitie'),
+      v('bureau-des-goodies', '05', 'Page produits Alimentaire et boisson', 'moitie'),
+      v('bureau-des-goodies', '06', 'Page produits Pack été', 'moitie'),
+      v('bureau-des-goodies', '07', 'Page produits Pack ski', 'moitie'),
+      v('bureau-des-goodies', '09', 'Charte graphique Bureau des goodies, page de titre', 'large'),
+      v('bureau-des-goodies', '11', 'Couleurs et déclinaisons du logotype', 'moitie'),
+      v('bureau-des-goodies', '13', "L'univers typographique, Barlow", 'moitie'),
+      v('bureau-des-goodies', '15', 'Les quatre déclinaisons couleur du monogramme', 'large'),
     ],
   },
   {
