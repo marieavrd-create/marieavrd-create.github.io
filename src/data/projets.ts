@@ -36,6 +36,7 @@ export type Projet = {
   survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur'; images?: string[]; couleur?: string };
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
   presentation?: { titre: string; dossier: string; nombre: number; texte?: string; mot?: string };
+  lecture?: { dossier: string; hauteurs: number[]; largeur: number; texte?: string };
 };
 
 const v = (slug: string, fichier: string, alt: string, format?: Visuel['format']): Visuel => ({
@@ -98,12 +99,14 @@ export const projets: Projet[] = [
     survol: { type: 'defile', images: ['/projets/e-square/e-page.webp'] },
     visuels: [
       v('e-square', 'e-cover', 'Page d’accueil du site E-square sur ordinateur', 'large'),
+      v('e-square', 'e-terrasse-1', 'Page d’accueil du site sur un ordinateur portable, en terrasse', 'large'),
       v('e-square', 'e-logo', 'Logo E-square', 'moitie'),
       v('e-square', 'e-laptop', 'Le site affiché sur un ordinateur portable', 'moitie'),
       v('e-square', 'e-mobile', 'Version mobile de la page d’accueil', 'moitie'),
       v('e-square', 'e-reseau', 'Section « Un réseau de bornes adapté à vos besoins »', 'moitie'),
       v('e-square', 'e-pourquoi', 'Section « Pourquoi choisir E-square pour votre entreprise ? »', 'moitie'),
       v('e-square', 'e-impact', 'Section « Soutenir la transition vers une mobilité durable »', 'moitie'),
+      v('e-square', 'e-terrasse-2', 'Section « Notre impact » sur un ordinateur portable, en terrasse', 'large'),
     ],
   },
   {
@@ -177,6 +180,43 @@ export const projets: Projet[] = [
       v('we-love-green', '07', 'Charte : référence, logotype et applications', 'large'),
       v('we-love-green', '08', 'Charte : couleurs et typographies', 'large'),
     ],
+  },
+  {
+    slug: 'allocine',
+    titre: 'AlloCiné',
+    categorie: 'Présentation de projet',
+    couleur: '#ff6a2a',
+    filtres: ['presentation'],
+    etiquettes: ['Présentation', 'Cadrage', 'Planning'],
+    resume: "Une présentation de cadrage et de pilotage pour la refonte du site, de l'application et de la ligne éditoriale d'AlloCiné.",
+    role: 'Direction artistique, conception de la présentation',
+    livrables: 'Présentation d’une trentaine de slides',
+    cadre: 'Projet d’études, Master 2 · 2024',
+    contexte:
+      "AlloCiné relance la refonte de son site, de son application et de sa ligne éditoriale sociale après une première collaboration décevante avec une agence. L'enjeu : regagner la confiance du client.",
+    taches: [
+      'Analyse du besoin client',
+      "Présentation de l'équipe et de la supervision",
+      'Cadrage : ce qui est inclus et exclu',
+      'Planning créatif, échéancier et outils de suivi',
+      'Mise en page du support sur une grille stricte, guidée par le rouge AlloCiné',
+    ],
+    survol: { type: 'eventail', images: ['/projets/allocine/02.webp', '/projets/allocine/04.webp', '/projets/allocine/05.webp'] },
+    visuels: [
+      v('allocine', 'lecteur-portee', 'Diapositive « Portée et limites » sur un ordinateur portable, en terrasse', 'large'),
+      v('allocine', '03', 'Contexte du projet', 'large'),
+      v('allocine', '02', 'Sommaire en cinq parties', 'moitie'),
+      v('allocine', '04', 'Pourquoi ce projet', 'moitie'),
+      v('allocine', '05', 'Objectifs du projet', 'moitie'),
+      v('allocine', '06', 'Échéancier des tâches', 'moitie'),
+      v('allocine', '07', 'Calendrier détaillé', 'large'),
+    ],
+    lecture: {
+      dossier: '/projets/allocine/lecture',
+      hauteurs: [2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 932],
+      largeur: 1400,
+      texte: 'Toute la présentation, de l’analyse à la gestion des imprévus, à faire défiler dans l’écran.',
+    },
   },
   {
     slug: 'umyst',
@@ -278,23 +318,24 @@ export const projets: Projet[] = [
   {
     slug: 'chemtrails',
     titre: 'Chemtrails Over the Country Club',
-    categorie: 'Site événementiel',
+    categorie: 'Direction artistique',
     couleur: '#e8474c',
     filtres: ['identite', 'affiche', 'digital'],
-    etiquettes: ['Logo', 'Affiche', 'Site', 'Boutique'],
+    etiquettes: ['DA', 'Logo', 'Affiche', 'Packaging'],
     resume:
-      "Un site événementiel pour la sortie de l'album de Lana Del Rey, avec logo, charte, affiche et boutique.",
+      "La direction artistique de la sortie de l'album de Lana Del Rey : logo, charte, affiche, packaging et boutique.",
     role: 'Direction artistique, graphisme',
-    livrables: 'Moodboard, logo, charte, affiche, maquettes du site et de la boutique',
+    livrables: 'Moodboard, logo, charte, affiche, packaging, maquettes de la boutique',
     equipe: 'Projet d’équipe (4 personnes)',
     cadre: 'Projet d’études',
-    contexte: "Créer un site événementiel pour la sortie de l'album de Lana Del Rey et donner envie de le découvrir.",
+    contexte: "Imaginer la direction artistique de la sortie de l'album de Lana Del Rey et donner envie de le découvrir.",
     taches: [
       'Moodboard années 70',
       'Logo',
       'Charte graphique : Rousseau Deco, Bodoni Moda, Avenir',
       'Affiche',
-      'Maquettes du site et de la boutique',
+      'Packaging du CD et livret',
+      'Maquettes de la boutique',
       'Présentation orale du projet',
     ],
     survol: { type: 'diapo', images: ['/projets/lana-del-rey/presentation/20.webp', '/projets/lana-del-rey/presentation/22.webp', '/projets/lana-del-rey/04.webp'] },
@@ -338,13 +379,13 @@ export const projets: Projet[] = [
   {
     slug: 'culture-pub',
     titre: 'Culture Pub',
-    categorie: 'Interface & design system',
+    categorie: 'Direction artistique & UI',
     couleur: '#8b85e8',
     filtres: ['digital', 'identite'],
-    etiquettes: ['UI', 'Design system', 'Identité'],
+    etiquettes: ['Direction artistique', 'Identité', 'UI'],
     resume: "Nouvelle identité et nouvelle plateforme pour l'émission culte, afin de toucher une nouvelle cible.",
     role: 'Direction artistique, UI design',
-    livrables: 'Logotype, design system, maquettes desktop et mobile',
+    livrables: 'Moodboard, logotype, charte, maquettes desktop et mobile, présentation',
     outils: 'Figma',
     cadre: 'Projet d’études',
     contexte:
@@ -353,19 +394,28 @@ export const projets: Projet[] = [
       'Benchmark',
       'Personas',
       'Wireframes',
-      'Design system',
+      'Moodboard et direction artistique',
       "Logotype encadré d'un trait arc-en-ciel",
       "Maquettes d'une interface sombre qui met les vidéos au premier plan",
+      'Présentation du projet',
     ],
     survol: { type: 'arcenciel' },
+    presentation: {
+      titre: 'La présentation du projet',
+      dossier: '/projets/culture-pub/presentation',
+      nombre: 24,
+      mot: 'du projet',
+      texte: 'Les 24 diapositives du projet, du brief au planning, en passant par le moodboard et les maquettes.',
+    },
     visuels: [
       v('culture-pub', '01', 'Page d’accueil Culture Pub en perspective', 'large'),
+      v('culture-pub', 'presentation/14', 'Moodboard : affiches, néons et typographies', 'large'),
+      v('culture-pub', 'presentation/13', 'Nouvelle identité visuelle', 'moitie'),
+      v('culture-pub', '08', 'Page vidéo, étiquettes par secteur', 'moitie'),
       v('culture-pub', '02', 'Page d’accueil complète, version desktop', 'tiers'),
       v('culture-pub', '05', 'Page catégories', 'tiers'),
       v('culture-pub', '04', 'Page d’accueil, version mobile', 'tiers'),
       v('culture-pub', '03', 'Page vidéo en perspective', 'large'),
-      v('culture-pub', '06', 'Design system : logo, icônes et bouton', 'moitie'),
-      v('culture-pub', '08', 'Page vidéo, étiquettes par secteur', 'moitie'),
     ],
   },
   {
@@ -387,36 +437,6 @@ export const projets: Projet[] = [
     survol: { type: 'coeur' },
     visuels: [
       v('decathlon', 'd-cover', 'Série de posts Décathlon dans le profil et le fil Instagram', 'large'),
-    ],
-  },
-  {
-    slug: 'allocine',
-    titre: 'AlloCiné',
-    categorie: 'Présentation de projet',
-    couleur: '#ff6a2a',
-    filtres: ['presentation'],
-    etiquettes: ['Présentation', 'Cadrage', 'Planning'],
-    resume: "Une présentation de cadrage et de pilotage pour la refonte du site, de l'application et de la ligne éditoriale d'AlloCiné.",
-    role: 'Direction artistique, conception de la présentation',
-    livrables: 'Présentation d’une trentaine de slides',
-    cadre: 'Projet d’études, Master 2 · 2024',
-    contexte:
-      "AlloCiné relance la refonte de son site, de son application et de sa ligne éditoriale sociale après une première collaboration décevante avec une agence. L'enjeu : regagner la confiance du client.",
-    taches: [
-      'Analyse du besoin client',
-      "Présentation de l'équipe et de la supervision",
-      'Cadrage : ce qui est inclus et exclu',
-      'Planning créatif, échéancier et outils de suivi',
-      'Mise en page du support sur une grille stricte, guidée par le rouge AlloCiné',
-    ],
-    survol: { type: 'eventail', images: ['/projets/allocine/02.webp', '/projets/allocine/04.webp', '/projets/allocine/05.webp'] },
-    visuels: [
-      v('allocine', '03', 'Contexte du projet', 'large'),
-      v('allocine', '02', 'Sommaire en cinq parties', 'moitie'),
-      v('allocine', '04', 'Pourquoi ce projet', 'moitie'),
-      v('allocine', '05', 'Portée et limites', 'moitie'),
-      v('allocine', '06', 'Échéancier des tâches', 'moitie'),
-      v('allocine', '07', 'Calendrier détaillé', 'large'),
     ],
   },
 ];

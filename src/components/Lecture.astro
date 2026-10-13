@@ -1,0 +1,111 @@
+---
+// Une présentation longue (PDF d'une seule page très haute, découpée en bandes)
+// à faire défiler dans un écran d'ordinateur.
+interface Props {
+  dossier: string;
+  hauteurs: number[];
+  largeur: number;
+  couleur: string;
+  texte?: string;
+}
+const { dossier, hauteurs, largeur, couleur, texte = 'Toute la présentation, à faire défiler dans l’écran.' } = Astro.props;
+const n = (i: number) => String(i).padStart(2, '0');
+---
+<section class="cadre lecture" style={`--c: ${couleur}`} aria-label="La présentation en entier" data-lecture>
+  <div class="lecture-fond">
+    <div class="lecture-tete" data-apparait>
+      <h2 class="titre-fin">La présentation <span class="it">en entier</span></h2>
+      <p>{texte}</p>
+    </div>
+
+    <div class="ecran-zone" data-apparait>
+      <div class="halo" aria-hidden="true"></div>
+      <div class="ecran">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="vitre" tabindex="0" aria-label="Présentation, faites défiler pour lire" data-vitre>
+          {hauteurs.map((h, i) => (
+            <img
+              src={`${dossier}/${n(i + 1)}.webp`}
+              alt={i === 0 ? 'Présentation complète du projet' : ''}
+              width={largeur} height={h}
+              loading={i < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          ))}
+        </div>
+        <span class="jauge" aria-hidden="true"><span data-jauge></span></span>
+      </div>
+      <div class="socle" aria-hidden="true"><span></span></div>
+    </div>
+    <p class="aide">Faites défiler dans l’écran</p>
+  </div>
+</section>
+
+<style>
+  .lecture { margin-top: clamp(64px, 9vw, 128px); }
+  .lecture-fond {
+    position: relative; overflow: hidden;
+    background: #121212; color: #fbfaf7;
+    border-radius: var(--rayon);
+    padding: clamp(28px, 5vw, 72px) clamp(16px, 4vw, 64px) clamp(24px, 3vw, 40px);
+  }
+  .lecture-tete { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .lecture-tete h2 { margin: 0; font-size: clamp(2rem, 4.6vw, 4rem); color: inherit; }
+  .lecture-tete p { margin: 0; max-width: 34ch; font-size: 0.875rem; color: rgba(251, 250, 247, 0.6); }
+
+  .ecran-zone { position: relative; margin: clamp(32px, 5vw, 64px) auto 0; max-width: 1040px; }
+  .halo {
+    position: absolute; inset: 8% 4% 0; border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--c) 55%, transparent), transparent);
+    filter: blur(40px); opacity: 0.55;
+  }
+  .ecran {
+    position: relative; margin: 0 6%;
+    padding: clamp(8px, 1.4vw, 16px);
+    background: linear-gradient(#1d1d1f, #0b0b0c);
+    border-radius: clamp(10px, 1.6vw, 20px) clamp(10px, 1.6vw, 20px) 4px 4px;
+    box-shadow: 0 0 0 1px #2c2c2e inset, 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+  }
+  .camera {
+    position: absolute; top: clamp(3px, 0.6vw, 7px); left: 50%; width: 5px; height: 5px; margin-left: -2.5px;
+    border-radius: 50%; background: #2a2a2d;
+  }
+  .vitre {
+    position: relative; aspect-ratio: 16 / 10; overflow-y: auto; overscroll-behavior: contain;
+    border-radius: 3px; background: #fff; outline: none;
+    scrollbar-width: thin; scrollbar-color: var(--c) transparent;
+  }
+  .vitre:focus-visible { box-shadow: 0 0 0 2px var(--c); }
+  .vitre img { display: block; width: 100%; height: auto; }
+  .jauge { position: absolute; left: clamp(8px, 1.4vw, 16px); right: clamp(8px, 1.4vw, 16px); bottom: 4px; height: 2px; background: rgba(255, 255, 255, 0.12); }
+  .jauge span { display: block; height: 100%; width: 100%; background: var(--c); transform-origin: 0 50%; transform: scaleX(0); }
+  .socle {
+    position: relative; height: clamp(10px, 1.6vw, 18px);
+    background: linear-gradient(#d8d6d2, #a9a7a3 60%, #7d7b78);
+    border-radius: 2px 2px clamp(10px, 1.6vw, 18px) clamp(10px, 1.6vw, 18px);
+    box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.9);
+  }
+  .socle span {
+    position: absolute; top: 0; left: 50%; width: 16%; height: 45%; transform: translateX(-50%);
+    background: linear-gradient(#9d9b97, #c2c0bc); border-radius: 0 0 8px 8px;
+  }
+  .aide { margin: clamp(20px, 2.6vw, 32px) 0 0; text-align: center; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(251, 250, 247, 0.55); }
+
+  @media (max-width: 760px) {
+    .ecran { margin: 0 2%; }
+    .vitre { aspect-ratio: 4 / 5; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-lecture]').forEach((racine) => {
+    const vitre = racine.querySelector<HTMLElement>('[data-vitre]')!;
+    const jauge = racine.querySelector<HTMLElement>('[data-jauge]')!;
+    const maj = () => {
+      const max = vitre.scrollHeight - vitre.clientHeight;
+      jauge.style.transform = `scaleX(${max > 0 ? vitre.scrollTop / max : 0})`;
+    };
+    vitre.addEventListener('scroll', maj, { passive: true });
+    maj();
+  });
+</script>
