@@ -55,6 +55,12 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
       {imgs.map((src, k) => <img src={src} alt="" loading="lazy" decoding="async" style={`--k: ${k}`} />)}
     </div>
   )}
+  {s?.type === 'decoupe' && (
+    <div class="decoupe" aria-hidden="true">
+      <span class="morceau m-a" style={`background-image: url(${couv.src})`}></span>
+      <span class="morceau m-b" style={`background-image: url(${couv.src})`}></span>
+    </div>
+  )}
   {s?.type === 'volet' && <img class="volet" src={imgs[0]} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
   {s?.type === 'brillance' && <span class="reflet-or" aria-hidden="true"></span>}
   {s?.type === 'arcenciel' && <span class="trait-arc" aria-hidden="true"></span>}
@@ -123,6 +129,12 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
   /* Diaporama */
   .diapo { position: absolute; inset: 0; pointer-events: none; }
   .diapo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+
+  /* Coup de ciseaux : la couverture se coupe en deux en diagonale */
+  .decoupe { position: absolute; inset: 0; pointer-events: none; opacity: 0; }
+  .morceau { position: absolute; inset: 0; background: center / cover; border-radius: var(--rayon); }
+  .m-a { clip-path: polygon(0 0, 62% 0, 38% 100%, 0 100%); }
+  .m-b { clip-path: polygon(62% 0, 100% 0, 100% 100%, 38% 100%); }
 
   /* Volet de couleur */
   .volet { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; clip-path: inset(100% 0 0 0); }
@@ -196,6 +208,16 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
       50% { opacity: 1; }
       57%, 100% { opacity: 0; transform: scale(1); }
     }
+
+    /* Les deux morceaux s'écartent le long de la coupe ; la carte s'efface derrière */
+    :global(.carte a:hover .carte-img:has(.survol-decoupe)) { overflow: visible; background: transparent; }
+    :global(.carte a:hover) .survol-decoupe { overflow: visible; }
+    :global(.carte a:hover) .survol-decoupe .base { opacity: 0; transition: opacity 0.15s 0.05s; }
+    :global(.carte a:hover) .decoupe { opacity: 1; }
+    .morceau { transition: transform 0.8s cubic-bezier(0.7, 0, 0.2, 1), filter 0.8s; }
+    :global(.carte a:hover) .m-a { transform: translate(-4%, -3%) rotate(-1.5deg); }
+    :global(.carte a:hover) .m-b { transform: translate(4%, 3%) rotate(1.5deg); }
+    :global(.carte a:hover) .morceau { filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.22)); }
 
     .volet { transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1) 0.12s; }
     :global(.carte a:hover) .volet { clip-path: inset(0 0 0 0); }

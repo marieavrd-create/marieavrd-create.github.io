@@ -33,7 +33,7 @@ export type Projet = {
   taches: string[];
   visuels: Visuel[];
   /** Animation de la vignette d'accueil au survol (voir CarteVisuel.astro) */
-  survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur'; images?: string[]; couleur?: string };
+  survol?: { type: 'livre' | 'decoupe' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur'; images?: string[]; couleur?: string };
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
   presentation?: { titre: string; dossier: string; nombre: number; texte?: string; mot?: string };
   lecture?: { dossier: string; hauteurs: number[]; largeur: number; texte?: string };
@@ -129,7 +129,7 @@ export const projets: Projet[] = [
       'Charte graphique : Futura, rouge, jaune',
       "Scénographie : couloir d'écrans d'affiches d'époque, puis salle-ring",
     ],
-    survol: { type: 'diapo', images: ['/projets/mohamed-ali/m-ring.webp', '/projets/mohamed-ali/m-ko.webp'] },
+    survol: { type: 'decoupe' },
     presentation: {
       titre: 'La présentation du projet',
       dossier: '/projets/mohamed-ali/presentation',
