@@ -14,6 +14,8 @@ const s = projet.survol;
 const imgs = s?.images ?? [];
 const chargement = prioritaire ? 'eager' : 'lazy';
 // Feuillets qui tournent au survol du livre (recto, verso), comme dans le livre 3D
+// Nombre de lames de la découpe
+const lames = 6;
 const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']];
 ---
 <div class:list={['visuel', s && `survol-${s.type}`]} style={s?.couleur ? `--sc: ${s.couleur}` : undefined}>
@@ -53,6 +55,15 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
   {s?.type === 'diapo' && (
     <div class:list={['diapo', `diapo-${imgs.length}`]} aria-hidden="true" style={`--n: ${imgs.length}`}>
       {imgs.map((src, k) => <img src={src} alt="" loading="lazy" decoding="async" style={`--k: ${k}`} />)}
+    </div>
+  )}
+  {s?.type === 'decoupe' && (
+    <div class="decoupe" aria-hidden="true" style={`--n: ${lames}`}>
+      {Array.from({ length: lames }, (_, k) => (
+        <span class="lame" style={`--k: ${k}; --sens: ${k % 2 ? -1 : 1}`}>
+          <img src={imgs[0]} alt="" decoding="async" />
+        </span>
+      ))}
     </div>
   )}
   {s?.type === 'volet' && <img class="volet" src={imgs[0]} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
@@ -123,6 +134,19 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
   /* Diaporama */
   .diapo { position: absolute; inset: 0; pointer-events: none; }
   .diapo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+
+  /* Découpe en lames : l'image suivante arrive par bandes verticales */
+  .decoupe { position: absolute; inset: 0; pointer-events: none; }
+  .lame {
+    position: absolute; top: 0; bottom: 0; overflow: hidden;
+    left: calc(var(--k) * 100% / var(--n)); width: calc(100% / var(--n) + 1px);
+    transform: translateY(calc(var(--sens) * 101%));
+  }
+  .lame img {
+    position: absolute; top: 0; height: 100%; object-fit: cover;
+    width: 100cqw; max-width: none;
+    left: calc(var(--k) * -100cqw / var(--n));
+  }
 
   /* Volet de couleur */
   .volet { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; clip-path: inset(100% 0 0 0); }
@@ -196,6 +220,12 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
       50% { opacity: 1; }
       57%, 100% { opacity: 0; transform: scale(1); }
     }
+
+    /* Les lames glissent l'une après l'autre, en sens alterné ; la couverture recule un peu */
+    .lame { transition: transform 0.75s cubic-bezier(0.7, 0, 0.2, 1); transition-delay: calc((var(--n) - 1 - var(--k)) * 40ms); }
+    :global(.carte a:hover) .lame { transform: translateY(0); transition-delay: calc(var(--k) * 60ms); }
+    .survol-decoupe .base { transition: transform 0.9s cubic-bezier(0.7, 0, 0.2, 1), filter 0.9s; }
+    :global(.carte a:hover) .survol-decoupe .base { transform: scale(1.08); filter: brightness(0.7); }
 
     .volet { transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1) 0.12s; }
     :global(.carte a:hover) .volet { clip-path: inset(0 0 0 0); }
