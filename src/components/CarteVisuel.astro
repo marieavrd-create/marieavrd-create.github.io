@@ -14,8 +14,6 @@ const s = projet.survol;
 const imgs = s?.images ?? [];
 const chargement = prioritaire ? 'eager' : 'lazy';
 // Feuillets qui tournent au survol du livre (recto, verso), comme dans le livre 3D
-// Nombre de lames de la découpe
-const lames = 6;
 const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']];
 ---
 <div class:list={['visuel', s && `survol-${s.type}`]} style={s?.couleur ? `--sc: ${s.couleur}` : undefined}>
@@ -58,12 +56,9 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
     </div>
   )}
   {s?.type === 'decoupe' && (
-    <div class="decoupe" aria-hidden="true" style={`--n: ${lames}`}>
-      {Array.from({ length: lames }, (_, k) => (
-        <span class="lame" style={`--k: ${k}; --sens: ${k % 2 ? -1 : 1}`}>
-          <img src={imgs[0]} alt="" decoding="async" />
-        </span>
-      ))}
+    <div class="decoupe" aria-hidden="true">
+      <span class="morceau m-a" style={`background-image: url(${couv.src})`}></span>
+      <span class="morceau m-b" style={`background-image: url(${couv.src})`}></span>
     </div>
   )}
   {s?.type === 'volet' && <img class="volet" src={imgs[0]} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
@@ -135,18 +130,11 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
   .diapo { position: absolute; inset: 0; pointer-events: none; }
   .diapo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
 
-  /* Découpe en lames : l'image suivante arrive par bandes verticales */
-  .decoupe { position: absolute; inset: 0; pointer-events: none; }
-  .lame {
-    position: absolute; top: 0; bottom: 0; overflow: hidden;
-    left: calc(var(--k) * 100% / var(--n)); width: calc(100% / var(--n) + 1px);
-    transform: translateY(calc(var(--sens) * 101%));
-  }
-  .lame img {
-    position: absolute; top: 0; height: 100%; object-fit: cover;
-    width: 100cqw; max-width: none;
-    left: calc(var(--k) * -100cqw / var(--n));
-  }
+  /* Coup de ciseaux : la couverture se coupe en deux en diagonale */
+  .decoupe { position: absolute; inset: 0; pointer-events: none; opacity: 0; }
+  .morceau { position: absolute; inset: 0; background: center / cover; border-radius: var(--rayon); }
+  .m-a { clip-path: polygon(0 0, 62% 0, 38% 100%, 0 100%); }
+  .m-b { clip-path: polygon(62% 0, 100% 0, 100% 100%, 38% 100%); }
 
   /* Volet de couleur */
   .volet { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; clip-path: inset(100% 0 0 0); }
@@ -221,11 +209,15 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
       57%, 100% { opacity: 0; transform: scale(1); }
     }
 
-    /* Les lames glissent l'une après l'autre, en sens alterné ; la couverture recule un peu */
-    .lame { transition: transform 0.75s cubic-bezier(0.7, 0, 0.2, 1); transition-delay: calc((var(--n) - 1 - var(--k)) * 40ms); }
-    :global(.carte a:hover) .lame { transform: translateY(0); transition-delay: calc(var(--k) * 60ms); }
-    .survol-decoupe .base { transition: transform 0.9s cubic-bezier(0.7, 0, 0.2, 1), filter 0.9s; }
-    :global(.carte a:hover) .survol-decoupe .base { transform: scale(1.08); filter: brightness(0.7); }
+    /* Les deux morceaux s'écartent le long de la coupe ; la carte s'efface derrière */
+    :global(.carte a:hover .carte-img:has(.survol-decoupe)) { overflow: visible; background: transparent; }
+    :global(.carte a:hover) .survol-decoupe { overflow: visible; }
+    :global(.carte a:hover) .survol-decoupe .base { opacity: 0; transition: opacity 0.15s 0.05s; }
+    :global(.carte a:hover) .decoupe { opacity: 1; }
+    .morceau { transition: transform 0.8s cubic-bezier(0.7, 0, 0.2, 1), filter 0.8s; }
+    :global(.carte a:hover) .m-a { transform: translate(-4%, -3%) rotate(-1.5deg); }
+    :global(.carte a:hover) .m-b { transform: translate(4%, 3%) rotate(1.5deg); }
+    :global(.carte a:hover) .morceau { filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.22)); }
 
     .volet { transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1) 0.12s; }
     :global(.carte a:hover) .volet { clip-path: inset(0 0 0 0); }

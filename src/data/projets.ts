@@ -129,7 +129,7 @@ export const projets: Projet[] = [
       'Charte graphique : Futura, rouge, jaune',
       "Scénographie : couloir d'écrans d'affiches d'époque, puis salle-ring",
     ],
-    survol: { type: 'decoupe', images: ['/projets/mohamed-ali/m-chiffres.webp'] },
+    survol: { type: 'decoupe' },
     presentation: {
       titre: 'La présentation du projet',
       dossier: '/projets/mohamed-ali/presentation',
