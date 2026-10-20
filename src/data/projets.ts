@@ -263,7 +263,6 @@ export const projets: Projet[] = [
         format: 'large',
       },
       v('cider-sunday-run-club', 'affiche', 'Affiche du club, logotype sur une photo de course', 'moitie'),
-      v('cider-sunday-run-club', 'beret', 'La mascotte au béret pour l’édition de Bayonne', 'moitie'),
       v('cider-sunday-run-club', 'perso-trait', 'La mascotte au trait bleu, une bouteille à la main', 'moitie'),
       v('cider-sunday-run-club', 'titre', 'Logotype avec la mascotte et la bouteille en stickers', 'moitie'),
       v('cider-sunday-run-club', 'rythmes', 'Cartes de rythme Doux, Brut et Extra-brut', 'large'),
