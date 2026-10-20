@@ -38,6 +38,8 @@ export type Projet = {
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
   presentation?: { titre: string; dossier: string; nombre: number; texte?: string; mot?: string };
   lecture?: { dossier: string; hauteurs: number[]; largeur: number; texte?: string };
+  /** Planche des déclinaisons en fin de page : grille de cases légendées « nom • variante » */
+  planche?: { titre: string; items: { src: string; alt: string; nom: string; variante: string }[] };
 };
 
 const v = (slug: string, fichier: string, alt: string, format?: Visuel['format']): Visuel => ({
@@ -271,6 +273,17 @@ export const projets: Projet[] = [
       v('cider-sunday-run-club', 'flasque', 'Flasque du club', 'tiers'),
       v('cider-sunday-run-club', 'm-tee-blanc', 'T-shirt blanc avec la mascotte et le logotype', 'large'),
     ],
+    planche: {
+      titre: 'Déclinaisons',
+      items: [
+        { src: '/projets/cider-sunday-run-club/d-trait.webp', alt: 'La mascotte au trait bleu', nom: 'Coureur', variante: 'Trait' },
+        { src: '/projets/cider-sunday-run-club/d-aplat.webp', alt: 'La mascotte en aplat noir', nom: 'Coureur', variante: 'Aplat' },
+        { src: '/projets/cider-sunday-run-club/d-arrivee.webp', alt: 'La mascotte bras ouverts à l’arrivée', nom: 'Coureur', variante: 'Arrivée' },
+        { src: '/projets/cider-sunday-run-club/d-tete.webp', alt: 'Sticker de la tête de la mascotte', nom: 'Sticker', variante: 'Tête' },
+        { src: '/projets/cider-sunday-run-club/d-sticker-bleu.webp', alt: 'Sticker de la mascotte en sweat bleu', nom: 'Sticker', variante: 'Couleur' },
+        { src: '/projets/cider-sunday-run-club/d-bouteille.webp', alt: 'Main qui tient la bouteille du club', nom: 'Bouteille', variante: 'Pictogramme' },
+      ],
+    },
   },
   {
     slug: 'umyst',

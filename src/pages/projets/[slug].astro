@@ -78,6 +78,20 @@ const bandeau = [
       ))}
     </section>
 
+    {projet.planche && (
+      <section class="cadre planche" aria-labelledby="planche-titre">
+        <h2 id="planche-titre" class="surtitre">{projet.planche.titre}</h2>
+        <div class="planche-grille">
+          {projet.planche.items.map((it) => (
+            <figure>
+              <img src={it.src} alt={it.alt} loading="lazy" decoding="async" />
+              <figcaption>{it.nom}<span class="point" aria-hidden="true"></span><span>{it.variante}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
     {projet.presentation && <Diaporama {...projet.presentation} couleur={projet.couleur} />}
     {projet.lecture && <Lecture {...projet.lecture} couleur={projet.couleur} />}
 
@@ -141,6 +155,23 @@ const bandeau = [
   .vis-moitie { grid-column: span 3; }
   .vis-tiers { grid-column: span 2; }
 
+  .planche { margin-top: clamp(64px, 9vw, 128px); }
+  .planche-grille {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 20px;
+    border-top: 1px solid var(--filet); border-left: 1px solid var(--filet); border-radius: var(--rayon); overflow: hidden;
+  }
+  .planche figure {
+    position: relative; margin: 0; aspect-ratio: 4 / 3; display: flex; align-items: flex-end; padding: clamp(12px, 1.6vw, 20px);
+    border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet);
+  }
+  .planche img { position: absolute; inset: 12% 24% 22%; width: 52%; height: 66%; object-fit: contain; transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+  .planche figcaption { display: flex; gap: 8px; align-items: center; font-size: 0.8125rem; color: var(--gris); }
+  .planche figcaption span:last-child { color: var(--encre); }
+  .planche .point { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .planche figure:hover img { transform: scale(1.07) rotate(-2deg); }
+  }
+
   .suivant { margin-top: clamp(96px, 12vw, 160px); display: grid; gap: 14px; }
   .suivant .surtitre { display: flex; align-items: center; gap: 10px; }
   .suivant a { font-size: clamp(2.25rem, 6vw, 5.5rem); text-decoration: none; width: fit-content; }
@@ -150,5 +181,7 @@ const bandeau = [
     .tete-grille, .recit { grid-template-columns: 1fr; }
     .bandeau { grid-template-columns: 1fr 1fr; }
     .vis-moitie, .vis-tiers { grid-column: 1 / -1; }
+    .planche-grille { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .planche figure { aspect-ratio: 1; }
   }
 </style>
