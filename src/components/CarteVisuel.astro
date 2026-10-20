@@ -215,9 +215,9 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
 
     :global(.carte a:hover) .flash { opacity: 1; }
     :global(.carte a:hover) .flash img:not(.flash-titre, .flash-badge) {
-      animation: flash calc(var(--n) * 0.24s) step-end infinite; animation-delay: calc(var(--k) * 0.24s);
+      animation: flash calc(var(--n) * 0.9s) step-end infinite; animation-delay: calc(var(--k) * 0.9s);
     }
-    @keyframes flash { 0% { opacity: 1; } 20%, 100% { opacity: 0; } }
+    @keyframes flash { 0% { opacity: 1; } 33.34%, 100% { opacity: 0; } }
 
     .volet { transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1) 0.12s; }
     :global(.carte a:hover) .volet { clip-path: inset(0 0 0 0); }

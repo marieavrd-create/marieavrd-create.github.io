@@ -249,15 +249,14 @@ export const projets: Projet[] = [
     ],
     survol: {
       type: 'flash',
-      titre: '/projets/cider-sunday-run-club/titre-blanc.svg',
       badge: '/projets/cider-sunday-run-club/sticker.webp',
-      images: ['m-bouteilles', 'affiche', 'm-tee-blanc', 'm-bouteille', 'm-tote'].map((f) => `/projets/cider-sunday-run-club/${f}.webp`),
+      images: ['m-soleil', 'affiche', 'rythmes'].map((f) => `/projets/cider-sunday-run-club/${f}.webp`),
     },
     visuels: [
       v('cider-sunday-run-club', '01', 'Carte de membre Cider Sunday Run Club sur fond bleu', 'large'),
-      v('cider-sunday-run-club', 'm-bouteilles', 'Trois bouteilles de cidre Doux, Brut et Extra-brut', 'large'),
-      v('cider-sunday-run-club', 'm-bouteille', 'Bouteille Extra-brut', 'moitie'),
+      v('cider-sunday-run-club', 'm-soleil', 'Bouteille de cidre Brut au soleil, étiquette Cider Sunday Run Club', 'large'),
       v('cider-sunday-run-club', 'm-tote', 'Tote bag en toile', 'moitie'),
+      v('cider-sunday-run-club', 'm-tee-blanc', 'T-shirt blanc avec la mascotte et le logotype', 'moitie'),
       {
         src: '/projets/cider-sunday-run-club/video.mp4',
         poster: '/projets/cider-sunday-run-club/video-poster.webp',
@@ -271,7 +270,6 @@ export const projets: Projet[] = [
       v('cider-sunday-run-club', 'perso-repos', 'La mascotte au repos', 'tiers'),
       v('cider-sunday-run-club', 'perso-course', 'La mascotte en pleine course', 'tiers'),
       v('cider-sunday-run-club', 'flasque', 'Flasque du club', 'tiers'),
-      v('cider-sunday-run-club', 'm-tee-blanc', 'T-shirt blanc avec la mascotte et le logotype', 'large'),
     ],
     planche: {
       titre: 'Déclinaisons',
