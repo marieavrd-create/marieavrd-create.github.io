@@ -34,7 +34,7 @@ export type Projet = {
   taches: string[];
   visuels: Visuel[];
   /** Animation de la vignette d'accueil au survol (voir CarteVisuel.astro) */
-  survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur' | 'flash'; images?: string[]; couleur?: string; titre?: string; badge?: string };
+  survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur' | 'flash' | 'video'; images?: string[]; video?: string; couleur?: string; titre?: string; badge?: string };
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
   presentation?: { titre: string; dossier: string; nombre: number; texte?: string; mot?: string };
   lecture?: { dossier: string; hauteurs: number[]; largeur: number; texte?: string };
@@ -101,7 +101,7 @@ export const projets: Projet[] = [
       'Conception des sections : accueil, impact, « Pourquoi E-square », réseau de bornes',
       'Réalisation et mise en ligne du site sous Framer',
     ],
-    survol: { type: 'defile', images: ['/projets/e-square/e-page.webp'] },
+    survol: { type: 'video', images: ['/projets/e-square/e-page.webp'], video: '/projets/e-square/survol.mp4' },
     visuels: [
       v('e-square', 'e-cover', 'Page d’accueil du site E-square sur ordinateur', 'large'),
       v('e-square', 'e-terrasse-1', 'Page d’accueil du site sur un ordinateur portable, en terrasse', 'large'),
