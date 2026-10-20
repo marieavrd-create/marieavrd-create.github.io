@@ -13,7 +13,8 @@ export const filtres = [
 
 export type Filtre = (typeof filtres)[number]['id'];
 
-export type Visuel = { src: string; alt: string; format?: 'large' | 'moitie' | 'tiers' };
+/** Un visuel en .mp4 est lu en vidéo muette et en boucle, avec `poster` comme image d'attente */
+export type Visuel = { src: string; alt: string; format?: 'large' | 'moitie' | 'tiers'; poster?: string };
 
 export type Projet = {
   slug: string;
@@ -33,7 +34,7 @@ export type Projet = {
   taches: string[];
   visuels: Visuel[];
   /** Animation de la vignette d'accueil au survol (voir CarteVisuel.astro) */
-  survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur'; images?: string[]; couleur?: string };
+  survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur' | 'flash'; images?: string[]; couleur?: string; titre?: string; badge?: string };
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
   presentation?: { titre: string; dossier: string; nombre: number; texte?: string; mot?: string };
   lecture?: { dossier: string; hauteurs: number[]; largeur: number; texte?: string };
@@ -221,6 +222,55 @@ export const projets: Projet[] = [
       largeur: 1400,
       texte: 'Toute la présentation, de l’analyse à la gestion des imprévus, à faire défiler dans l’écran.',
     },
+  },
+  {
+    slug: 'cider-sunday-run-club',
+    titre: 'Cider Sunday Run Club',
+    categorie: 'Character design',
+    couleur: '#1C20FF',
+    filtres: ['identite'],
+    etiquettes: ['Character design', 'Identité', 'Illustration', 'Merch'],
+    resume:
+      'Une mascotte et une identité pour un club de course du dimanche qui finit autour d’un cidre, déclinées sur les vêtements et les bouteilles.',
+    role: 'Direction artistique, illustration',
+    livrables: 'Mascotte et ses poses, logotype, stickers, cartes de rythme, affiche, merch et étiquettes',
+    outils: 'Illustrator, InDesign',
+    cadre: 'Projet personnel',
+    contexte:
+      'Cider Sunday Run Club réunit des coureurs le dimanche matin, puis autour d’une bouteille de cidre. Il lui fallait une mascotte qu’on a envie de suivre : un petit coureur au trait, rond et rieur, et un seul bleu électrique, assez franc pour se voir de loin.',
+    taches: [
+      'Création du personnage et de ses poses (repos, course, tête)',
+      'Logotype Cider sunday run club',
+      'Trois rythmes de course, Doux, Brut et Extra-brut, nommés comme les cidres',
+      'Stickers, flasque et affiche',
+      'Déclinaison sur les vêtements et les étiquettes de bouteilles',
+    ],
+    survol: {
+      type: 'flash',
+      titre: '/projets/cider-sunday-run-club/titre-blanc.svg',
+      badge: '/projets/cider-sunday-run-club/sticker.webp',
+      images: ['m-bouteilles', 'affiche', 'm-tee-blanc', 'm-bouteille', 'm-tote'].map((f) => `/projets/cider-sunday-run-club/${f}.webp`),
+    },
+    visuels: [
+      v('cider-sunday-run-club', '01', 'Carte de membre Cider Sunday Run Club sur fond bleu', 'large'),
+      v('cider-sunday-run-club', 'm-bouteilles', 'Trois bouteilles de cidre Doux, Brut et Extra-brut', 'large'),
+      v('cider-sunday-run-club', 'm-bouteille', 'Bouteille Extra-brut', 'moitie'),
+      v('cider-sunday-run-club', 'm-tote', 'Tote bag en toile', 'moitie'),
+      {
+        src: '/projets/cider-sunday-run-club/video.mp4',
+        poster: '/projets/cider-sunday-run-club/video-poster.webp',
+        alt: 'Présentation animée du projet, au défilement',
+        format: 'large',
+      },
+      v('cider-sunday-run-club', 'affiche', 'Affiche du club, logotype sur une photo de course', 'moitie'),
+      v('cider-sunday-run-club', 'perso-trait', 'La mascotte au trait bleu, une bouteille à la main', 'moitie'),
+      v('cider-sunday-run-club', 'titre', 'Logotype avec la mascotte et la bouteille en stickers', 'moitie'),
+      v('cider-sunday-run-club', 'rythmes', 'Cartes de rythme Doux, Brut et Extra-brut', 'large'),
+      v('cider-sunday-run-club', 'perso-repos', 'La mascotte au repos', 'tiers'),
+      v('cider-sunday-run-club', 'perso-course', 'La mascotte en pleine course', 'tiers'),
+      v('cider-sunday-run-club', 'flasque', 'Flasque du club', 'tiers'),
+      v('cider-sunday-run-club', 'm-tee-blanc', 'T-shirt blanc avec la mascotte et le logotype', 'large'),
+    ],
   },
   {
     slug: 'umyst',

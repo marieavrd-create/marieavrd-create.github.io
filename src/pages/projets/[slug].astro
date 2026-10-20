@@ -68,7 +68,11 @@ const bandeau = [
     <section class="cadre galerie" aria-label="Visuels du projet">
       {galerie.map((img) => (
         <figure class={`vis vis-${img.format ?? 'moitie'}`} data-apparait>
-          <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+          {img.src.endsWith('.mp4') ? (
+            <video src={img.src} poster={img.poster} autoplay muted loop playsinline preload="none" aria-label={img.alt} />
+          ) : (
+            <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+          )}
           <figcaption aria-hidden="true">{img.alt}</figcaption>
         </figure>
       ))}
@@ -131,7 +135,7 @@ const bandeau = [
     margin-top: clamp(64px, 9vw, 128px); align-items: start;
   }
   .vis { margin: 0; }
-  .vis img { width: 100%; border-radius: var(--rayon); background: var(--fond-2); }
+  .vis img, .vis video { display: block; width: 100%; border-radius: var(--rayon); background: var(--fond-2); }
   .vis figcaption { margin-top: 10px; font-size: 0.75rem; color: var(--gris); }
   .vis-large { grid-column: 1 / -1; }
   .vis-moitie { grid-column: span 3; }
