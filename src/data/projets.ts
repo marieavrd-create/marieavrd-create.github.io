@@ -13,7 +13,8 @@ export const filtres = [
 
 export type Filtre = (typeof filtres)[number]['id'];
 
-export type Visuel = { src: string; alt: string; format?: 'large' | 'moitie' | 'tiers' };
+/** Un visuel en .mp4 est lu en vidéo muette et en boucle, avec `poster` comme image d'attente */
+export type Visuel = { src: string; alt: string; format?: 'large' | 'moitie' | 'tiers'; poster?: string };
 
 export type Projet = {
   slug: string;
@@ -248,10 +249,21 @@ export const projets: Projet[] = [
       type: 'flash',
       titre: '/projets/cider-sunday-run-club/titre-blanc.svg',
       badge: '/projets/cider-sunday-run-club/sticker.webp',
-      images: ['m-tee-blanc', 'm-bouteilles', 'm-sweat', 'm-tee-noir', 'm-bouteille', 'm-tote', 'm-tee-bleu', 'm-chaussettes', 'm-bouteilles-2', 'rythmes'].map((f) => `/projets/cider-sunday-run-club/${f}.webp`),
+      images: ['m-bouteilles', 'affiche', 'm-tee-blanc', 'm-bouteille', 'm-tote'].map((f) => `/projets/cider-sunday-run-club/${f}.webp`),
     },
     visuels: [
       v('cider-sunday-run-club', '01', 'Carte de membre Cider Sunday Run Club sur fond bleu', 'large'),
+      v('cider-sunday-run-club', 'm-bouteilles', 'Trois bouteilles de cidre Doux, Brut et Extra-brut', 'large'),
+      v('cider-sunday-run-club', 'm-bouteille', 'Bouteille Extra-brut', 'moitie'),
+      v('cider-sunday-run-club', 'm-tote', 'Tote bag en toile', 'moitie'),
+      {
+        src: '/projets/cider-sunday-run-club/video.mp4',
+        poster: '/projets/cider-sunday-run-club/video-poster.webp',
+        alt: 'Présentation animée du projet, au défilement',
+        format: 'large',
+      },
+      v('cider-sunday-run-club', 'affiche', 'Affiche du club, logotype sur une photo de course', 'moitie'),
+      v('cider-sunday-run-club', 'beret', 'La mascotte au béret pour l’édition de Bayonne', 'moitie'),
       v('cider-sunday-run-club', 'perso-trait', 'La mascotte au trait bleu, une bouteille à la main', 'moitie'),
       v('cider-sunday-run-club', 'titre', 'Logotype avec la mascotte et la bouteille en stickers', 'moitie'),
       v('cider-sunday-run-club', 'rythmes', 'Cartes de rythme Doux, Brut et Extra-brut', 'large'),
@@ -259,16 +271,6 @@ export const projets: Projet[] = [
       v('cider-sunday-run-club', 'perso-course', 'La mascotte en pleine course', 'tiers'),
       v('cider-sunday-run-club', 'flasque', 'Flasque du club', 'tiers'),
       v('cider-sunday-run-club', 'm-tee-blanc', 'T-shirt blanc avec la mascotte et le logotype', 'large'),
-      v('cider-sunday-run-club', 'm-tee-bleu', 'T-shirt bleu avec le logotype en blanc', 'moitie'),
-      v('cider-sunday-run-club', 'm-tee-noir', 'T-shirt noir avec la tête de la mascotte', 'moitie'),
-      v('cider-sunday-run-club', 'm-sweat', 'Sweat crème avec le sticker brodé', 'tiers'),
-      v('cider-sunday-run-club', 'm-tote', 'Tote bag en toile', 'tiers'),
-      v('cider-sunday-run-club', 'm-chaussettes', 'Chaussettes de course', 'tiers'),
-      v('cider-sunday-run-club', 'm-bouteilles', 'Trois bouteilles de cidre Doux, Brut et Extra-brut', 'large'),
-      v('cider-sunday-run-club', 'm-bouteille', 'Bouteille Extra-brut', 'moitie'),
-      v('cider-sunday-run-club', 'm-bouteilles-2', 'Bouteilles Brut et Doux', 'moitie'),
-      v('cider-sunday-run-club', 'affiche', 'Affiche du club, logotype sur une photo de course', 'moitie'),
-      v('cider-sunday-run-club', 'beret', 'La mascotte au béret pour l’édition de Bayonne', 'moitie'),
     ],
   },
   {
