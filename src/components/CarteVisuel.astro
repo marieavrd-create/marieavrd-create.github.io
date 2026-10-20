@@ -56,6 +56,13 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
     </div>
   )}
   {s?.type === 'volet' && <img class="volet" src={imgs[0]} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
+  {s?.type === 'flash' && (
+    <div class="flash" aria-hidden="true" style={`--n: ${imgs.length}`}>
+      {imgs.map((src, k) => <img src={src} alt="" loading="lazy" decoding="async" style={`--k: ${k}`} />)}
+      {s.titre && <img class="flash-titre" src={s.titre} alt="" loading="lazy" />}
+      {s.badge && <img class="flash-badge" src={s.badge} alt="" loading="lazy" />}
+    </div>
+  )}
   {s?.type === 'brillance' && <span class="reflet-or" aria-hidden="true"></span>}
   {s?.type === 'arcenciel' && <span class="trait-arc" aria-hidden="true"></span>}
   {s?.type === 'coeur' && (
@@ -123,6 +130,15 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
   /* Diaporama */
   .diapo { position: absolute; inset: 0; pointer-events: none; }
   .diapo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+
+  /* Mockups qui s'enchaînent très vite derrière le logotype */
+  .flash { position: absolute; inset: 0; pointer-events: none; opacity: 0; }
+  .flash img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .flash .flash-titre {
+    inset: auto; left: 50%; top: 5%; width: 24%; height: auto; transform: translateX(-50%); opacity: 1;
+    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+  }
+  .flash .flash-badge { inset: auto; right: 4%; bottom: 6%; width: 11%; height: auto; opacity: 1; object-fit: contain; }
 
   /* Volet de couleur */
   .volet { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; clip-path: inset(100% 0 0 0); }
@@ -196,6 +212,12 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
       50% { opacity: 1; }
       57%, 100% { opacity: 0; transform: scale(1); }
     }
+
+    :global(.carte a:hover) .flash { opacity: 1; }
+    :global(.carte a:hover) .flash img:not(.flash-titre, .flash-badge) {
+      animation: flash calc(var(--n) * 0.24s) step-end infinite; animation-delay: calc(var(--k) * 0.24s);
+    }
+    @keyframes flash { 0% { opacity: 1; } 10%, 100% { opacity: 0; } }
 
     .volet { transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1) 0.12s; }
     :global(.carte a:hover) .volet { clip-path: inset(0 0 0 0); }
