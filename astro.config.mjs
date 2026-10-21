@@ -1,9 +1,8 @@
 import { defineConfig } from 'astro/config';
 
-// Adresse gratuite GitHub Pages. Quand marieangeviard.fr sera branché,
-// remplacer `site` par https://marieangeviard.fr et ajouter public/CNAME.
+// Domaine acheté chez OVH, branché sur GitHub Pages (Settings › Pages › Custom domain)
 export default defineConfig({
-  site: 'https://marieavrd-create.github.io',
+  site: 'https://marieangeviard.com',
   trailingSlash: 'ignore',
   build: { format: 'directory' },
 });

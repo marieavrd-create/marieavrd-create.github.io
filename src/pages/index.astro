@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Ellipse from '../components/Ellipse.astro';
 import CarteVisuel from '../components/CarteVisuel.astro';
-import { projets, filtres } from '../data/projets';
+import { selection as projets, filtres } from '../data/projets';
 
 const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.id)));
 ---
