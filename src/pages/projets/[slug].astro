@@ -5,7 +5,7 @@ import Livre3D from '../../components/Livre3D.astro';
 import Lecture from '../../components/Lecture.astro';
 import Diaporama from '../../components/Diaporama.astro';
 import EsquareScene from '../../components/EsquareScene.astro';
-import { projets, type Projet } from '../../data/projets';
+import { projets, selection, type Projet } from '../../data/projets';
 
 export function getStaticPaths() {
   return projets.map((p, i) => ({
@@ -15,9 +15,11 @@ export function getStaticPaths() {
 }
 
 const { projet, index } = Astro.props as { projet: Projet; index: number };
-const suivant = projets[(index + 1) % projets.length];
+// Le projet suivant et le numéro suivent l'ordre de l'accueil ; une page retirée renvoie vers le premier projet
+const rang = selection.indexOf(projet);
+const suivant = rang === -1 ? selection[0] : selection[(rang + 1) % selection.length];
 const [couverture, ...galerie] = projet.visuels;
-const num = String(index + 1).padStart(2, '0');
+const num = String((rang === -1 ? index : rang) + 1).padStart(2, '0');
 const bandeau = [
   ['Rôle', projet.role],
   ['Livrables', projet.livrables],

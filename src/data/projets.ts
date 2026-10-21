@@ -40,6 +40,8 @@ export type Projet = {
   lecture?: { dossier: string; hauteurs: number[]; largeur: number; texte?: string };
   /** Planche des déclinaisons en fin de page : grille de cases légendées « nom • variante » */
   planche?: { titre: string; items: { src: string; alt: string; nom: string; variante: string }[] };
+  /** Retiré de l'accueil (8 projets maximum) : la page reste en ligne à son adresse */
+  retire?: boolean;
 };
 
 const v = (slug: string, fichier: string, alt: string, format?: Visuel['format']): Visuel => ({
@@ -227,6 +229,7 @@ export const projets: Projet[] = [
   },
   {
     slug: 'cider-sunday-run-club',
+    retire: true,
     titre: 'Cider Sunday Run Club',
     categorie: 'Character design',
     couleur: '#1C20FF',
@@ -285,6 +288,7 @@ export const projets: Projet[] = [
   },
   {
     slug: 'umyst',
+    retire: true,
     titre: 'Umyst',
     categorie: 'Application & identité',
     couleur: '#f6c400',
@@ -320,6 +324,7 @@ export const projets: Projet[] = [
   },
   {
     slug: 'bureau-des-goodies',
+    retire: true,
     titre: 'Bureau des goodies',
     categorie: 'Catalogues & charte',
     couleur: '#3d7be0',
@@ -416,6 +421,7 @@ export const projets: Projet[] = [
   },
   {
     slug: 'paris-2024',
+    retire: true,
     titre: 'Paris 2024',
     categorie: 'Affiches A3',
     couleur: '#c9a94f',
@@ -485,6 +491,7 @@ export const projets: Projet[] = [
   },
   {
     slug: 'decathlon',
+    retire: true,
     titre: 'Décathlon',
     categorie: 'Réseaux sociaux',
     couleur: '#0082c3',
@@ -505,3 +512,6 @@ export const projets: Projet[] = [
     ],
   },
 ];
+
+/** Les projets présentés sur l'accueil, dans l'ordre */
+export const selection = projets.filter((p) => !p.retire);
