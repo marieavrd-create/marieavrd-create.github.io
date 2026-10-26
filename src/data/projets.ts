@@ -5,10 +5,10 @@
 
 export const filtres = [
   { id: 'edition', label: 'Édition & print' },
+  { id: 'presentation', label: 'Présentation & data' },
   { id: 'identite', label: 'Identité' },
   { id: 'affiche', label: 'Affiche' },
   { id: 'digital', label: 'Digital & UI' },
-  { id: 'presentation', label: 'Présentation & data' },
 ] as const;
 
 export type Filtre = (typeof filtres)[number]['id'];
@@ -26,6 +26,10 @@ export type Projet = {
   resume: string;
   role: string;
   livrables: string;
+  /** Ligne « livrable » sous la vignette d'accueil : ce que le recruteur va voir */
+  livrable?: string;
+  /** Le mot entouré par l'ellipse dans le titre de la page (sinon tout le titre) */
+  mot?: string;
   outils?: string;
   equipe?: string;
   cadre: string;
@@ -34,7 +38,7 @@ export type Projet = {
   taches: string[];
   visuels: Visuel[];
   /** Animation de la vignette d'accueil au survol (voir CarteVisuel.astro) */
-  survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur' | 'flash' | 'video'; images?: string[]; video?: string; couleur?: string; titre?: string; badge?: string };
+  survol?: { type: 'livre' | 'defile' | 'eventail' | 'diapo' | 'volet' | 'brillance' | 'arcenciel' | 'coeur' | 'flash' | 'video'; images?: string[]; video?: string; couleur?: string; titre?: string; badge?: string; depart?: string };
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
   presentation?: { titre: string; dossier: string; nombre: number; texte?: string; mot?: string };
   lecture?: { dossier: string; hauteurs: number[]; largeur: number; texte?: string };
@@ -62,6 +66,8 @@ export const projets: Projet[] = [
       'Les mémoires de mon arrière-grand-père, témoin des deux guerres mondiales : réécriture du manuscrit et mise en page complète d’un livre de 378 pages.',
     role: 'Réécriture et mise en page',
     livrables: 'Couverture (première, dos, quatrième) et gabarit intérieur',
+    livrable: 'Livre broché de 378 pages, couverture et intérieur',
+    mot: 'vie',
     outils: 'InDesign, Photoshop',
     cadre: 'Projet personnel',
     contexte:
@@ -96,6 +102,7 @@ export const projets: Projet[] = [
       'Le site vitrine d’E-square, solution de recharge pour scooters et motos électriques, conçu et réalisé sous Framer.',
     role: 'Webdesign (freelance)',
     livrables: 'Site vitrine (desktop et mobile)',
+    livrable: 'Site vitrine, desktop et mobile',
     outils: 'Framer',
     cadre: 'Freelance, 2025',
     contexte:
@@ -123,12 +130,14 @@ export const projets: Projet[] = [
     titre: 'Sur les pas de Mohamed Ali',
     categorie: 'Expérience muséale',
     couleur: '#d7262e',
-    filtres: ['digital', 'identite'],
+    filtres: ['digital', 'identite', 'presentation'],
     etiquettes: ['Scénographie digitale', 'UX', 'Charte'],
     resume:
       'Une expérience digitale autour de Mohamed Ali pour la Collection Pinault : un couloir d’écrans d’affiches d’époque, puis une salle-ring où l’on rejoue ses déplacements.',
     role: 'Concept, UX, direction artistique',
     livrables: 'Concept, personas, parcours utilisateur, moodboard, charte',
+    livrable: 'Concept, charte et présentation de 30 diapos',
+    mot: 'Ali',
     cadre: 'Projet de Master',
     contexte: 'Brief : concevoir une expérience digitale autour de Mohamed Ali pour la Collection Pinault.',
     taches: [
@@ -168,6 +177,7 @@ export const projets: Projet[] = [
       "Identité visuelle d'une édition du festival We Love Green, à Paris : logotype, charte, affiches et déclinaisons textile et objets.",
     role: 'Direction artistique, graphisme',
     livrables: 'Logotype, charte, affiches, merchandising, posts Instagram',
+    livrable: 'Logotype, charte, affiches et réseaux sociaux',
     outils: 'Illustrator',
     cadre: 'Projet d’études',
     contexte:
@@ -200,6 +210,7 @@ export const projets: Projet[] = [
     resume: "Une présentation de cadrage et de pilotage pour la refonte du site, de l'application et de la ligne éditoriale d'AlloCiné.",
     role: 'Direction artistique, conception de la présentation',
     livrables: 'Présentation d’une trentaine de slides',
+    livrable: 'Présentation d’une trentaine de diapos',
     cadre: 'Projet d’études, Master 2 · 2024',
     contexte:
       "AlloCiné relance la refonte de son site, de son application et de sa ligne éditoriale sociale après une première collaboration décevante avec une agence. L'enjeu : regagner la confiance du client.",
@@ -367,6 +378,8 @@ export const projets: Projet[] = [
       '« Artiste, un métier à risque » : une infographie qui met en regard les risques du métier d’artiste et ceux du quotidien.',
     role: 'Graphisme, data visualisation',
     livrables: 'Infographie verticale',
+    livrable: 'Infographie verticale',
+    mot: 'risque',
     cadre: 'Projet d’études',
     contexte:
       'Une infographie qui met en regard les risques du métier d’artiste et ceux du quotidien.',
@@ -375,7 +388,7 @@ export const projets: Projet[] = [
       'Choix des formes : camembert, pictogrammes, gros titres',
       "Mise en page d'une infographie lisible en quelques secondes",
     ],
-    survol: { type: 'defile', images: ['/projets/infographie/i-data.webp'] },
+    survol: { type: 'defile', images: ['/projets/infographie/i-data.webp'], depart: '1.5%' },
     visuels: [
       v('infographie', 'i-cover', 'Infographie « Artiste, un métier à risque »', 'large'),
       v('infographie', 'i-data', 'Infographie complète en format vertical', 'tiers'),
@@ -386,12 +399,14 @@ export const projets: Projet[] = [
     titre: 'Chemtrails Over the Country Club',
     categorie: 'Direction artistique',
     couleur: '#e8474c',
-    filtres: ['identite', 'affiche', 'digital'],
+    filtres: ['identite', 'affiche', 'digital', 'presentation'],
     etiquettes: ['DA', 'Logo', 'Affiche', 'Packaging'],
     resume:
       "La direction artistique de la sortie de l'album de Lana Del Rey : logo, charte, affiche, packaging et boutique.",
     role: 'Direction artistique, graphisme',
     livrables: 'Moodboard, logo, charte, affiche, packaging, maquettes de la boutique',
+    livrable: 'Charte, affiche, packaging et présentation de 44 diapos',
+    mot: 'Chemtrails',
     equipe: 'Projet d’équipe (4 personnes)',
     cadre: 'Projet d’études',
     contexte: "Imaginer la direction artistique de la sortie de l'album de Lana Del Rey et donner envie de le découvrir.",
@@ -448,11 +463,12 @@ export const projets: Projet[] = [
     titre: 'Culture Pub',
     categorie: 'Direction artistique & UI',
     couleur: '#8b85e8',
-    filtres: ['digital', 'identite'],
+    filtres: ['digital', 'identite', 'presentation'],
     etiquettes: ['Direction artistique', 'Identité', 'UI'],
     resume: "Nouvelle identité et nouvelle plateforme pour l'émission culte, afin de toucher une nouvelle cible.",
     role: 'Direction artistique, UI design',
     livrables: 'Moodboard, logotype, charte, maquettes desktop et mobile, présentation',
+    livrable: 'Charte, maquettes web et présentation de 24 diapos',
     outils: 'Figma',
     cadre: 'Projet d’études',
     contexte:

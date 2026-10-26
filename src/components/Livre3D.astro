@@ -32,6 +32,8 @@
   .livre-bas :global(b) { color: var(--encre); font-weight: 550; }
   .livre-num { flex-shrink: 0; font-variant-numeric: tabular-nums; }
   .livre-repli[hidden], canvas[hidden] { display: none; }
+  /* Sur mobile, image fixe d'emblée : pas de longue zone à faire défiler au pouce */
+  @media (max-width: 760px) { .livre { height: auto; } .livre-colle { position: relative; height: auto; } }
   .livre.fixe { height: auto; }
   .livre.fixe .livre-colle { position: relative; height: auto; }
   .livre.fixe .livre-vue { aspect-ratio: 1576 / 945; }
