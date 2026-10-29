@@ -341,6 +341,7 @@ export const projets: Projet[] = [
       'Catalogues produits de plus de 300 pages et charte graphique, en stage puis en alternance, de la conception jusqu’à l’envoi en production.',
     role: 'Graphiste, stage puis alternance',
     livrables: 'Catalogues produits, charte graphique, visuels personnalisés',
+    livrable: 'Catalogues de plus de 300 pages et charte',
     outils: 'InDesign, Illustrator, Photoshop',
     cadre: 'Entreprise · 2021-2023',
     contexte:
@@ -524,6 +525,11 @@ export const projets: Projet[] = [
     ],
   },
 ];
+
+/** Sélection pour les cabinets (page /edition, non listée) : mise en page et présentations d'abord */
+export const selectionEdition = ['bureau-des-goodies', 'deux-guerres-une-vie', 'allocine', 'infographie'].map(
+  (slug) => projets.find((p) => p.slug === slug)!,
+);
 
 /** Les projets présentés sur l'accueil, dans l'ordre */
 export const selection = projets.filter((p) => !p.retire);

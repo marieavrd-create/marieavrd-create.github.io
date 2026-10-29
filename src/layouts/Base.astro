@@ -9,6 +9,8 @@ interface Props {
   accent?: string;
   /** false retire le grand « Un poste, un projet ? » du pied de page (page contact) */
   appel?: boolean;
+  /** false demande aux moteurs de recherche de ne pas indexer la page (page /edition, envoyée par lien) */
+  indexer?: boolean;
 }
 
 const {
@@ -17,6 +19,7 @@ const {
   image = '/projets/deux-guerres-une-vie/01.webp',
   accent,
   appel = true,
+  indexer = true,
 } = Astro.props;
 
 const titreComplet = titre ? `${titre} · Marie-Ange Viard` : 'Marie-Ange Viard · Graphiste à Paris';
@@ -34,6 +37,7 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titreComplet}</title>
     <meta name="description" content={description} />
+    {!indexer && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={url} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
