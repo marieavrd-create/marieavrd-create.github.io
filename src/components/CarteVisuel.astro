@@ -2,6 +2,8 @@
 // Visuel d'une carte projet sur l'accueil, avec une animation au survol
 // propre à chaque projet (choisie dans projets.ts, champ `survol`).
 // Les animations ne jouent qu'à la souris et jamais en « réduire les animations ».
+// Les images du survol (data-src, data-bg) ne se chargent qu'au premier survol :
+// rien de plus à télécharger sur mobile.
 import type { Projet } from '../data/projets';
 
 interface Props {
@@ -20,16 +22,16 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
   {s?.type === 'livre' ? (
     <div class="scene-livre" role="img" aria-label="Le livre « Deux guerres, une vie » en volume">
       <div class="livre">
-        <span class="page-fond" style="background-image: url(/livre-3d/tex/p43.jpg)"></span>
+        <span class="page-fond" data-bg="/livre-3d/tex/p43.jpg"></span>
         {feuilles.map(([recto, verso], k) => (
           <span class="feuille" style={`--k: ${k}`}>
-            <span class="recto" style={`background-image: url(/livre-3d/tex/${recto}.jpg)`}></span>
-            <span class="verso" style={`background-image: url(/livre-3d/tex/${verso}.jpg)`}></span>
+            <span class="recto" data-bg={`/livre-3d/tex/${recto}.jpg`}></span>
+            <span class="verso" data-bg={`/livre-3d/tex/${verso}.jpg`}></span>
           </span>
         ))}
         <span class="couv">
           <img class="recto" src="/livre-3d/tex/front.jpg" alt="" loading={chargement} />
-          <span class="verso" style="background-image: url(/livre-3d/tex/p12.jpg)"></span>
+          <span class="verso" data-bg="/livre-3d/tex/p12.jpg"></span>
         </span>
         <img class="f-ar" src="/livre-3d/tex/back.jpg" alt="" loading={chargement} />
         <img class="f-dos" src="/livre-3d/tex/spine.jpg" alt="" loading={chargement} />
@@ -40,27 +42,27 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
       <span class="ombre-livre"></span>
     </div>
   ) : s?.type === 'defile' || (s?.type === 'video' && imgs[0]) ? (
-    <img class="base defile" src={imgs[0]} alt={couv.alt} loading={chargement} decoding="async" />
+    <img class="base defile" src={imgs[0]} alt={couv.alt} width="1600" height="1000" style={s?.depart ? `--depart: ${s.depart}` : undefined} loading={chargement} decoding="async" />
   ) : (
-    <img class="base" src={couv.src} alt={couv.alt} loading={chargement} decoding="async" />
+    <img class="base" src={couv.src} alt={couv.alt} width="1600" height="1000" loading={chargement} decoding="async" />
   )}
 
   {s?.type === 'eventail' && (
     <div class="eventail" aria-hidden="true">
-      {imgs.map((src, k) => <img src={src} alt="" loading="lazy" decoding="async" style={`--k: ${k - (imgs.length - 1) / 2}; --ka: ${Math.abs(k - (imgs.length - 1) / 2)}`} />)}
+      {imgs.map((src, k) => <img data-src={src} alt="" decoding="async" style={`--k: ${k - (imgs.length - 1) / 2}; --ka: ${Math.abs(k - (imgs.length - 1) / 2)}`} />)}
     </div>
   )}
   {s?.type === 'diapo' && (
     <div class:list={['diapo', `diapo-${imgs.length}`]} aria-hidden="true" style={`--n: ${imgs.length}`}>
-      {imgs.map((src, k) => <img src={src} alt="" loading="lazy" decoding="async" style={`--k: ${k}`} />)}
+      {imgs.map((src, k) => <img data-src={src} alt="" decoding="async" style={`--k: ${k}`} />)}
     </div>
   )}
-  {s?.type === 'volet' && <img class="volet" src={imgs[0]} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
+  {s?.type === 'volet' && <img class="volet" data-src={imgs[0]} alt="" aria-hidden="true" decoding="async" />}
   {s?.type === 'flash' && (
     <div class="flash" aria-hidden="true" style={`--n: ${imgs.length}`}>
-      {imgs.map((src, k) => <img src={src} alt="" loading="lazy" decoding="async" style={`--k: ${k}`} />)}
-      {s.titre && <img class="flash-titre" src={s.titre} alt="" loading="lazy" />}
-      {s.badge && <img class="flash-badge" src={s.badge} alt="" loading="lazy" />}
+      {imgs.map((src, k) => <img data-src={src} alt="" decoding="async" style={`--k: ${k}`} />)}
+      {s.titre && <img class="flash-titre" data-src={s.titre} alt="" />}
+      {s.badge && <img class="flash-badge" data-src={s.badge} alt="" />}
     </div>
   )}
   {s?.type === 'video' && s.video && (
@@ -123,7 +125,7 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
   }
 
   /* Page qui défile dans le cadre */
-  .defile { object-position: 50% 0; }
+  .defile { object-position: 50% var(--depart, 0%); }
 
   /* Vidéo lancée au survol (lecture gérée par le script plus bas) */
   .survol-film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
@@ -259,6 +261,20 @@ const feuilles = [['p13', 'p14'], ['p15', 'p38'], ['p39', 'p40'], ['p41', 'p42']
 </style>
 
 <script>
+  // Images du survol chargées au premier passage de la souris (ou au focus clavier)
+  const souris = matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)');
+  document.querySelectorAll<HTMLElement>('.visuel').forEach((vis) => {
+    const lien = vis.closest('a');
+    if (!lien) return;
+    const charge = () => {
+      if (!souris.matches) return;
+      vis.querySelectorAll<HTMLImageElement>('img[data-src]').forEach((i) => { i.src = i.dataset.src!; i.removeAttribute('data-src'); });
+      vis.querySelectorAll<HTMLElement>('[data-bg]').forEach((e) => { e.style.backgroundImage = `url(${e.dataset.bg})`; e.removeAttribute('data-bg'); });
+    };
+    lien.addEventListener('pointerenter', charge, { once: true });
+    lien.addEventListener('focus', charge, { once: true });
+  });
+
   // La vidéo ne se charge et ne joue qu'au survol, à la souris, hors « réduire les animations »
   const ok = matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)');
   document.querySelectorAll<HTMLVideoElement>('.survol-film').forEach((v) => {

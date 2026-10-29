@@ -9,19 +9,19 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
 <Base>
   <section class="ouverture cadre" aria-labelledby="titre-accueil">
     <h1 id="titre-accueil" class="titre-fin titre">
-      <span class="ligne" data-apparait>Graphiste &amp; <Ellipse marge={0.14}><span class="it">directrice</span></Ellipse></span>
-      <span class="ligne" data-apparait data-delai="0.08">artistique junior</span>
+      <span class="ligne" data-apparait>Graphiste &amp; <Ellipse marge={0.14}><span class="it">maquettiste</span></Ellipse></span>
+      <span class="ligne" data-apparait data-delai="0.08">print et digital</span>
     </h1>
     <div class="ouverture-bas">
       <p class="intro" data-apparait data-delai="0.15">
-        Je mets en page des documents print et digitaux clairs et rigoureux : éditions, présentations, chartes.
-        Formée chez <strong>Belin Éducation</strong> et <strong>Bureau des goodies</strong>.
+        Je mets en page des documents clairs et rigoureux : éditions, présentations, chartes.
+        Directrice artistique junior, formée chez <strong>Belin Éducation</strong> et <strong>Bureau des goodies</strong>.
       </p>
+      <dl class="chiffres" data-apparait data-delai="0.25">
+        <div><dt>300+</dt><dd>pages de catalogues mises en page</dd></div>
+        <div><dt>Jusqu’au BAT</dt><dd>chaîne graphique suivie jusqu’à la production</dd></div>
+      </dl>
     </div>
-    <dl class="chiffres" data-apparait data-delai="0.25">
-      <div><dt class="titre-fin">300+</dt><dd>pages de catalogues mises en page</dd></div>
-      <div><dt class="titre-fin">Jusqu’au BAT</dt><dd>chaîne graphique suivie jusqu’à la production</dd></div>
-    </dl>
   </section>
 
   <section id="projets" class="cadre projets" aria-label="Projets">
@@ -46,6 +46,7 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
               <span class="carte-titre"><span class="point" />{p.titre}</span>
               <span class="it carte-cat">{p.categorie}</span>
             </div>
+            {p.livrable && <p class="carte-livrable">{p.livrable}</p>}
           </a>
         </li>
       ))}
@@ -54,33 +55,30 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
 </Base>
 
 <style>
-  .ouverture { padding-top: clamp(48px, 7vw, 96px); }
-  .titre { font-size: clamp(2.6rem, 7.2vw, 6.75rem); }
+  .ouverture { padding-top: clamp(40px, 5vw, 72px); }
+  .titre { font-size: clamp(2.6rem, 7.2vw, 6rem); }
   .ligne { display: block; }
   .titre .it { font-size: 0.98em; }
 
   .ouverture-bas {
-    display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
-    margin-top: clamp(28px, 4vw, 48px);
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 24px clamp(32px, 6vw, 96px);
+    margin-top: clamp(24px, 3vw, 40px);
   }
   .intro { margin: 0; max-width: 46ch; font-size: clamp(0.9375rem, 1.2vw, 1.0625rem); line-height: 1.6; }
   .intro strong { font-weight: 550; }
 
-  .chiffres {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gouttiere);
-    margin: clamp(48px, 7vw, 88px) 0 0;
-  }
-  .chiffres > div { border-top: 1px solid var(--encre); padding-top: 14px; }
-  .chiffres dt { font-size: clamp(1.75rem, 3vw, 2.5rem); }
-  .chiffres dd { margin: 8px 0 0; font-size: 0.8125rem; color: var(--gris); max-width: 28ch; }
+  .chiffres { display: flex; gap: var(--gouttiere) clamp(24px, 3vw, 48px); margin: 0; flex-shrink: 0; }
+  .chiffres > div { border-top: 1px solid var(--encre); padding-top: 10px; min-width: 11rem; }
+  .chiffres dt { font-size: 1.375rem; font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; }
+  .chiffres dd { margin: 6px 0 0; font-size: 0.8125rem; line-height: 1.4; color: var(--gris); max-width: 22ch; }
 
-  .projets { margin-top: clamp(72px, 10vw, 140px); }
+  .projets { margin-top: clamp(48px, 6vw, 88px); }
   .barre-filtres {
     display: flex; justify-content: space-between; align-items: center; gap: 16px;
     padding-bottom: 20px; border-bottom: 1px solid var(--filet); margin-bottom: clamp(24px, 3vw, 36px);
   }
   .filtres { display: flex; flex-wrap: wrap; gap: 8px; }
-  .filtres button { cursor: pointer; font-family: inherit; transition: background 0.2s, color 0.2s; }
+  .filtres button { cursor: pointer; min-height: 32px; font-family: inherit; transition: background 0.2s, color 0.2s; }
   .filtres button:hover { background: var(--fond-2); }
   .filtres button[aria-pressed='true'] { background: var(--encre); color: var(--fond); }
   .compte { font-size: 0.75rem; color: var(--gris); white-space: nowrap; }
@@ -97,14 +95,21 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
   .carte-titre { display: inline-flex; align-items: center; gap: 9px; font-size: 0.9375rem; font-weight: 450; }
   .carte-titre .point { transform: translateY(-1px); }
   .carte-cat { font-size: 0.875rem; color: var(--gris); text-align: right; }
+  .carte-livrable { margin: 4px 0 0 18px; font-size: 0.8125rem; line-height: 1.45; color: var(--gris); }
 
   @media (max-width: 760px) {
     .ouverture-bas { flex-direction: column; align-items: flex-start; }
-    .chiffres { grid-template-columns: 1fr; gap: 16px; }
-    .chiffres > div { padding-top: 10px; }
-    .chiffres dd { margin-top: 4px; }
-    .barre-filtres { flex-direction: column; align-items: flex-start; }
-    .filtres { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 4px; scrollbar-width: none; }
+    .chiffres { width: 100%; }
+    .chiffres > div { flex: 1; min-width: 0; }
+    .barre-filtres { flex-direction: column; align-items: stretch; }
+    /* Les filtres défilent de côté : un fondu à droite signale la suite */
+    .filtres {
+      flex-wrap: nowrap; overflow-x: auto; margin-right: calc(var(--marge) * -1); padding: 6px var(--marge) 6px 0; scrollbar-width: none;
+      -webkit-mask: linear-gradient(90deg, #000 calc(100% - 56px), transparent);
+      mask: linear-gradient(90deg, #000 calc(100% - 56px), transparent);
+    }
+    .filtres::-webkit-scrollbar { display: none; }
+    .filtres button { min-height: 44px; flex-shrink: 0; }
     .grille-projets { grid-template-columns: 1fr; }
   }
 </style>

@@ -19,6 +19,8 @@ const { projet, index } = Astro.props as { projet: Projet; index: number };
 const rang = selection.indexOf(projet);
 const suivant = rang === -1 ? selection[0] : selection[(rang + 1) % selection.length];
 const [couverture, ...galerie] = projet.visuels;
+// Un titre long n'entoure qu'un mot (champ `mot`), comme sur l'accueil
+const [avantMot, apresMot] = projet.mot && projet.titre.includes(projet.mot) ? projet.titre.split(projet.mot) : [null, null];
 const num = String((rang === -1 ? index : rang) + 1).padStart(2, '0');
 const bandeau = [
   ['Rôle', projet.role],
@@ -34,7 +36,9 @@ const bandeau = [
       <a class="retour" href="/#projets">← Tous les projets</a>
       <p class="numero" data-apparait><span class="point" /><span>{num}</span><span class="numero-cat">{projet.categorie}</span></p>
       <div class="tete-grille">
-        <h1 class="titre-fin" data-apparait><Ellipse marge={0.16}>{projet.titre}</Ellipse></h1>
+        <h1 class="titre-fin" data-apparait>
+          {avantMot !== null ? <>{avantMot}<Ellipse marge={0.16}><span class="it">{projet.mot}</span></Ellipse>{apresMot}</> : <Ellipse marge={0.16}>{projet.titre}</Ellipse>}
+        </h1>
         <p class="resume" data-apparait data-delai="0.1">{projet.resume}</p>
       </div>
       <dl class="bandeau" data-apparait data-delai="0.15">
@@ -71,7 +75,7 @@ const bandeau = [
       {galerie.map((img) => (
         <figure class={`vis vis-${img.format ?? 'moitie'}`} data-apparait>
           {img.src.endsWith('.mp4') ? (
-            <video src={img.src} poster={img.poster} autoplay muted loop playsinline preload="none" aria-label={img.alt} />
+            <video class="vis-film" src={img.src} poster={img.poster} muted loop playsinline preload="none" aria-label={img.alt} />
           ) : (
             <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
           )}
@@ -106,16 +110,16 @@ const bandeau = [
 
 <style>
   .tete { padding-top: clamp(28px, 5vw, 64px); }
-  .retour { font-size: 0.8125rem; text-decoration: none; color: var(--gris); }
+  .retour { display: inline-flex; align-items: center; min-height: 44px; font-size: 0.8125rem; text-decoration: none; color: var(--gris); }
   .retour:hover { color: var(--encre); }
   .numero {
     display: flex; align-items: center; gap: 12px;
-    margin: clamp(32px, 5vw, 56px) 0 clamp(16px, 2.4vw, 28px);
+    margin: clamp(22px, 4vw, 46px) 0 clamp(16px, 2.4vw, 28px);
     font-size: 0.9375rem; font-weight: 450; font-variant-numeric: tabular-nums;
   }
   .numero-cat { color: var(--gris); font-weight: 400; }
   .tete-grille { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--gouttiere) clamp(24px, 5vw, 80px); align-items: end; }
-  h1 { font-size: clamp(2.75rem, 7.6vw, 7rem); }
+  h1 { font-size: clamp(2.75rem, 7.6vw, 7rem); text-wrap: balance; }
   h1 :global(.ellipse) { white-space: normal; }
   .resume { margin: 0; font-size: clamp(1rem, 1.3vw, 1.125rem); line-height: 1.6; max-width: 46ch; }
 
@@ -187,3 +191,21 @@ const bandeau = [
     .planche figure { aspect-ratio: 1; }
   }
 </style>
+
+<script>
+  // Les vidéos de la galerie jouent quand elles sont à l'écran, sauf en « réduire les animations »
+  // (elles restent alors sur leur image fixe, avec les commandes pour les lancer)
+  const films = document.querySelectorAll<HTMLVideoElement>('.vis-film');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    films.forEach((v) => { v.controls = true; });
+  } else {
+    const io = new IntersectionObserver((entrees) =>
+      entrees.forEach((e) => {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      }),
+    );
+    films.forEach((v) => io.observe(v));
+  }
+</script>

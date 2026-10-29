@@ -1,0 +1,69 @@
+---
+// Sélection envoyée aux cabinets (Big Four) : mise en page et présentations.
+// Page absente du menu et non indexée : on la partage par son lien.
+import Base from '../layouts/Base.astro';
+import Ellipse from '../components/Ellipse.astro';
+import CarteVisuel from '../components/CarteVisuel.astro';
+import { selectionEdition as projets } from '../data/projets';
+---
+<Base
+  titre="Mise en page et présentations"
+  description="Marie-Ange Viard, graphiste : une sélection de projets de mise en page, d’édition et de présentation."
+  indexer={false}
+>
+  <section class="ouverture cadre" aria-labelledby="titre-edition">
+    <h1 id="titre-edition" class="titre-fin titre">
+      <span class="ligne" data-apparait><Ellipse marge={0.14}><span class="it">Mise en page</span></Ellipse></span>
+      <span class="ligne" data-apparait data-delai="0.08">et présentations</span>
+    </h1>
+    <p class="intro" data-apparait data-delai="0.15">
+      Quatre projets choisis pour un poste de maquettiste&#8239;: des catalogues de plus de 300&#160;pages,
+      un livre de 378&#160;pages, une présentation de cadrage et une infographie.
+      Le reste de mon travail est sur <a href="/">la page d’accueil</a>.
+    </p>
+  </section>
+
+  <section class="cadre projets" aria-label="Projets sélectionnés">
+    <ol class="grille-projets">
+      {projets.map((p, i) => (
+        <li class="carte" style={`--c: ${p.couleur}`}>
+          <a href={`/projets/${p.slug}`}>
+            <div class="carte-img">
+              <CarteVisuel projet={p} prioritaire={i < 2} />
+            </div>
+            <div class="carte-legende">
+              <span class="carte-titre"><span class="num">{String(i + 1).padStart(2, '0')}</span>{p.titre}</span>
+              <span class="it carte-cat">{p.categorie}</span>
+            </div>
+            {p.livrable && <p class="carte-livrable">{p.livrable}</p>}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</Base>
+
+<style>
+  .ouverture { padding-top: clamp(40px, 5vw, 72px); }
+  .titre { font-size: clamp(2.6rem, 7.2vw, 6rem); }
+  .ligne { display: block; }
+  .intro { margin: clamp(24px, 3vw, 40px) 0 0; max-width: 52ch; font-size: clamp(0.9375rem, 1.2vw, 1.0625rem); line-height: 1.6; }
+
+  .projets { margin-top: clamp(48px, 6vw, 88px); padding-top: clamp(24px, 3vw, 36px); border-top: 1px solid var(--filet); }
+  .grille-projets {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(28px, 4vw, 56px) var(--gouttiere);
+  }
+  .carte a { display: block; text-decoration: none; }
+  .carte-img { border-radius: var(--rayon); overflow: hidden; background: var(--fond-2); }
+  .carte-legende { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 12px; }
+  .carte-titre { display: inline-flex; align-items: baseline; gap: 10px; font-size: 0.9375rem; font-weight: 450; }
+  .num { font-size: 0.75rem; color: var(--c); font-variant-numeric: tabular-nums; }
+  .carte-cat { font-size: 0.875rem; color: var(--gris); text-align: right; }
+  .carte-livrable { margin: 4px 0 0 26px; font-size: 0.8125rem; line-height: 1.45; color: var(--gris); }
+
+  @media (max-width: 760px) {
+    .grille-projets { grid-template-columns: 1fr; }
+  }
+</style>
