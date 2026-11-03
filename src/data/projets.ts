@@ -33,7 +33,7 @@ export type Projet = {
   outils?: string;
   equipe?: string;
   cadre: string;
-  contexte: string;
+  contexte?: string;
   /** Les tâches réalisées, affichées en liste */
   taches: string[];
   visuels: Visuel[];
@@ -70,13 +70,11 @@ export const projets: Projet[] = [
     mot: 'vie',
     outils: 'InDesign, Photoshop',
     cadre: 'Projet personnel',
-    contexte:
-      "Deux guerres, une vie est l'autobiographie de mon arrière-grand-père, qui traverse les deux conflits mondiaux. Un format broché de 110 × 170 mm, 378 pages de texte et d'archives.",
     taches: [
       'Reprise et réécriture du manuscrit',
       'Couverture : première, dos et quatrième',
       'Gabarit et mise en page intérieure (378 pages)',
-      "Intégration des photographies d'archives et des cartes",
+      "Intégration et unification des photographies d'archives et des cartes",
     ],
     survol: { type: 'livre' },
     visuels: [

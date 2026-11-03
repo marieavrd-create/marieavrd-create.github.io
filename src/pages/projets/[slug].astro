@@ -53,10 +53,12 @@ const bandeau = [
     </figure>
 
     <section class="cadre recit">
-      <div class="bloc" data-apparait>
-        <h2 class="surtitre">Le contexte</h2>
-        <p>{projet.contexte}</p>
-      </div>
+      {projet.contexte && (
+        <div class="bloc" data-apparait>
+          <h2 class="surtitre">Le contexte</h2>
+          <p>{projet.contexte}</p>
+        </div>
+      )}
       <div class="bloc" data-apparait>
         <h2 class="surtitre">Réalisations</h2>
         <ol class="taches">
