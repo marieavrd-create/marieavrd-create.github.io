@@ -37,6 +37,7 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titreComplet}</title>
     <meta name="description" content={description} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     {!indexer && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={url} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -82,7 +83,11 @@ const nav = [
         </p>
       )}
       <div class="pied-bas">
-        <span>© {new Date().getFullYear()} Marie-Ange Viard · Paris</span>
+        <span class="pied-legal">
+          <span>© {new Date().getFullYear()} Marie-Ange Viard · Paris</span>
+          <a href="/mentions-legales">Mentions légales</a>
+          <a href="/confidentialite">Confidentialité</a>
+        </span>
         <span class="pied-liens">
           <a href="mailto:ma.projetgraphique@gmail.com">ma.projetgraphique@gmail.com</a>
           <a href="https://www.linkedin.com/in/marieangeviard/" rel="me noopener">LinkedIn</a>
@@ -125,7 +130,9 @@ const nav = [
   .pied-liens { display: flex; flex-wrap: wrap; gap: 8px 24px; }
   .pied-liens a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
   .sans-appel .pied-bas { margin-top: 0; padding-top: 16px; border-top: 1px solid var(--filet); }
-  .pied-liens a:hover { color: var(--encre); }
+  .pied-liens a:hover, .pied-legal a:hover { color: var(--encre); }
+  .pied-legal { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; }
+  .pied-legal a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
 
   @media (max-width: 600px) {
     .entete { padding-block: 10px; }

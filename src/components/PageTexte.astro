@@ -1,0 +1,23 @@
+---
+// Mise en forme commune des pages de texte légales (mentions, confidentialité)
+interface Props { titre: string; maj: string }
+const { titre, maj } = Astro.props;
+---
+<section class="cadre page-texte">
+  <h1 class="titre-fin">{titre}</h1>
+  <p class="maj">Dernière mise à jour : {maj}</p>
+  <div class="corps"><slot /></div>
+</section>
+
+<style>
+  .page-texte { padding-top: clamp(40px, 7vw, 96px); }
+  h1 { font-size: clamp(2.25rem, 6vw, 4.5rem); line-height: 1.08; text-wrap: balance; }
+  .maj { margin-top: 16px; font-size: 0.8125rem; color: var(--gris); }
+  .corps { max-width: 68ch; margin-top: clamp(40px, 6vw, 72px); font-size: 1rem; line-height: 1.65; font-weight: 350; }
+  .corps :global(h2) { font-size: 1.125rem; font-weight: 500; margin: 48px 0 12px; padding-top: 16px; border-top: 1px solid var(--filet); }
+  .corps :global(p), .corps :global(ul) { margin: 0 0 12px; }
+  .corps :global(ul) { padding-left: 1.2em; }
+  .corps :global(li) { margin-bottom: 6px; }
+  .corps :global(a) { text-decoration: underline; text-underline-offset: 0.18em; }
+  .corps :global(a:hover) { color: var(--gris); }
+</style>
