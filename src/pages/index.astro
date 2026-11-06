@@ -17,10 +17,6 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
         Je mets en page des documents clairs et rigoureux : éditions, présentations, chartes.
         Directrice artistique junior, formée chez <strong>Belin Éducation</strong> et <strong>Bureau des goodies</strong>.
       </p>
-      <dl class="chiffres" data-apparait data-delai="0.25">
-        <div><dt>300+</dt><dd>pages de catalogues mises en page</dd></div>
-        <div><dt>Jusqu’au BAT</dt><dd>chaîne graphique suivie jusqu’à la production</dd></div>
-      </dl>
     </div>
   </section>
 
@@ -67,10 +63,6 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
   .intro { margin: 0; max-width: 46ch; font-size: clamp(0.9375rem, 1.2vw, 1.0625rem); line-height: 1.6; }
   .intro strong { font-weight: 550; }
 
-  .chiffres { display: flex; gap: var(--gouttiere) clamp(24px, 3vw, 48px); margin: 0; flex-shrink: 0; }
-  .chiffres > div { border-top: 1px solid var(--encre); padding-top: 10px; min-width: 11rem; }
-  .chiffres dt { font-size: 1.375rem; font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; }
-  .chiffres dd { margin: 6px 0 0; font-size: 0.8125rem; line-height: 1.4; color: var(--gris); max-width: 22ch; }
 
   .projets { margin-top: clamp(48px, 6vw, 88px); }
   .barre-filtres {
@@ -99,8 +91,6 @@ const presents = filtres.filter((f) => projets.some((p) => p.filtres.includes(f.
 
   @media (max-width: 760px) {
     .ouverture-bas { flex-direction: column; align-items: flex-start; }
-    .chiffres { width: 100%; }
-    .chiffres > div { flex: 1; min-width: 0; }
     .barre-filtres { flex-direction: column; align-items: stretch; }
     /* Les filtres défilent de côté : un fondu à droite signale la suite */
     .filtres {
