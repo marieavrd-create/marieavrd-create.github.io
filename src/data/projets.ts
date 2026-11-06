@@ -35,7 +35,6 @@ export type Projet = {
   cadre: string;
   contexte?: string;
   /** Masque les légendes sous les visuels de la galerie (le texte alternatif reste) */
-  sansLegende?: boolean;
   /** Les deux premiers visuels s'affichent côte à côte en ouverture de page, à la place d'une seule image */
   couvertureDouble?: boolean;
   /** Les tâches réalisées, affichées en liste */
@@ -83,7 +82,6 @@ export const projets: Projet[] = [
       "Intégration et unification des photographies d'archives et des cartes",
     ],
     survol: { type: 'livre' },
-    sansLegende: true,
     couvertureDouble: true,
     visuels: [
       v('deux-guerres-une-vie', '01', 'Maquette du livre fermé', 'moitie'),
@@ -140,8 +138,9 @@ export const projets: Projet[] = [
       'Une expérience digitale autour de Mohamed Ali pour la Collection Pinault : un couloir d’écrans d’affiches d’époque, puis une salle-ring où l’on rejoue ses déplacements.',
     role: 'Concept, UX, direction artistique',
     livrables: 'Concept, personas, parcours utilisateur, moodboard, charte',
-    livrable: 'Concept, charte et présentation de 30 diapos',
+    livrable: 'Concept, charte et présentation de 30\u00a0diapositives',
     mot: 'Ali',
+    outils: 'InDesign, Illustrator',
     cadre: 'Projet de Master',
     contexte: 'Brief : concevoir une expérience digitale autour de Mohamed Ali pour la Collection Pinault.',
     taches: [
@@ -293,7 +292,7 @@ export const projets: Projet[] = [
     filtres: ['identite'],
     etiquettes: ['Character design', 'Identité', 'Illustration', 'Merch'],
     resume:
-      'Une mascotte et une identité pour un club de course du dimanche qui finit autour d’un cidre, déclinées sur les vêtements et les bouteilles.',
+      'Une mascotte et une identité pour un club de course du dimanche qui finit autour d’un cidre, déclinées sur la flasque et les bouteilles.',
     role: 'Direction artistique, illustration',
     livrables: 'Mascotte et ses poses, logotype, stickers, cartes de rythme, affiche, merch et étiquettes',
     outils: 'Illustrator, InDesign',
@@ -305,7 +304,7 @@ export const projets: Projet[] = [
       'Logotype Cider sunday run club',
       'Trois rythmes de course, Doux, Brut et Extra-brut, nommés comme les cidres',
       'Stickers, flasque et affiche',
-      'Déclinaison sur les vêtements et les étiquettes de bouteilles',
+      'Déclinaison sur la flasque et les étiquettes de bouteilles',
     ],
     survol: {
       type: 'flash',
@@ -315,11 +314,9 @@ export const projets: Projet[] = [
     visuels: [
       v('cider-sunday-run-club', '01', 'Carte de membre Cider Sunday Run Club sur fond bleu', 'large'),
       v('cider-sunday-run-club', 'm-soleil', 'Bouteille de cidre Brut au soleil, étiquette Cider Sunday Run Club', 'large'),
-      v('cider-sunday-run-club', 'm-tote', 'Tote bag en toile', 'moitie'),
-      v('cider-sunday-run-club', 'm-tee-blanc', 'T-shirt blanc avec la mascotte et le logotype', 'moitie'),
-      v('cider-sunday-run-club', 'foulee', 'On lâche rien, en bleu sur une photo de course floue', 'large'),
-      v('cider-sunday-run-club', 'bars-a-cidre', 'Les run clubs sont les nouveaux bars à cidre, peint en blanc sur fond bleu', 'large'),
+      v('cider-sunday-run-club', 'foulee', 'On lâche rien, en bleu sur une photo de course floue', 'moitie'),
       v('cider-sunday-run-club', 'affiche', 'Affiche du club, logotype sur une photo de course', 'moitie'),
+      v('cider-sunday-run-club', 'bars-a-cidre', 'Les run clubs sont les nouveaux bars à cidre, peint en blanc sur fond bleu', 'large'),
       v('cider-sunday-run-club', 'perso-trait', 'La mascotte au trait bleu, une bouteille à la main', 'moitie'),
       v('cider-sunday-run-club', 'titre', 'Logotype avec la mascotte et la bouteille en stickers', 'moitie'),
       v('cider-sunday-run-club', 'rythmes', 'Cartes de rythme Doux, Brut et Extra-brut', 'large'),
@@ -449,14 +446,15 @@ export const projets: Projet[] = [
     filtres: ['identite', 'affiche', 'digital', 'presentation'],
     etiquettes: ['DA', 'Logo', 'Affiche', 'Packaging'],
     resume:
-      "La direction artistique de la sortie de l'album de Lana Del Rey : logo, charte, affiche, packaging et boutique.",
+      "La direction artistique de la sortie de l'album Chemtrails Over the Country Club de Lana Del Rey\u00a0: logo, charte, affiche, packaging et boutique.",
     role: 'Direction artistique, graphisme',
     livrables: 'Moodboard, logo, charte, affiche, packaging, maquettes de la boutique',
     livrable: 'Charte, affiche, packaging et présentation de 44 diapos',
     mot: 'Chemtrails',
     equipe: 'Projet d’équipe (4 personnes)',
     cadre: 'Projet d’études',
-    contexte: "Imaginer la direction artistique de la sortie de l'album de Lana Del Rey et donner envie de le découvrir.",
+    contexte:
+      "Projet d'études en équipe de quatre\u00a0: imaginer la sortie de l'album et donner envie de le découvrir, dans l'esprit rétro des années 1970. Ma part\u00a0: la présentation, l'affiche et les visuels.",
     taches: [
       'Moodboard années 70',
       'Logo',

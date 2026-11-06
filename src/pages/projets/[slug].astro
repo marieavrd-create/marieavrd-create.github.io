@@ -84,7 +84,6 @@ const bandeau = [
           ) : (
             <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
           )}
-          {!projet.sansLegende && <figcaption aria-hidden="true">{img.alt}</figcaption>}
         </figure>
       ))}
     </section>
@@ -96,7 +95,6 @@ const bandeau = [
           {projet.planche.items.map((it) => (
             <figure>
               <img src={it.src} alt={it.alt} loading="lazy" decoding="async" />
-              <figcaption>{it.nom}<span class="point" aria-hidden="true"></span><span>{it.variante}</span></figcaption>
             </figure>
           ))}
         </div>
@@ -163,7 +161,6 @@ const bandeau = [
   }
   .vis { margin: 0; }
   .vis img, .vis video { display: block; width: 100%; border-radius: var(--rayon); background: var(--fond-2); }
-  .vis figcaption { margin-top: 10px; font-size: 0.75rem; color: var(--gris); }
   .vis-large { grid-column: 1 / -1; }
   .vis-moitie { grid-column: span 3; }
   .vis-tiers { grid-column: span 2; }
@@ -178,9 +175,6 @@ const bandeau = [
     border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet);
   }
   .planche img { position: absolute; inset: 12% 24% 22%; width: 52%; height: 66%; object-fit: contain; transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
-  .planche figcaption { display: flex; gap: 8px; align-items: center; font-size: 0.8125rem; color: var(--gris); }
-  .planche figcaption span:last-child { color: var(--encre); }
-  .planche .point { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .planche figure:hover img { transform: scale(1.07) rotate(-2deg); }
   }
