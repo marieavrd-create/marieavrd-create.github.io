@@ -444,7 +444,7 @@ export const projets: Projet[] = [
     filtres: ['identite', 'affiche', 'digital', 'presentation'],
     etiquettes: ['DA', 'Logo', 'Affiche', 'Packaging'],
     resume:
-      "La direction artistique de la sortie de l'album de Lana Del Rey : logo, charte, affiche, packaging et boutique.",
+      "La direction artistique de la sortie de l'album Chemtrails Over the Country Club de Lana Del Rey\u00a0: logo, charte, affiche, packaging et boutique.",
     role: 'Direction artistique, graphisme',
     livrables: 'Moodboard, logo, charte, affiche, packaging, maquettes de la boutique',
     livrable: 'Charte, affiche, packaging et présentation de 44 diapos',
