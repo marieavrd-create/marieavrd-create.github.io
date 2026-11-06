@@ -451,7 +451,8 @@ export const projets: Projet[] = [
     mot: 'Chemtrails',
     equipe: 'Projet d’équipe (4 personnes)',
     cadre: 'Projet d’études',
-    contexte: "Imaginer la direction artistique de la sortie de l'album de Lana Del Rey et donner envie de le découvrir.",
+    contexte:
+      "Projet d'études en équipe de quatre\u00a0: imaginer la sortie de l'album et donner envie de le découvrir, dans l'esprit rétro des années 1970. Ma part\u00a0: la présentation, l'affiche et les visuels.",
     taches: [
       'Moodboard années 70',
       'Logo',
