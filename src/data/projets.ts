@@ -136,8 +136,9 @@ export const projets: Projet[] = [
       'Une expérience digitale autour de Mohamed Ali pour la Collection Pinault : un couloir d’écrans d’affiches d’époque, puis une salle-ring où l’on rejoue ses déplacements.',
     role: 'Concept, UX, direction artistique',
     livrables: 'Concept, personas, parcours utilisateur, moodboard, charte',
-    livrable: 'Concept, charte et présentation de 30 diapos',
+    livrable: 'Concept, charte et présentation de 30\u00a0diapositives',
     mot: 'Ali',
+    outils: 'InDesign, Illustrator',
     cadre: 'Projet de Master',
     contexte: 'Brief : concevoir une expérience digitale autour de Mohamed Ali pour la Collection Pinault.',
     taches: [
