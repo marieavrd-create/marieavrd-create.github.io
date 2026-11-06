@@ -81,7 +81,7 @@ const bandeau = [
           ) : (
             <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
           )}
-          <figcaption aria-hidden="true">{img.alt}</figcaption>
+          {!projet.sansLegende && <figcaption aria-hidden="true">{img.alt}</figcaption>}
         </figure>
       ))}
     </section>

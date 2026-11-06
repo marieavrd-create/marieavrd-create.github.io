@@ -34,6 +34,8 @@ export type Projet = {
   equipe?: string;
   cadre: string;
   contexte?: string;
+  /** Masque les légendes sous les visuels de la galerie (le texte alternatif reste) */
+  sansLegende?: boolean;
   /** Les tâches réalisées, affichées en liste */
   taches: string[];
   visuels: Visuel[];
@@ -77,6 +79,7 @@ export const projets: Projet[] = [
       "Intégration et unification des photographies d'archives et des cartes",
     ],
     survol: { type: 'livre' },
+    sansLegende: true,
     visuels: [
       v('deux-guerres-une-vie', 'livre-a-plat', 'Couverture à plat : quatrième, dos et première', 'large'),
       v('deux-guerres-une-vie', '01', 'Maquette du livre fermé', 'moitie'),
