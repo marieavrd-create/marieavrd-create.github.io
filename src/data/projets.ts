@@ -35,6 +35,8 @@ export type Projet = {
   cadre: string;
   contexte?: string;
   /** Masque les légendes sous les visuels de la galerie (le texte alternatif reste) */
+  /** Les deux premiers visuels s'affichent côte à côte en ouverture de page, à la place d'une seule image */
+  couvertureDouble?: boolean;
   /** Les tâches réalisées, affichées en liste */
   taches: string[];
   visuels: Visuel[];
@@ -80,8 +82,8 @@ export const projets: Projet[] = [
       "Intégration et unification des photographies d'archives et des cartes",
     ],
     survol: { type: 'livre' },
+    couvertureDouble: true,
     visuels: [
-      v('deux-guerres-une-vie', 'livre-a-plat', 'Couverture à plat : quatrième, dos et première', 'large'),
       v('deux-guerres-une-vie', '01', 'Maquette du livre fermé', 'moitie'),
       v('deux-guerres-une-vie', '04', 'Tranche du livre', 'moitie'),
       v('deux-guerres-une-vie', '03', 'Page qui tourne, texte et photographies', 'large'),
