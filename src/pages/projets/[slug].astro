@@ -94,7 +94,7 @@ const bandeau = [
           {projet.planche.items.map((it) => (
             <figure>
               <img src={it.src} alt={it.alt} loading="lazy" decoding="async" />
-              <figcaption>{it.nom}<span class="point" aria-hidden="true"></span><span>{it.variante}</span></figcaption>
+              {!projet.sansLegende && <figcaption>{it.nom}<span class="point" aria-hidden="true"></span><span>{it.variante}</span></figcaption>}
             </figure>
           ))}
         </div>
