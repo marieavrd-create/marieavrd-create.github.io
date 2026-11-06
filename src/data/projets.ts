@@ -33,7 +33,9 @@ export type Projet = {
   outils?: string;
   equipe?: string;
   cadre: string;
-  contexte: string;
+  contexte?: string;
+  /** Masque les légendes sous les visuels de la galerie (le texte alternatif reste) */
+  sansLegende?: boolean;
   /** Les tâches réalisées, affichées en liste */
   taches: string[];
   visuels: Visuel[];
@@ -72,20 +74,18 @@ export const projets: Projet[] = [
     mot: 'vie',
     outils: 'InDesign, Photoshop',
     cadre: 'Projet personnel',
-    contexte:
-      "Deux guerres, une vie est l'autobiographie de mon arrière-grand-père, qui traverse les deux conflits mondiaux. Un format broché de 110 × 170 mm, 378 pages de texte et d'archives.",
     taches: [
       'Reprise et réécriture du manuscrit',
       'Couverture : première, dos et quatrième',
       'Gabarit et mise en page intérieure (378 pages)',
-      "Intégration des photographies d'archives et des cartes",
+      "Intégration et unification des photographies d'archives et des cartes",
     ],
     survol: { type: 'livre' },
+    sansLegende: true,
     visuels: [
       v('deux-guerres-une-vie', 'livre-a-plat', 'Couverture à plat : quatrième, dos et première', 'large'),
       v('deux-guerres-une-vie', '01', 'Maquette du livre fermé', 'moitie'),
       v('deux-guerres-une-vie', '04', 'Tranche du livre', 'moitie'),
-      v('deux-guerres-une-vie', '02', 'Double page intérieure avec un portrait d’archives', 'large'),
       v('deux-guerres-une-vie', '03', 'Page qui tourne, texte et photographies', 'large'),
       v('deux-guerres-une-vie', 'close-up-mosaique', 'Doubles pages du livre, archives, cartes et textes', 'large'),
       v('deux-guerres-une-vie', 'close-up-texte', 'Gros plan sur la première phrase du récit', 'moitie'),
