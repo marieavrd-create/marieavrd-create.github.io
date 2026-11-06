@@ -395,9 +395,10 @@ export const projets: Projet[] = [
     ],
     survol: { type: 'eventail', images: ['/projets/bureau-des-goodies/01.webp', '/projets/bureau-des-goodies/04.webp', '/projets/bureau-des-goodies/05.webp'] },
     visuels: [
-      v('bureau-des-goodies', '03', 'Catalogue, page de la rubrique Sacs et bagages', 'large'),
+      v('bureau-des-goodies', 'charte-10', 'Les quatre déclinaisons couleur du monogramme', 'large'),
       v('bureau-des-goodies', '01', 'Couverture du catalogue', 'moitie'),
       v('bureau-des-goodies', '02', 'Page « Qui sommes-nous ? » du catalogue', 'moitie'),
+      v('bureau-des-goodies', '03', 'Catalogue, page de la rubrique Sacs et bagages', 'moitie'),
       v('bureau-des-goodies', '04', 'Page produits Écritures', 'moitie'),
       v('bureau-des-goodies', '05', 'Page produits Alimentaire et boisson', 'moitie'),
       v('bureau-des-goodies', '06', 'Page produits Pack été', 'moitie'),
@@ -410,7 +411,6 @@ export const projets: Projet[] = [
       v('bureau-des-goodies', 'charte-07', "L'univers typographique, Barlow Thin et Extrabold", 'moitie'),
       v('bureau-des-goodies', 'charte-08', 'Iconographie : sweat, tote bag, mug et stylo', 'moitie'),
       v('bureau-des-goodies', 'charte-09', 'Logo mis en situation : posts Instagram, carte de visite, t-shirt', 'large'),
-      v('bureau-des-goodies', 'charte-10', 'Les quatre déclinaisons couleur du monogramme', 'large'),
     ],
   },
   {
