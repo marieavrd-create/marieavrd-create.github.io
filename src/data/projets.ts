@@ -58,50 +58,6 @@ const v = (slug: string, fichier: string, alt: string, format?: Visuel['format']
 
 export const projets: Projet[] = [
   {
-    slug: 'aldren',
-    titre: 'DEU Aldren 2025',
-    categorie: 'Édition financière',
-    couleur: '#1b3f7a',
-    filtres: ['edition', 'presentation'],
-    etiquettes: ['Édition financière', 'Mise en page', 'Tableaux', 'Styles InDesign'],
-    resume:
-      'Un extrait de 8 pages du document d’enregistrement universel d’un groupe fictif de services d’énergie : sommaire, message de la présidente, chiffres clés, intercalaire et états financiers.',
-    role: 'Conception et mise en page',
-    livrables: 'Extrait de DEU de 8 pages au format A4, PDF prêt à imprimer',
-    livrable: 'Extrait de DEU de 8 pages : chiffres clés et états financiers',
-    mot: 'Aldren',
-    outils: 'InDesign, Illustrator',
-    cadre: 'Projet personnel, 2026',
-    contexte:
-      'Le document d’enregistrement universel est le rapport annuel réglementé des sociétés cotées. Pour travailler ce format, j’ai imaginé Aldren, un groupe de services d’énergie, et mis en page ses pages les plus exigeantes : chiffres clés, compte de résultat et bilan. Entreprise, personnes et chiffres sont fictifs.',
-    taches: [
-      'Analyse de DEU publiés par de grands groupes : sommaire à chapitres numérotés, intercalaires, tableaux sobres',
-      'Grille de 12 colonnes, ligne de base de 12 pt, gabarits Texte et Intercalaire, nuancier CMJN',
-      'Styles de paragraphe, de cellule et de tableau : un tableau importé d’Excel prend sa mise en forme en un clic',
-      'Sommaire à points de conduite et graphiques dessinés dans Illustrator',
-      'Contrôle des totaux du compte de résultat et du bilan, contrôle en amont et export PDF',
-    ],
-    survol: { type: 'eventail', images: ['/projets/aldren/pages/04-s.webp', '/projets/aldren/pages/01-s.webp', '/projets/aldren/pages/07-s.webp'] },
-    visuels: [
-      v('aldren', '01', 'Les doubles pages du DEU Aldren 2025 posées à plat sur fond bleu', 'large'),
-    ],
-    feuilleter: {
-      dossier: '/projets/aldren/pages',
-      pages: [
-        'Couverture',
-        'Sommaire',
-        'Message de la présidente',
-        'Chiffres clés',
-        'Engagements et répartition',
-        'Intercalaire, états financiers',
-        'Compte de résultat consolidé',
-        'Bilan consolidé',
-      ],
-      texte: 'Les 8 pages en doubles pages, telles qu’elles sortent d’InDesign.',
-      pdf: '/projets/aldren/DEU-Aldren-2025-extrait.pdf',
-    },
-  },
-  {
     slug: 'deux-guerres-une-vie',
     titre: 'Deux guerres, une vie',
     categorie: 'Édition',
@@ -211,6 +167,50 @@ export const projets: Projet[] = [
       v('mohamed-ali', 'm-ko', 'Salle-ring : séquence KO', 'moitie'),
       v('mohamed-ali', 'm-coin', 'Salle-ring : séquence dans le coin', 'moitie'),
     ],
+  },
+  {
+    slug: 'aldren',
+    titre: 'DEU Aldren 2025',
+    categorie: 'Édition financière',
+    couleur: '#1b3f7a',
+    filtres: ['edition', 'presentation'],
+    etiquettes: ['Édition financière', 'Mise en page', 'Tableaux', 'Styles InDesign'],
+    resume:
+      'Un extrait de 8 pages du document d’enregistrement universel d’un groupe fictif de services d’énergie : sommaire, message de la présidente, chiffres clés, intercalaire et états financiers.',
+    role: 'Conception et mise en page',
+    livrables: 'Extrait de DEU de 8 pages au format A4, PDF prêt à imprimer',
+    livrable: 'Extrait de DEU de 8 pages : chiffres clés et états financiers',
+    mot: 'Aldren',
+    outils: 'InDesign, Illustrator',
+    cadre: 'Projet personnel, 2026',
+    contexte:
+      'Le document d’enregistrement universel est le rapport annuel réglementé des sociétés cotées. Pour travailler ce format, j’ai imaginé Aldren, un groupe de services d’énergie, et mis en page ses pages les plus exigeantes : chiffres clés, compte de résultat et bilan. Entreprise, personnes et chiffres sont fictifs.',
+    taches: [
+      'Analyse de DEU publiés par de grands groupes : sommaire à chapitres numérotés, intercalaires, tableaux sobres',
+      'Grille de 12 colonnes, ligne de base de 12 pt, gabarits Texte et Intercalaire, nuancier CMJN',
+      'Styles de paragraphe, de cellule et de tableau : un tableau importé d’Excel prend sa mise en forme en un clic',
+      'Sommaire à points de conduite et graphiques dessinés dans Illustrator',
+      'Contrôle des totaux du compte de résultat et du bilan, contrôle en amont et export PDF',
+    ],
+    survol: { type: 'eventail', images: ['/projets/aldren/pages/04-s.webp', '/projets/aldren/pages/01-s.webp', '/projets/aldren/pages/07-s.webp'] },
+    visuels: [
+      v('aldren', '01', 'Les doubles pages du DEU Aldren 2025 posées à plat sur fond bleu', 'large'),
+    ],
+    feuilleter: {
+      dossier: '/projets/aldren/pages',
+      pages: [
+        'Couverture',
+        'Sommaire',
+        'Message de la présidente',
+        'Chiffres clés',
+        'Engagements et répartition',
+        'Intercalaire, états financiers',
+        'Compte de résultat consolidé',
+        'Bilan consolidé',
+      ],
+      texte: 'Les 8 pages en doubles pages, telles qu’elles sortent d’InDesign.',
+      pdf: '/projets/aldren/DEU-Aldren-2025-extrait.pdf',
+    },
   },
   {
     slug: 'we-love-green',
