@@ -426,7 +426,7 @@ export const projets: Projet[] = [
     livrables: 'Deux pistes de logo, cartes de visite, écrans, visuel publicitaire',
     livrable: 'Logo, cartes de visite et visuel publicitaire',
     mot: 'Achylles',
-    cadre: '2021',
+    cadre: '',
     contexte:
       'Achylles se présente comme « le copilote de votre projet d’achat immobilier » : un service clé en main pour acheter dans le neuf en toute sécurité. Il fallait une identité rassurante, entre le bleu de la confiance et le jaune de la clé remise.',
     taches: [
