@@ -1,0 +1,197 @@
+---
+// Un document imprimé (pages A4 exportées en images) à feuilleter en doubles pages :
+// couverture seule, puis 2-3, 4-5… ; page par page sur mobile.
+// Flèches, clavier, glissement au doigt et vignettes.
+interface Props {
+  dossier: string;
+  pages: string[]; // légende de chaque page
+  couleur: string;
+  titre?: string;
+  mot?: string;
+  texte?: string;
+  pdf?: string;
+}
+const { dossier, pages, couleur, titre = 'Feuilleter', mot = 'le document', texte, pdf } = Astro.props;
+const n = (i: number) => String(i).padStart(2, '0');
+---
+<section class="cadre feuilleteur" style={`--c: ${couleur}`} aria-label="Feuilleter le document" data-feuilleteur data-dossier={dossier} data-pages={JSON.stringify(pages)}>
+  <div class="tete" data-apparait>
+    <h2 class="titre-fin">{titre} <span class="it">{mot}</span></h2>
+    <div class="tete-droite">
+      {texte && <p>{texte}</p>}
+      {pdf && <a class="pdf" href={pdf} download>Télécharger le PDF <span aria-hidden="true">↓</span></a>}
+    </div>
+  </div>
+
+  <div class="scene" data-apparait>
+    <div class="vue" tabindex="0" aria-roledescription="lecteur de document" aria-label="Document, flèches gauche et droite pour tourner les pages" data-vue>
+      <div class="double" data-double>
+        <img src={`${dossier}/01.webp`} alt={`Page 1, ${pages[0]}`} width="1241" height="1754" />
+      </div>
+    </div>
+    <button type="button" class="fleche prec" data-prec aria-label="Pages précédentes" disabled>←</button>
+    <button type="button" class="fleche suiv" data-suiv aria-label="Pages suivantes">→</button>
+  </div>
+
+  <div class="barre">
+    <span data-legende>{pages[0]}</span>
+    <span class="compteur"><span data-num>1</span> / {pages.length}</span>
+  </div>
+
+  <ol class="vignettes" aria-label="Toutes les pages">
+    {pages.map((p, i) => (
+      <li>
+        <button type="button" data-aller={i + 1} aria-label={`Page ${i + 1}, ${p}`} aria-current={i === 0 ? 'true' : undefined}>
+          <img src={`${dossier}/${n(i + 1)}-m.webp`} alt="" width="240" height="339" loading="lazy" decoding="async" />
+          <span>{i + 1}</span>
+        </button>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .feuilleteur { margin-top: clamp(64px, 9vw, 128px); }
+  .tete { display: flex; justify-content: space-between; align-items: end; gap: 16px 24px; flex-wrap: wrap; }
+  .tete h2 { margin: 0; font-size: clamp(2rem, 4.6vw, 4rem); }
+  .tete-droite { display: grid; gap: 12px; justify-items: start; max-width: 36ch; }
+  .tete p { margin: 0; font-size: 0.875rem; line-height: 1.5; color: var(--gris); }
+  .pdf {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px;
+    border: 1px solid var(--encre); border-radius: 999px; font-size: 0.8125rem; text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .pdf:hover { background: var(--encre); color: var(--fond); }
+
+  .scene {
+    position: relative; margin-top: clamp(24px, 3vw, 40px);
+    background: var(--fond-2); border-radius: var(--rayon);
+    aspect-ratio: 16 / 10; max-height: 86vh; width: 100%;
+  }
+  .vue { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; padding: clamp(16px, 3.5vw, 44px) clamp(56px, 7vw, 96px); outline: none; touch-action: pan-y; }
+  .vue:focus-visible { box-shadow: 0 0 0 2px var(--c) inset; border-radius: var(--rayon); }
+  .double { display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; }
+  .double :global(img) {
+    display: block; height: auto; width: auto; max-height: 100%; max-width: 50%; min-width: 0; background: #fff;
+    box-shadow: 0 2px 4px rgba(10, 20, 40, 0.12), 0 14px 34px -8px rgba(10, 20, 40, 0.22);
+  }
+  .double.seule :global(img) { max-width: 100%; }
+  .double :global(img + img) { box-shadow: 0 2px 4px rgba(10, 20, 40, 0.12), 0 14px 34px -8px rgba(10, 20, 40, 0.22), inset 10px 0 14px -12px rgba(0, 0, 0, 0.3); }
+  .double.entre { animation: entre 0.35s ease; }
+  @keyframes entre { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .fleche {
+    position: absolute; top: calc(50% - 22px); width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    border: 1px solid var(--filet); background: var(--fond); color: var(--encre); font: inherit; font-size: 1.1rem;
+    transition: background 0.2s, color 0.2s;
+  }
+  .fleche:hover:not(:disabled) { background: var(--encre); color: var(--fond); }
+  .fleche:disabled { opacity: 0.3; cursor: default; }
+  .fleche:focus-visible { outline: 2px solid var(--c); outline-offset: 3px; }
+  .prec { left: clamp(8px, 1.4vw, 16px); }
+  .suiv { right: clamp(8px, 1.4vw, 16px); }
+
+  .barre {
+    display: flex; justify-content: space-between; gap: 16px; padding: 12px 0;
+    border-bottom: 1px solid var(--filet); font-size: 0.8125rem; color: var(--gris);
+  }
+  .compteur { flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .compteur [data-num] { color: var(--encre); }
+
+  .vignettes { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; }
+  .vignettes button { all: unset; cursor: pointer; display: grid; gap: 6px; justify-items: center; width: 100%; }
+  .vignettes img {
+    width: 100%; height: auto; aspect-ratio: 210 / 297; object-fit: cover; background: #fff; opacity: 0.5;
+    outline: 2px solid transparent; outline-offset: 2px; transition: opacity 0.2s;
+  }
+  .vignettes button:hover img { opacity: 0.85; }
+  .vignettes button[aria-current='true'] img { opacity: 1; outline-color: var(--c); }
+  .vignettes button:focus-visible img { outline-color: var(--encre); }
+  .vignettes span { font-size: 0.75rem; color: var(--gris); font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 760px) {
+    .scene { aspect-ratio: 3 / 4; }
+    .vue { padding: 20px 52px; }
+    .vignettes { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .double.entre { animation: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-feuilleteur]').forEach((racine) => {
+    const dossier = racine.dataset.dossier!;
+    const legendes: string[] = JSON.parse(racine.dataset.pages!);
+    const total = legendes.length;
+    const double = racine.querySelector<HTMLElement>('[data-double]')!;
+    const vue = racine.querySelector<HTMLElement>('[data-vue]')!;
+    const prec = racine.querySelector<HTMLButtonElement>('[data-prec]')!;
+    const suiv = racine.querySelector<HTMLButtonElement>('[data-suiv]')!;
+    const num = racine.querySelector('[data-num]')!;
+    const legende = racine.querySelector('[data-legende]')!;
+    const vignettes = [...racine.querySelectorAll<HTMLButtonElement>('[data-aller]')];
+    const etroit = matchMedia('(max-width: 760px)');
+    const src = (p: number) => `${dossier}/${String(p).padStart(2, '0')}.webp`;
+
+    // Couverture seule, puis doubles pages (2-3, 4-5…), dernière page seule si impaire
+    const planches = (): number[][] => {
+      if (etroit.matches) return legendes.map((_, i) => [i + 1]);
+      const s: number[][] = [[1]];
+      for (let p = 2; p <= total; p += 2) s.push(p + 1 <= total ? [p, p + 1] : [p]);
+      return s;
+    };
+    let actuel = 0;
+    let premiere = 1;
+    const indexDe = (p: number) => Math.max(0, planches().findIndex((s) => s.includes(p)));
+
+    const afficher = () => {
+      const S = planches();
+      actuel = Math.max(0, Math.min(actuel, S.length - 1));
+      const sp = S[actuel];
+      premiere = sp[0];
+      double.replaceChildren(
+        ...sp.map((p) => {
+          const img = new Image(1241, 1754);
+          img.src = src(p);
+          img.alt = `Page ${p}, ${legendes[p - 1]}`;
+          return img;
+        }),
+      );
+      double.classList.toggle('seule', sp.length === 1);
+      double.classList.remove('entre');
+      void double.offsetWidth;
+      double.classList.add('entre');
+      num.textContent = sp.join('–');
+      legende.textContent = sp.map((p) => legendes[p - 1]).join(' · ');
+      prec.disabled = actuel === 0;
+      suiv.disabled = actuel === S.length - 1;
+      vignettes.forEach((b) => {
+        if (sp.includes(Number(b.dataset.aller))) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+      });
+      S[actuel + 1]?.forEach((p) => { new Image().src = src(p); });
+    };
+
+    prec.addEventListener('click', () => { actuel--; afficher(); });
+    suiv.addEventListener('click', () => { actuel++; afficher(); });
+    vignettes.forEach((b) => b.addEventListener('click', () => { actuel = indexDe(Number(b.dataset.aller)); afficher(); }));
+    vue.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' && !suiv.disabled) { e.preventDefault(); actuel++; afficher(); }
+      if (e.key === 'ArrowLeft' && !prec.disabled) { e.preventDefault(); actuel--; afficher(); }
+    });
+    let x0: number | null = null;
+    vue.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
+    vue.addEventListener('pointerup', (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0;
+      x0 = null;
+      if (Math.abs(dx) > 40) {
+        if (dx < 0 && !suiv.disabled) actuel++;
+        else if (dx > 0 && !prec.disabled) actuel--;
+        afficher();
+      }
+    });
+    etroit.addEventListener('change', () => { actuel = indexDe(premiere); afficher(); });
+  });
+</script>

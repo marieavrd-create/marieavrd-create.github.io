@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Ellipse from '../../components/Ellipse.astro';
 import Livre3D from '../../components/Livre3D.astro';
 import Lecture from '../../components/Lecture.astro';
+import Feuilleteur from '../../components/Feuilleteur.astro';
 import Diaporama from '../../components/Diaporama.astro';
 import EsquareScene from '../../components/EsquareScene.astro';
 import { projets, selection, type Projet } from '../../data/projets';
@@ -100,6 +101,7 @@ const bandeau = [
 
     {projet.presentation && <Diaporama {...projet.presentation} couleur={projet.couleur} />}
     {projet.lecture && <Lecture {...projet.lecture} couleur={projet.couleur} />}
+    {projet.feuilleter && <Feuilleteur {...projet.feuilleter} couleur={projet.couleur} />}
 
     <nav class="cadre suivant" aria-label="Projet suivant" style={`--c: ${suivant.couleur}`}>
       <span class="surtitre"><span class="point" /> Projet suivant</span>

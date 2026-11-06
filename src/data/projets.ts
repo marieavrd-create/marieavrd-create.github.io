@@ -42,6 +42,8 @@ export type Projet = {
   /** Diaporama présenté en fin de page, dans un écran (fichiers 01.webp… et 01-m.webp… en vignettes) */
   presentation?: { titre: string; dossier: string; nombre: number; texte?: string; mot?: string };
   lecture?: { dossier: string; hauteurs: number[]; largeur: number; texte?: string };
+  /** Document imprimé à feuilleter en doubles pages (fichiers 01.webp… et 01-m.webp… en vignettes) */
+  feuilleter?: { dossier: string; pages: string[]; texte?: string; pdf?: string };
   /** Planche des déclinaisons en fin de page : grille de cases légendées « nom • variante » */
   planche?: { titre: string; items: { src: string; alt: string; nom: string; variante: string }[] };
   /** Retiré de l'accueil (8 projets maximum) : la page reste en ligne à son adresse */
@@ -55,6 +57,50 @@ const v = (slug: string, fichier: string, alt: string, format?: Visuel['format']
 });
 
 export const projets: Projet[] = [
+  {
+    slug: 'aldren',
+    titre: 'DEU Aldren 2025',
+    categorie: 'Édition financière',
+    couleur: '#1b3f7a',
+    filtres: ['edition', 'presentation'],
+    etiquettes: ['Édition financière', 'Mise en page', 'Tableaux', 'Styles InDesign'],
+    resume:
+      'Un extrait de 8 pages du document d’enregistrement universel d’un groupe fictif de services d’énergie : sommaire, message de la présidente, chiffres clés, intercalaire et états financiers.',
+    role: 'Conception et mise en page',
+    livrables: 'Extrait de DEU de 8 pages au format A4, PDF prêt à imprimer',
+    livrable: 'Extrait de DEU de 8 pages : chiffres clés et états financiers',
+    mot: 'Aldren',
+    outils: 'InDesign, Illustrator',
+    cadre: 'Projet personnel, 2026',
+    contexte:
+      'Le document d’enregistrement universel est le rapport annuel réglementé des sociétés cotées. Pour travailler ce format, j’ai imaginé Aldren, un groupe de services d’énergie, et mis en page ses pages les plus exigeantes : chiffres clés, compte de résultat et bilan. Entreprise, personnes et chiffres sont fictifs.',
+    taches: [
+      'Analyse de DEU publiés par de grands groupes : sommaire à chapitres numérotés, intercalaires, tableaux sobres',
+      'Grille de 12 colonnes, ligne de base de 12 pt, gabarits Texte et Intercalaire, nuancier CMJN',
+      'Styles de paragraphe, de cellule et de tableau : un tableau importé d’Excel prend sa mise en forme en un clic',
+      'Sommaire à points de conduite et graphiques dessinés dans Illustrator',
+      'Contrôle des totaux du compte de résultat et du bilan, contrôle en amont et export PDF',
+    ],
+    survol: { type: 'eventail', images: ['/projets/aldren/pages/04-s.webp', '/projets/aldren/pages/01-s.webp', '/projets/aldren/pages/07-s.webp'] },
+    visuels: [
+      v('aldren', '01', 'Les doubles pages du DEU Aldren 2025 posées à plat sur fond bleu', 'large'),
+    ],
+    feuilleter: {
+      dossier: '/projets/aldren/pages',
+      pages: [
+        'Couverture',
+        'Sommaire',
+        'Message de la présidente',
+        'Chiffres clés',
+        'Engagements et répartition',
+        'Intercalaire, états financiers',
+        'Compte de résultat consolidé',
+        'Bilan consolidé',
+      ],
+      texte: 'Les 8 pages en doubles pages, telles qu’elles sortent d’InDesign.',
+      pdf: '/projets/aldren/DEU-Aldren-2025-extrait.pdf',
+    },
+  },
   {
     slug: 'deux-guerres-une-vie',
     titre: 'Deux guerres, une vie',
@@ -461,6 +507,7 @@ export const projets: Projet[] = [
   },
   {
     slug: 'culture-pub',
+    retire: true,
     titre: 'Culture Pub',
     categorie: 'Direction artistique & UI',
     couleur: '#8b85e8',
@@ -527,7 +574,7 @@ export const projets: Projet[] = [
 ];
 
 /** Sélection pour les cabinets (page /edition, non listée) : mise en page et présentations d'abord */
-export const selectionEdition = ['bureau-des-goodies', 'deux-guerres-une-vie', 'allocine', 'infographie'].map(
+export const selectionEdition = ['aldren', 'bureau-des-goodies', 'deux-guerres-une-vie', 'allocine', 'infographie'].map(
   (slug) => projets.find((p) => p.slug === slug)!,
 );
 
