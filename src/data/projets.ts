@@ -84,7 +84,6 @@ export const projets: Projet[] = [
       v('deux-guerres-une-vie', 'livre-a-plat', 'Couverture à plat : quatrième, dos et première', 'large'),
       v('deux-guerres-une-vie', '01', 'Maquette du livre fermé', 'moitie'),
       v('deux-guerres-une-vie', '04', 'Tranche du livre', 'moitie'),
-      v('deux-guerres-une-vie', '02', 'Double page intérieure avec un portrait d’archives', 'large'),
       v('deux-guerres-une-vie', '03', 'Page qui tourne, texte et photographies', 'large'),
       v('deux-guerres-une-vie', 'close-up-mosaique', 'Doubles pages du livre, archives, cartes et textes', 'large'),
       v('deux-guerres-une-vie', 'close-up-texte', 'Gros plan sur la première phrase du récit', 'moitie'),
