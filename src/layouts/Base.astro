@@ -11,18 +11,34 @@ interface Props {
   appel?: boolean;
   /** false demande aux moteurs de recherche de ne pas indexer la page (page /edition, envoyée par lien) */
   indexer?: boolean;
+  /** 'article' pour une page projet (aperçu des liens partagés) */
+  type?: 'website' | 'article';
 }
 
 const {
   titre,
-  description = 'Marie-Ange Viard, graphiste et directrice artistique junior à Paris : édition, identité visuelle, affiches et interfaces.',
+  description = 'Marie-Ange Viard, graphiste print et digital et maquettiste à Paris : mise en page, édition, présentations sous InDesign, identité visuelle et supports digitaux.',
   image = '/projets/deux-guerres-une-vie/01.webp',
   accent,
   appel = true,
   indexer = true,
+  type = 'website',
 } = Astro.props;
 
-const titreComplet = titre ? `${titre} · Marie-Ange Viard` : 'Marie-Ange Viard · Graphiste à Paris';
+const titreComplet = titre ? `${titre} · Marie-Ange Viard, graphiste` : 'Marie-Ange Viard · Graphiste print et digital, maquettiste à Paris';
+const linkedin = 'https://www.linkedin.com/in/marieangeviard/';
+// Fiche « Personne » lue par Google (nom, métier, ville, LinkedIn) : sur l'accueil et la page À propos
+const fiche = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Marie-Ange Viard',
+  jobTitle: ['Graphiste print et digital', 'Maquettiste'],
+  url: new URL('/', Astro.site).href,
+  image: new URL('/portrait.webp', Astro.site).href,
+  sameAs: [linkedin],
+  address: { '@type': 'PostalAddress', addressLocality: 'Paris', addressCountry: 'FR' },
+  knowsAbout: ['Mise en page', 'Maquette', 'Édition', 'Présentations', 'Adobe InDesign', 'Identité visuelle', 'Charte graphique', 'Direction artistique', 'Webdesign'],
+});
 const url = new URL(Astro.url.pathname, Astro.site);
 const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
@@ -41,12 +57,16 @@ const nav = [
     {!indexer && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={url} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Marie-Ange Viard, graphiste" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:title" content={titreComplet} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={url} />
     <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {(chemin === '/' || chemin === '/a-propos') && <script type="application/ld+json" set:html={fiche} />}
     <meta name="theme-color" content="#fbfaf7" />
     <script is:inline>
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

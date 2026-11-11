@@ -32,8 +32,11 @@ const bandeau = [
   ['Équipe', projet.equipe],
   ['Cadre', projet.cadre],
 ].filter(([, v]) => v) as [string, string][];
+// Titre et description pour Google : « AlloCiné, présentation de projet · Marie-Ange Viard, graphiste »
+const titrePage = `${projet.titre}, ${projet.categorie.charAt(0).toLowerCase()}${projet.categorie.slice(1)}`;
+const descriptionPage = projet.resume.length < 120 ? `${projet.resume} Projet de Marie-Ange Viard, graphiste print et digital.` : projet.resume;
 ---
-<Base titre={projet.titre} description={projet.resume} image={couverture.src} accent={projet.couleur}>
+<Base titre={titrePage} description={descriptionPage} image={couverture.src} accent={projet.couleur} type="article">
   <article style={`--c: ${projet.couleur}`}>
     <header class="cadre tete">
       <a class="retour" href="/#projets">← Tous les projets</a>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://marieangeviard.com/sitemap-index.xml
