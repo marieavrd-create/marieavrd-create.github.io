@@ -17,7 +17,7 @@ interface Props {
 
 const {
   titre,
-  description = 'Marie-Ange Viard, graphiste print et digital à Paris : mise en page, édition, présentations sous InDesign, identité visuelle et supports digitaux.',
+  description = 'Marie-Ange Viard, graphiste print et digital et maquettiste à Paris : mise en page, édition, présentations sous InDesign, identité visuelle et supports digitaux.',
   image = '/projets/deux-guerres-une-vie/01.webp',
   accent,
   appel = true,
@@ -25,19 +25,19 @@ const {
   type = 'website',
 } = Astro.props;
 
-const titreComplet = titre ? `${titre} · Marie-Ange Viard, graphiste` : 'Marie-Ange Viard · Graphiste print et digital à Paris';
+const titreComplet = titre ? `${titre} · Marie-Ange Viard, graphiste` : 'Marie-Ange Viard · Graphiste print et digital, maquettiste à Paris';
 const linkedin = 'https://www.linkedin.com/in/marieangeviard/';
 // Fiche « Personne » lue par Google (nom, métier, ville, LinkedIn) : sur l'accueil et la page À propos
 const fiche = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Marie-Ange Viard',
-  jobTitle: 'Graphiste print et digital',
+  jobTitle: ['Graphiste print et digital', 'Maquettiste'],
   url: new URL('/', Astro.site).href,
   image: new URL('/portrait.webp', Astro.site).href,
   sameAs: [linkedin],
   address: { '@type': 'PostalAddress', addressLocality: 'Paris', addressCountry: 'FR' },
-  knowsAbout: ['Mise en page', 'Édition', 'Présentations', 'Adobe InDesign', 'Identité visuelle', 'Charte graphique', 'Direction artistique', 'Webdesign'],
+  knowsAbout: ['Mise en page', 'Maquette', 'Édition', 'Présentations', 'Adobe InDesign', 'Identité visuelle', 'Charte graphique', 'Direction artistique', 'Webdesign'],
 });
 const url = new URL(Astro.url.pathname, Astro.site);
 const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
